@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Logs / Dependencies (falls später TypeScript dazukommt)
+*.log
+node_modules/
+dist/
