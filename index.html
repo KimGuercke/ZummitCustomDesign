@@ -153,11 +153,12 @@ body.no-underline a { text-decoration: none !important; }
 /* Sub-Tabs — weiße Leiste, erster Tab bündig mit der Karte */
 .subtabs { display: inline-flex; max-width: 100%; background: #fff; border-radius: 10px 10px 0 0; overflow: hidden; }
 .subtab {
-  display: inline-flex; align-items: center; gap: .45rem; white-space: nowrap;
-  padding: .7rem 1.05rem; font-size: .95rem; color: var(--ui-text);
+  display: inline-flex; align-items: center; gap: clamp(.2rem, .4vw, .45rem); white-space: nowrap;
+  padding: clamp(.4rem, .6vw, .7rem) clamp(.55rem, .9vw, 1.05rem);
+  font-size: clamp(11px, 1.2vw, 15px); color: var(--ui-text);
   background: transparent; border: 0; cursor: pointer; border-bottom: 3px solid transparent;
 }
-.subtab .icon { width: 15px; height: 15px; color: var(--ui-accent); }
+.subtab .icon { width: clamp(12px, 1.1vw, 15px); height: clamp(12px, 1.1vw, 15px); color: var(--ui-accent); }
 .subtab:hover { color: var(--ui-accent); }
 .subtab.is-active { background: var(--z-bg); color: var(--z-fg); font-weight: 700; }
 .subtab.is-active .icon { color: var(--z-fg); }
