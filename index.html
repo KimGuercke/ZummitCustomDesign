@@ -148,20 +148,21 @@ body.no-underline a { text-decoration: none !important; }
   box-shadow: 0 2px 8px rgba(0,0,0,.08);
 }
 .workspace.is-collapsed .collapse .icon { transform: rotate(180deg); }
-.detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0; }
+.detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0;
+  container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter) */ }
 
 /* Sub-Tabs — weiße Leiste, erster Tab bündig mit der Karte */
 .subtabs { display: inline-flex; max-width: 100%; background: #fff; border-radius: 10px 10px 0 0; overflow: hidden; }
 .subtab {
-  display: inline-flex; align-items: center; gap: clamp(.2rem, .4vw, .45rem); white-space: nowrap;
-  padding: clamp(.4rem, .6vw, .7rem) clamp(.55rem, .9vw, 1.05rem);
-  font-size: clamp(11px, 1.2vw, 15px); color: var(--ui-text);
+  display: inline-flex; align-items: center; gap: clamp(.2rem, .8cqi, .45rem); white-space: nowrap;
+  padding: clamp(.4rem, 1.3cqi, .7rem) clamp(.55rem, 1.9cqi, 1.05rem);
+  font-size: clamp(11px, 1.7cqi, 15px); color: var(--ui-text);
   background: transparent; border: 0; cursor: pointer; border-bottom: 3px solid transparent;
 }
-.subtab .icon { width: clamp(12px, 1.1vw, 15px); height: clamp(12px, 1.1vw, 15px); color: var(--ui-accent); }
+.subtab i { font-size: 1em; color: var(--ui-accent); }
 .subtab:hover { color: var(--ui-accent); }
 .subtab.is-active { background: var(--z-bg); color: var(--z-fg); font-weight: 700; }
-.subtab.is-active .icon { color: var(--z-fg); }
+.subtab.is-active i { color: var(--z-fg); }
 
 /* =========================================================================
    Blauer Frame — Vortrag/Video, IMMER 16:9, fluid
@@ -380,11 +381,11 @@ body.no-underline a { text-decoration: none !important; }
       </button>
       <div class="detail__inner">
         <div class="subtabs">
-          <button class="subtab is-active"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Beitrag</button>
-          <button class="subtab"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Details</button>
-          <button class="subtab"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Downloads</button>
-          <button class="subtab"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Feedback</button>
-          <button class="subtab"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Abstimmungen</button>
+          <button class="subtab is-active"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
+          <button class="subtab"><i class="fa-solid fa-circle-info"></i>Details</button>
+          <button class="subtab"><i class="fa-solid fa-download"></i>Downloads</button>
+          <button class="subtab"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
+          <button class="subtab"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
         </div>
 
         <!-- Der blaue 16:9-Frame -->
