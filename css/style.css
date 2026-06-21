@@ -208,6 +208,16 @@ body.no-underline a { text-decoration: none !important; }
 }
 .talk-cta-join:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.7); }
 
+/* Beschreibungs-Block — weißer Panel, dunkle Schrift, Font 16–24px (cqi) */
+.talk-desc {
+  background: var(--ui-bg); color: var(--ui-text);
+  border-radius: calc(var(--scale) * 0.4);
+  padding: calc(var(--scale) * 1.4);
+  font-size: clamp(16px, 2.9cqi, 24px); line-height: 1.5;
+}
+.talk-desc p { margin: 0 0 1em; }
+.talk-desc p:last-child { margin-bottom: 0; }
+
 .talk-card__body {
   /* Master-Skala — PUR cqi, KEIN clamp.
      Alle Maße (Fonts, Paddings, Gaps, Bilder, Breiten) hängen an --scale,

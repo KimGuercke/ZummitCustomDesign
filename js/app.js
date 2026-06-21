@@ -43,6 +43,11 @@
       title: "Like dich selbst – Selbstbewusst & resilient gegen Cybermobbing",
       subtitle: "Aufzeichnung · Woche der Familiengesundheit · 15.–22.05.2026",
       speakers: [SP.hambloch],
+      description: [
+        "Heutzutage nutzen Kinder und Jugendliche ihr Smartphone ganz selbstverständlich – ob im Bus, im Café oder im Park, fast immer ist das Handy dabei. Soziale Netzwerke wie Instagram, Snapchat und TikTok ermöglichen den ständigen Kontakt zu Freund*innen. Auch das Gaming ist für viele eine sinnvolle Freizeitbeschäftigung und sorgt für gewünschte Erfolgserlebnisse. Darüber hinaus bietet das Smartphone vielfältige weitere Nutzungsmöglichkeiten.",
+        "Die meisten Jugendlichen nutzen digitale Medien funktional und freizeitorientiert. Doch worauf sollten Eltern achten? Welche digitalen Angebote sind förderlich, welche Strukturen und Rahmenbedingungen sollten Eltern setzen? Wie viel Medienkonsum ist gut – und ab wann wird es zu viel? Wie können wir als Eltern Schutzfaktoren stärken und riskantes Verhalten frühzeitig erkennen?",
+        "Im Workshop werden die Definition von Mediensucht, Möglichkeiten zur Stärkung von Schutzfaktoren sowie konkrete Tipps zur Medienerziehung vermittelt.",
+      ],
     },
     {
       id: "experiment", mode: "color",
@@ -94,6 +99,10 @@
       ? `<button class="talk-cta-join" type="button">${t.cta}</button>`
       : "";
 
+    const descBlock = (t.description && t.description.length)
+      ? `<hr class="talk-divider" /><div class="talk-desc">${t.description.map(p => `<p>${p}</p>`).join("")}</div>`
+      : "";
+
     card.className = "talk-card" + (t.mode === "video" ? " mode-video" : "");
     card.style.backgroundImage = "";   // Reset; applyBackground() setzt ggf. neu
     card.innerHTML = `
@@ -112,6 +121,7 @@
         ${ctaBlock}
         <hr class="talk-divider" data-comp="speakers" />
         <ul class="speakers" data-comp="speakers">${speakers}</ul>
+        ${descBlock}
       </div>`;
   }
 
