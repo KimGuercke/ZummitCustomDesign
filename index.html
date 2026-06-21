@@ -49,26 +49,8 @@
         <label class="switch" title="Nur Lesezeichen"><input type="checkbox"><span class="track"></span></label>
       </div>
       <div class="listpanel__date">Sa. 20.06.</div>
-      <ul class="talk-list">
-        <li class="talk-item is-selected">
-          <span class="talk-item__meta">10:00–11:00 | Hauptsaal</span>
-          <span class="talk-item__title">Testbeitrag mit statischem Bild.</span>
-          <span class="talk-item__bm"><svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
-          <span class="talk-item__more"><svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></span>
-        </li>
-        <li class="talk-item">
-          <span class="talk-item__meta">11:00–12:00 | Hauptsaal</span>
-          <span class="talk-item__title">Und noch ein Vortrag</span>
-          <span class="talk-item__bm"><svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
-          <span class="talk-item__more"><svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></span>
-        </li>
-        <li class="talk-item">
-          <span class="talk-item__meta">12:00–13:00 | Hauptsaal</span>
-          <span class="talk-item__title">Vortrag 2</span>
-          <span class="talk-item__bm"><svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
-          <span class="talk-item__more"><svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg></span>
-        </li>
-      </ul>
+      <!-- Vortragsliste — wird per JS aus den Vortrags-Daten gerendert -->
+      <ul class="talk-list" id="talkList"></ul>
     </aside>
 
     <div class="splitter" id="splitter"></div>
@@ -79,52 +61,23 @@
         <svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <div class="detail__inner">
-        <div class="subtabs">
-          <button class="subtab is-active"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
-          <button class="subtab"><i class="fa-solid fa-circle-info"></i>Details</button>
-          <button class="subtab"><i class="fa-solid fa-download"></i>Downloads</button>
-          <button class="subtab"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
-          <button class="subtab"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
+        <!-- Tab-Leiste + Karten-CTAs (Bookmark / …) rechtsbündig zur Karte, fluid -->
+        <div class="tabbar">
+          <div class="subtabs">
+            <button class="subtab is-active"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
+            <button class="subtab"><i class="fa-solid fa-circle-info"></i>Details</button>
+            <button class="subtab"><i class="fa-solid fa-download"></i>Downloads</button>
+            <button class="subtab"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
+            <button class="subtab"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
+          </div>
+          <div class="card-cta">
+            <button class="cta-btn" type="button" title="Merken" aria-label="Merken"><i class="fa-regular fa-bookmark"></i></button>
+            <button class="cta-btn" type="button" title="Mehr" aria-label="Mehr"><i class="fa-solid fa-ellipsis"></i></button>
+          </div>
         </div>
 
-        <!-- Der blaue 16:9-Frame -->
-        <article class="talk-card" id="card">
-          <div class="talk-card__body">
-            <div class="talk-meta">
-              <span class="talk-meta__left">
-                <span class="talk-date is-hidden" data-comp="date">Sa. 20.06.2026</span>
-                <span class="talk-time" data-comp="time">15:30 - 16:30</span>
-                <span class="talk-sep" data-comp="room" aria-hidden="true">|</span>
-                <a class="talk-room" data-comp="room" href="#">Hörsaal 3</a>
-              </span>
-              <span class="talk-meta__actions">
-                <svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                <svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
-              </span>
-            </div>
-            <h2 class="talk-title">Das ist der Titel zu dem Vortrag mit einemsehrlangenwörtchen zum testen</h2>
-            <p class="talk-subtitle" data-comp="subtitle">Das ist der Subtitel falls der vorhanden ist, kann man diesen optional mit einblenden.</p>
-            <hr class="talk-divider" data-comp="speakers" />
-            <ul class="speakers" data-comp="speakers">
-              <li class="speaker">
-                <img class="speaker-img" src="https://randomuser.me/api/portraits/women/65.jpg" alt="" loading="lazy" />
-                <div class="speaker-info">
-                  <a class="speaker-name" href="#">Dr. Mellanie Müller-Rügenwald</a>
-                  <span class="speaker-role">Head of Marketing</span>
-                  <span class="speaker-org">Glücksstadt Tourismus e.V</span>
-                </div>
-              </li>
-              <li class="speaker">
-                <img class="speaker-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="" loading="lazy" />
-                <div class="speaker-info">
-                  <a class="speaker-name" href="#">Prof. Dr. Walter Mustermann</a>
-                  <span class="speaker-role">Direktor des Instituts für Verfahrens- und Umwelttechnik</span>
-                  <span class="speaker-org">Technische Universität Dresden</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </article>
+        <!-- Beitrags-Karte (wird per JS aus den Vortrags-Daten gerendert) -->
+        <article class="talk-card" id="card"></article>
       </div>
     </main>
   </div>

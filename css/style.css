@@ -27,7 +27,10 @@
   --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
   --topbar-h: 56px;
   --nav-h: clamp(40px, 4vw, 52px);
-  --list-w: 340px;
+  /* Listenbreite: automatisch fluid mit dem Fenster, gedeckelt 320–520.
+     Splitter-Drag setzt diesen Wert per Inline-Style als px-Override;
+     ein Fenster-Resize entfernt den Override → zurück auf diese Verteilung. */
+  --list-w: clamp(320px, 30vw, 520px);
 }
 
 * , *::before, *::after { box-sizing: border-box; }
@@ -120,15 +123,16 @@ body.no-underline a { text-decoration: none !important; }
 .talk-list { list-style: none; margin: .4rem 0 0; padding: 0; overflow-y: auto; }
 .talk-item {
   padding: .8rem 1.1rem; border-bottom: 1px solid var(--ui-border);
-  cursor: pointer; display: grid; grid-template-columns: 1fr auto auto; gap: .2rem .5rem;
-  align-items: start;
+  cursor: pointer; display: flex; align-items: stretch; gap: .6rem;
 }
 .talk-item:hover { background: #f6f8f9; }
 .talk-item.is-selected { background: var(--ui-selected); }
-.talk-item__meta { grid-column: 1; color: var(--ui-muted); font-size: .8rem; }
-.talk-item__title { grid-column: 1; font-weight: 700; font-size: .95rem; }
-.talk-item__bm { grid-column: 2; grid-row: 1; color: var(--ui-muted); }
-.talk-item__more { grid-column: 3; grid-row: 2; color: var(--ui-muted); align-self: center; }
+.talk-item__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .2rem; }
+.talk-item__meta { color: var(--ui-muted); font-size: .8rem; }
+.talk-item__title { font-weight: 700; font-size: .95rem; }
+/* Aktionen rechts: Bookmark oben, „…" unten — vertikal auseinandergezogen */
+.talk-item__actions { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
+.talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
 .detail { position: relative; overflow: auto; min-width: 0; padding: clamp(14px, 2.4vw, 40px); padding-left: 54px; }
@@ -142,6 +146,20 @@ body.no-underline a { text-decoration: none !important; }
 .workspace.is-collapsed .collapse .icon { transform: rotate(180deg); }
 .detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0;
   container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter) */ }
+
+/* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
+.tabbar { display: flex; align-items: center; gap: clamp(.4rem, 1.2cqi, 1rem); }
+
+/* Karten-CTAs (Bookmark / …) — rechtsbündig, cqi-fluid wie die Sub-Tabs */
+.card-cta { margin-left: auto; flex: 0 0 auto; display: flex; align-items: center; gap: clamp(.2rem, .7cqi, .5rem); }
+.cta-btn {
+  display: inline-grid; place-items: center;
+  width: clamp(28px, 3.6cqi, 40px); height: clamp(28px, 3.6cqi, 40px);
+  border: 0; background: transparent; color: var(--ui-muted);
+  border-radius: 50%; cursor: pointer; font-size: clamp(13px, 1.8cqi, 18px);
+  transition: background .15s, color .15s;
+}
+.cta-btn:hover { background: var(--ui-selected); color: var(--ui-text); }
 
 /* Sub-Tabs — weiße Leiste, erster Tab bündig mit der Karte */
 .subtabs { display: inline-flex; max-width: 100%; background: #fff; border-radius: 10px 10px 0 0; overflow: hidden; }
@@ -168,6 +186,27 @@ body.no-underline a { text-decoration: none !important; }
   display: flex;
 }
 .talk-card.mode-image { background-size: cover; background-position: center; }
+
+/* Video-Modus: harte 16:9-Sperre der KARTE entfällt — Karte wächst in der Höhe.
+   Inhalt fließt von oben, das Video selbst bleibt 16:9 (siehe .talk-video). */
+.talk-card.mode-video { aspect-ratio: auto; }
+.talk-card.mode-video .talk-card__body { justify-content: flex-start; }
+.talk-video {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: calc(var(--scale) * 0.4); overflow: hidden; background: #000;
+}
+.talk-video img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Join-CTA unter dem Video — Full-Width, dezenter Rahmen, cqi-skaliert */
+.talk-cta-join {
+  width: 100%; display: block;
+  padding: calc(var(--scale) * 0.75) calc(var(--scale) * 1.2);
+  font: inherit; font-size: var(--meta-size); font-weight: 600;
+  color: var(--z-fg); background: transparent;
+  border: 1px solid rgba(255,255,255,.45); border-radius: calc(var(--scale) * 0.4);
+  cursor: pointer; transition: background .15s, border-color .15s;
+}
+.talk-cta-join:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.7); }
 
 .talk-card__body {
   /* Master-Skala — PUR cqi, KEIN clamp.
