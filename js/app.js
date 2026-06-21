@@ -52,7 +52,7 @@
   /* --- Vortrags-Daten — Single Source für Liste UND Karte --- */
   const TALKS = [
     {
-      id: "standard", mode: "color",
+      id: "standard", mode: "color", cardCta: true,   // In-Card-CTA (wie Demo-Vortrag)
       listMeta: "10:00–11:00 | Hauptsaal", listTitle: "Standard-Sample (Zahnrad-Einstellungen)",
       date: "Sa. 20.06.2026", time: "15:30 - 16:30", room: "Hörsaal 3",
       title: "Das ist der Titel zu dem Vortrag mit einemsehrlangenwörtchen zum testen",
@@ -297,7 +297,7 @@
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
 
   /* --- Farben -> Design-Tokens live --- */
-  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent" };
+  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta" };
   $$("[data-color]").forEach(inp => inp.addEventListener("input", () =>
     root.style.setProperty(colorMap[inp.dataset.color], inp.value)));
 
