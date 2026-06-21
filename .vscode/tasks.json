@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "View lokal (8080)",
+      "type": "shell",
+      "detail": "Startet bei Bedarf den lokalen Server und öffnet http://localhost:8080/ im Browser",
+      "command": "(lsof -ti tcp:8080 >/dev/null 2>&1 || nohup python3 -m http.server 8080 --directory /Users/kimguercke/_ClaudeProjects/ZummitCustomDesign >/dev/null 2>&1 &) ; sleep 1 ; open http://localhost:8080/",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "close": true
+      }
+    },
+    {
+      "label": "View live (GitHub Pages)",
+      "type": "shell",
+      "detail": "Öffnet die Live-Seite https://kimguercke.github.io/ZummitCustomDesign/ im Browser",
+      "command": "open https://kimguercke.github.io/ZummitCustomDesign/",
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "close": true
+      }
+    }
+  ]
+}
