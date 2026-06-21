@@ -105,6 +105,19 @@
       files: FILES,                            // alle 5
       description: DESC_WORKSHOP,
     },
+    {
+      id: "demo-notabs", mode: "video", videoThumb: "assets/video-thumb.jpg",
+      cta: "Zum Vortrag - jetzt beitreten",
+      demoAll: true, filesVariant: "onblue", cardCta: true,
+      noTabs: true,                            // keine Tab-Leiste — nur das Panel
+      listMeta: "15:30–17:00 | Hörsaal 1", listTitle: "Demo ohne Tab-Register da kein Feedback und keine Abstimmungen",
+      date: "Sa. 20.06.2026", time: "15:30 - 17:00", room: "Hörsaal 1",
+      title: "Maximal-Beispiel – alle Komponenten auf der Beitragsseite",
+      subtitle: "Datum, Uhrzeit, Raum, Video, Referenten, Dateien und Beschreibung – alles inline.",
+      speakers: [SP.mueller, SP.mustermann, SP.hambloch],
+      files: FILES,
+      description: DESC_WORKSHOP,
+    },
   ];
 
   let currentTalk = TALKS[0];
@@ -209,7 +222,7 @@
   function renderCard(t, tab) {
     const isHero = tab === "beitrag";
     const flow = !isHero || t.mode === "video" || t.autoHeight;  // 16:9 nur im Beitrag-Hero (color)
-    card.className = "talk-card" + (flow ? " mode-flow" : "");
+    card.className = "talk-card" + (flow ? " mode-flow" : "") + (t.noTabs ? " no-tabs" : "");
     card.style.backgroundImage = "";
 
     let inner;
@@ -240,6 +253,8 @@
 
   /* Tab-Register je Vortrag ein-/ausblenden (z.B. wenn Inhalte inline im Beitrag liegen) */
   function updateTabVisibility() {
+    const noTabs = !!currentTalk.noTabs;
+    $(".tabbar").classList.toggle("is-hidden", noTabs);   // gesamte Tab-Leiste weg → nur Panel
     const hide = currentTalk.hideTabs || [];
     $$(".subtab").forEach(b => b.classList.toggle("is-hidden", hide.includes(b.dataset.tab)));
   }
@@ -314,7 +329,7 @@
 
   /* --- Abgerundete Panel-Ecken an/aus --- */
   $("#panelRadius").addEventListener("change", e =>
-    root.style.setProperty("--panel-radius", e.target.checked ? "0 6px 6px 6px" : "0"));
+    root.style.setProperty("--panel-corner", e.target.checked ? "6px" : "0"));
 
   /* --- Logo-Upload-Vorschau --- */
   $("#logoInput").addEventListener("change", e => {
@@ -330,7 +345,7 @@
   const onMove = e => {
     if (!dragging) return;
     const x = (e.touches ? e.touches[0].clientX : e.clientX);
-    const w = Math.max(320, Math.min(520, x));
+    const w = Math.max(0, x);                 // Splitter-Begrenzung aufgehoben
     root.style.setProperty("--list-w", w + "px");
   };
   const stop = () => { dragging = false; document.body.style.userSelect = ""; };

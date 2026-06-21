@@ -21,7 +21,7 @@
   --ui-mainnav: #ffffff;    /* Hintergrund Main-Tab-Reg. */
   --ui-leftpanel: #ffffff;  /* Hintergrund Left Panel    */
   --panel-shadow: 6px 6px 22px rgba(0,0,0,.22); /* Panel-Schatten */
-  --panel-radius: 0 6px 6px 6px; /* TL eckig (aktiver Tab), TR/BR/BL rund (6px) */
+  --panel-corner: 6px; /* Eckradius des Panels (Toggle); TL eckig wegen aktivem Tab */
   --ui-canvas: #eef1f3;
   --ui-text: #1f2933;
   --ui-muted: #6b7785;
@@ -182,8 +182,10 @@ body.no-underline a { text-decoration: none !important; }
   color: var(--z-fg);
   display: flex;
   box-shadow: var(--panel-shadow); /* dezenter Panel-Schatten (toggle-bar)   */
-  border-radius: var(--panel-radius);
+  border-radius: 0 var(--panel-corner) var(--panel-corner) var(--panel-corner);
 }
+/* Ohne Tab-Leiste: auch oben links runden (kein Tab dockt mehr an) */
+.talk-card.no-tabs { border-top-left-radius: var(--panel-corner); }
 .talk-card.mode-image { background-size: cover; background-position: center; }
 
 /* Flow-Modus: harte 16:9-Sperre der KARTE entfällt — Karte wächst in der Höhe.
@@ -243,7 +245,7 @@ body.no-underline a { text-decoration: none !important; }
 .file__btn {
   border: 0; background: transparent; cursor: pointer;
   display: inline-grid; place-items: center; padding: calc(var(--scale) * 0.2);
-  font-size: clamp(15px, 1.9cqi, 18px);
+  font-size: calc(var(--scale) * 1.1);   /* gleiche Größe wie Referenten-Icons */
 }
 
 /* Einzelne Datei: immer volle Zeile, Name in Referenten-Schriftgröße */
@@ -296,7 +298,7 @@ body.no-underline a { text-decoration: none !important; }
 .talk-sep { opacity: .6; }
 /* In-Card-CTA (Demo): Bookmark/„…" auf der Karte, etwas größer als die Meta-Zeile */
 .talk-meta__cta { display: flex; align-items: center; gap: calc(var(--scale) * 0.8); flex: 0 0 auto; }
-.talk-meta__cta button { border: 0; background: transparent; cursor: pointer; color: var(--z-cta); padding: 0; line-height: 1; font-size: calc(var(--meta-size) * 1.2); }
+.talk-meta__cta button { border: 0; background: transparent; cursor: pointer; color: var(--z-cta); padding: 0; line-height: 1; font-size: calc(var(--meta-size) * 1.05); }
 .talk-meta__cta button:hover { opacity: .75; }
 .talk-room { color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; }
 
@@ -328,7 +330,7 @@ body.no-underline a { text-decoration: none !important; }
 .speaker-name { font-size: var(--name-size); font-weight: 700; color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; overflow-wrap: break-word; }
 .speaker-role, .speaker-org { font-size: var(--info-size); line-height: 1.3; color: var(--z-fg-muted); overflow-wrap: break-word; }
 /* Aktionen je Referent: Bookmark oben, „…" unten — rechtsbündig */
-.speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 1.5); color: var(--z-cta); }
+.speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 0.75); color: var(--z-cta); }
 .speaker__actions .icon { width: calc(var(--scale) * 1.1); height: calc(var(--scale) * 1.1); }
 
 /* =========================================================================
