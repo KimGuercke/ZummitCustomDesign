@@ -82,8 +82,8 @@ body.no-underline a { text-decoration: none !important; }
 /* --- Hauptmenü --------------------------------------------------------- */
 .mainnav {
   flex: 0 0 var(--nav-h);
-  display: flex; align-items: stretch; gap: .25rem;
-  padding: 0 .7rem;
+  display: flex; align-items: stretch; gap: clamp(.05rem, .3vw, .35rem);
+  padding: 0 clamp(.3rem, .7vw, .9rem);
   background: var(--ui-bg);
   border-bottom: 1px solid var(--ui-border);
 }
