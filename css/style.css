@@ -337,7 +337,7 @@ body.no-underline a { text-decoration: none !important; }
    Settings-Drawer
    ========================================================================= */
 .scrim {
-  position: fixed; inset: 0; background: rgba(15,30,40,.4);
+  position: fixed; inset: 0; background: transparent; /* kein Abdunkeln — Farben live beurteilbar */
   opacity: 0; visibility: hidden; transition: opacity .2s; z-index: 40;
 }
 .scrim.is-open { opacity: 1; visibility: visible; }
