@@ -57,22 +57,20 @@
 
     <!-- Detail rechts -->
     <main class="detail">
-      <button class="collapse" id="collapse" title="Liste ein-/ausklappen">
-        <svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-      </button>
       <div class="detail__inner">
         <!-- Tab-Leiste + Karten-CTAs (Bookmark / …) rechtsbündig zur Karte, fluid -->
         <div class="tabbar">
           <div class="subtabs">
-            <button class="subtab is-active"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
-            <button class="subtab"><i class="fa-solid fa-circle-info"></i>Details</button>
-            <button class="subtab"><i class="fa-solid fa-download"></i>Downloads</button>
-            <button class="subtab"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
-            <button class="subtab"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
+            <button class="subtab is-active" data-tab="beitrag"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
+            <button class="subtab" data-tab="details"><i class="fa-solid fa-circle-info"></i>Details</button>
+            <button class="subtab" data-tab="downloads"><i class="fa-solid fa-download"></i>Downloads</button>
+            <button class="subtab" data-tab="feedback"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
+            <button class="subtab" data-tab="abstimmungen"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
           </div>
           <div class="card-cta">
+            <button class="cta-btn" type="button" title="Als Kalendereintrag exportieren" aria-label="Als Kalendereintrag exportieren"><i class="fa-regular fa-calendar-plus"></i></button>
+            <button class="cta-btn" type="button" title="Teilen" aria-label="Teilen"><i class="fa-regular fa-share-from-square"></i></button>
             <button class="cta-btn" type="button" title="Merken" aria-label="Merken"><i class="fa-regular fa-bookmark"></i></button>
-            <button class="cta-btn" type="button" title="Mehr" aria-label="Mehr"><i class="fa-solid fa-ellipsis"></i></button>
           </div>
         </div>
 
@@ -127,7 +125,8 @@
     </div>
 
     <div class="section-title">Farben</div>
-    <div class="color-row"><span>Hintergrund</span><input class="swatch" type="color" data-color="bg" value="#035E7C" /></div>
+    <div class="color-row"><span>Desktop-Hintergrund</span><input class="swatch" type="color" data-color="desktop" value="#eef1f3" /></div>
+    <div class="color-row"><span>Panel-Hintergrund</span><input class="swatch" type="color" data-color="bg" value="#035E7C" /></div>
     <div class="color-row"><span>Vordergrund Primary (Primär)</span><input class="swatch" type="color" data-color="primary" value="#ffffff" /></div>
     <div class="color-row"><span>Vordergrund Secondary (muted)</span><input class="swatch" type="color" data-color="secondary" value="#d1d1d1" /></div>
     <div class="color-row"><span>Vordergrund Tertiary (Tertiär) <em style="color:var(--ui-muted)">→ Wahrscheinlich nicht!</em></span><input class="swatch" type="color" data-color="tertiary" value="#bbc4c9" /></div>
@@ -140,10 +139,12 @@
 
     <div class="section-title">Komponenten (zusätzlich zu Titel)</div>
     <div class="toggle-row"><span>Datum</span><label class="switch"><input type="checkbox" data-toggle-comp="date"><span class="track"></span></label></div>
-    <div class="toggle-row"><span>Zeitpunkt / Uhrzeit</span><label class="switch"><input type="checkbox" data-toggle-comp="time" checked><span class="track"></span></label></div>
-    <div class="toggle-row"><span>Raum</span><label class="switch"><input type="checkbox" data-toggle-comp="room" checked><span class="track"></span></label></div>
-    <div class="toggle-row"><span>Sub-Titel</span><label class="switch"><input type="checkbox" data-toggle-comp="subtitle" checked><span class="track"></span></label></div>
-    <div class="toggle-row"><span>Referenten</span><label class="switch"><input type="checkbox" data-toggle-comp="speakers" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Uhrzeit</span><label class="switch"><input type="checkbox" data-toggle-comp="time" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Raum mit Link</span><label class="switch"><input type="checkbox" data-toggle-comp="room" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Sub-Titel anzeigen</span><label class="switch"><input type="checkbox" data-toggle-comp="subtitle" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Referenten im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="speakers" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Dokumente im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="files" checked><span class="track"></span></label></div>
+    <div class="toggle-row"><span>Detailbeschreibung im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="description" checked><span class="track"></span></label></div>
   </div>
 </aside>
 

@@ -98,13 +98,8 @@ body.no-underline a { text-decoration: none !important; }
   display: grid;
   grid-template-columns: var(--list-w) 6px 1fr;
 }
-.workspace.is-collapsed { grid-template-columns: 0 0 1fr; }
-.workspace.is-collapsed .listpanel,
-.workspace.is-collapsed .splitter { overflow: hidden; }
-
 .splitter { cursor: col-resize; background: var(--ui-border); }
 .splitter:hover { background: var(--ui-accent); }
-.workspace.is-collapsed .splitter { pointer-events: none; }
 
 /* --- Listenpanel ------------------------------------------------------- */
 .listpanel {
@@ -135,15 +130,7 @@ body.no-underline a { text-decoration: none !important; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
-.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(14px, 2.4vw, 40px); padding-left: 54px; }
-.collapse {
-  position: absolute; top: clamp(14px, 2.4vw, 40px); left: 10px; z-index: 5;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--ui-bg); border: 1px solid var(--ui-border);
-  color: var(--ui-muted); cursor: pointer; display: grid; place-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-}
-.workspace.is-collapsed .collapse .icon { transform: rotate(180deg); }
+.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(14px, 2.4vw, 40px); }
 .detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0;
   container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter) */ }
 
@@ -155,11 +142,11 @@ body.no-underline a { text-decoration: none !important; }
 .cta-btn {
   display: inline-grid; place-items: center;
   width: clamp(28px, 3.6cqi, 40px); height: clamp(28px, 3.6cqi, 40px);
-  border: 0; background: transparent; color: var(--ui-muted);
+  border: 0; background: transparent; color: var(--ui-accent);   /* CTA-Farbe aus den Einstellungen */
   border-radius: 50%; cursor: pointer; font-size: clamp(13px, 1.8cqi, 18px);
   transition: background .15s, color .15s;
 }
-.cta-btn:hover { background: var(--ui-selected); color: var(--ui-text); }
+.cta-btn:hover { background: var(--ui-selected); }
 
 /* Sub-Tabs — weiße Leiste, erster Tab bündig mit der Karte, eckige Ecken */
 .subtabs { display: inline-flex; max-width: 100%; background: #fff; border-radius: 0; overflow: hidden; }
@@ -187,10 +174,11 @@ body.no-underline a { text-decoration: none !important; }
 }
 .talk-card.mode-image { background-size: cover; background-position: center; }
 
-/* Video-Modus: harte 16:9-Sperre der KARTE entfällt — Karte wächst in der Höhe.
+/* Flow-Modus: harte 16:9-Sperre der KARTE entfällt — Karte wächst in der Höhe.
+   Gilt für Video-Vorträge UND Vorträge mit vielen Referenten.
    Inhalt fließt von oben, das Video selbst bleibt 16:9 (siehe .talk-video). */
-.talk-card.mode-video { aspect-ratio: auto; }
-.talk-card.mode-video .talk-card__body { justify-content: flex-start; }
+.talk-card.mode-flow { aspect-ratio: auto; }
+.talk-card.mode-flow .talk-card__body { justify-content: flex-start; }
 .talk-video {
   position: relative; width: 100%; aspect-ratio: 16 / 9;
   border-radius: calc(var(--scale) * 0.4); overflow: hidden; background: #000;
@@ -199,7 +187,7 @@ body.no-underline a { text-decoration: none !important; }
 
 /* Join-CTA unter dem Video — Full-Width, dezenter Rahmen, cqi-skaliert */
 .talk-cta-join {
-  width: 100%; display: block;
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: calc(var(--scale) * 0.55);
   padding: calc(var(--scale) * 0.75) calc(var(--scale) * 1.2);
   font: inherit; font-size: var(--meta-size); font-weight: 600;
   color: var(--z-fg); background: transparent;
@@ -217,6 +205,51 @@ body.no-underline a { text-decoration: none !important; }
 }
 .talk-desc p { margin: 0 0 1em; }
 .talk-desc p:last-child { margin-bottom: 0; }
+
+/* Leerer Tab (kein Inhalt / Toggle aus) */
+.tab-empty { color: var(--z-fg-muted); font-size: var(--meta-size); }
+
+/* Maximal-Showcase: Sektions-Label für die Inline-Blöcke im Beitrag */
+.talk-section-label { margin: 0; font-size: var(--meta-size); font-weight: 700; color: var(--z-fg); }
+
+/* =========================================================================
+   Dateien / Downloads — zweispaltig, unter 550px Kartenbreite einspaltig.
+   Zwei Design-Varianten: .files--onblue (auf Karte) · .files--panel (weiß).
+   ========================================================================= */
+.files__grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--scale) * 0.9) calc(var(--scale) * 2.4);
+}
+@container (max-width: 900px) {
+  .files__grid { grid-template-columns: 1fr; }
+}
+.file { display: flex; align-items: center; gap: calc(var(--scale) * 0.7); min-width: 0; padding: calc(var(--scale) * 0.55) 0; }
+.file__icon { flex: 0 0 auto; font-size: calc(var(--scale) * 1.5); }
+.file__name { flex: 1; min-width: 0; font-size: clamp(16px, 2.1cqi, 19px); overflow-wrap: anywhere; } /* min. 16px; lange Namen brechen um */
+.file__actions { flex: 0 0 auto; display: flex; align-items: center; gap: calc(var(--scale) * 0.35); }
+.file__btn {
+  border: 0; background: transparent; cursor: pointer;
+  display: inline-grid; place-items: center; padding: calc(var(--scale) * 0.2);
+  font-size: clamp(15px, 1.9cqi, 18px);
+}
+
+/* Einzelne Datei: immer volle Zeile, Name in Referenten-Schriftgröße */
+.files--single .files__grid { grid-template-columns: 1fr; }
+.files--single .file__name { font-size: var(--name-size); }
+
+/* Variante A — auf der blauen Karte */
+.files--onblue { color: var(--z-fg); }
+.files--onblue .file__icon { color: var(--z-fg-muted); }
+.files--onblue .file__btn { color: var(--z-fg); }
+.files--onblue .file__btn:hover { color: var(--z-fg-muted); }
+
+/* Variante B — weißer Panel mit Überschrift */
+.files--panel {
+  background: var(--ui-bg); color: var(--ui-text);
+  border-radius: calc(var(--scale) * 0.4); padding: calc(var(--scale) * 1.2);
+}
+.files--panel .file__icon, .files--panel .file__btn { color: var(--ui-accent); }
 
 .talk-card__body {
   /* Master-Skala — PUR cqi, KEIN clamp.
@@ -249,6 +282,10 @@ body.no-underline a { text-decoration: none !important; }
 .talk-meta__actions { display: flex; align-items: center; gap: calc(var(--scale) * 0.7); color: var(--z-fg); flex: 0 0 auto; }
 .talk-meta__actions .icon { width: calc(var(--scale) * 1.5); height: calc(var(--scale) * 1.5); cursor: pointer; }
 .talk-sep { opacity: .6; }
+/* In-Card-CTA (Demo): Bookmark/„…" auf der Karte, etwas größer als die Meta-Zeile */
+.talk-meta__cta { display: flex; align-items: center; gap: calc(var(--scale) * 0.8); flex: 0 0 auto; }
+.talk-meta__cta button { border: 0; background: transparent; cursor: pointer; color: var(--ui-accent); padding: 0; line-height: 1; font-size: calc(var(--meta-size) * 1.2); }
+.talk-meta__cta button:hover { opacity: .75; }
 .talk-room { color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; }
 
 .talk-title {
@@ -263,15 +300,24 @@ body.no-underline a { text-decoration: none !important; }
 
 .talk-divider { width: 100%; height: 0; margin: calc(var(--scale) * 0.3) 0; border: 0; border-top: 1px solid var(--z-divider); }
 
-.speakers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: calc(var(--scale) * 0.9); }
-.speaker { display: flex; align-items: center; gap: calc(var(--scale) * 0.85); }
+/* Referenten — einspaltig: ein Referent pro voller Zeile.
+   Text bricht bei wenig Platz innerhalb der Zelle um. */
+.speakers {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: 1fr;
+  gap: calc(var(--scale) * 0.9);
+}
+.speaker { display: flex; align-items: flex-start; gap: calc(var(--scale) * 0.85); min-width: 0; }
 .speaker-img {
   flex: 0 0 auto; width: var(--img-size); height: var(--img-size);
   border-radius: 50%; object-fit: cover; background: var(--z-fg-muted);
 }
-.speaker-info { display: flex; flex-direction: column; gap: calc(var(--scale) * 0.1); min-width: 0; }
-.speaker-name { font-size: var(--name-size); font-weight: 700; color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; }
-.speaker-role, .speaker-org { font-size: var(--info-size); line-height: 1.3; color: var(--z-fg-muted); }
+.speaker-info { flex: 1; display: flex; flex-direction: column; gap: calc(var(--scale) * 0.1); min-width: 0; }
+.speaker-name { font-size: var(--name-size); font-weight: 700; color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; overflow-wrap: break-word; }
+.speaker-role, .speaker-org { font-size: var(--info-size); line-height: 1.3; color: var(--z-fg-muted); overflow-wrap: break-word; }
+/* Aktionen je Referent: Bookmark oben, „…" unten — rechtsbündig */
+.speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 1.5); color: var(--z-fg-muted); }
+.speaker__actions .icon { width: calc(var(--scale) * 1.1); height: calc(var(--scale) * 1.1); }
 
 /* =========================================================================
    Settings-Drawer
@@ -282,9 +328,9 @@ body.no-underline a { text-decoration: none !important; }
 }
 .scrim.is-open { opacity: 1; visibility: visible; }
 .drawer {
-  position: fixed; top: 0; right: 0; height: 100%; width: 420px; max-width: 92vw;
-  background: var(--ui-bg); z-index: 50; box-shadow: -8px 0 40px rgba(0,0,0,.18);
-  transform: translateX(100%); visibility: hidden;
+  position: fixed; top: 0; left: 0; height: 100%; width: 420px; max-width: 92vw;
+  background: var(--ui-bg); z-index: 50; box-shadow: 8px 0 40px rgba(0,0,0,.18);
+  transform: translateX(-100%); visibility: hidden;
   transition: transform .25s ease, visibility .25s ease;
   display: flex; flex-direction: column;
 }
