@@ -297,7 +297,7 @@
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
 
   /* --- Farben -> Design-Tokens live --- */
-  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta" };
+  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
   $$("[data-color]").forEach(inp => inp.addEventListener("input", () =>
     root.style.setProperty(colorMap[inp.dataset.color], inp.value)));
 
@@ -307,6 +307,14 @@
 
   /* --- Modus Hintergrundfarbe/-bild --- */
   modeSelect.addEventListener("change", applyBackground);
+
+  /* --- Panel-Schatten an/aus --- */
+  $("#panelShadow").addEventListener("change", e =>
+    root.style.setProperty("--panel-shadow", e.target.checked ? "6px 6px 22px rgba(0,0,0,.22)" : "none"));
+
+  /* --- Abgerundete Panel-Ecken an/aus --- */
+  $("#panelRadius").addEventListener("change", e =>
+    root.style.setProperty("--panel-radius", e.target.checked ? "0 6px 6px 6px" : "0"));
 
   /* --- Logo-Upload-Vorschau --- */
   $("#logoInput").addEventListener("change", e => {

@@ -17,6 +17,11 @@
 
   /* Chrome (App-Rahmen, helles Theme) */
   --ui-bg: #ffffff;
+  --ui-header: #ffffff;     /* Hintergrund Header        */
+  --ui-mainnav: #ffffff;    /* Hintergrund Main-Tab-Reg. */
+  --ui-leftpanel: #ffffff;  /* Hintergrund Left Panel    */
+  --panel-shadow: 6px 6px 22px rgba(0,0,0,.22); /* Panel-Schatten */
+  --panel-radius: 0 6px 6px 6px; /* TL eckig (aktiver Tab), TR/BR/BL rund (6px) */
   --ui-canvas: #eef1f3;
   --ui-text: #1f2933;
   --ui-muted: #6b7785;
@@ -56,7 +61,7 @@ body.no-underline a { text-decoration: none !important; }
   flex: 0 0 var(--topbar-h);
   display: flex; align-items: center; gap: 1rem;
   padding: 0 1.1rem;
-  background: var(--ui-bg);
+  background: var(--ui-header);
   border-bottom: 1px solid var(--ui-border);
   position: sticky; top: 0; z-index: 30;
 }
@@ -80,8 +85,10 @@ body.no-underline a { text-decoration: none !important; }
   flex: 0 0 var(--nav-h);
   display: flex; align-items: stretch; gap: clamp(.05rem, .3vw, .35rem);
   padding: 0 clamp(.3rem, .7vw, .9rem);
-  background: var(--ui-bg);
+  background: var(--ui-mainnav);
   border-bottom: 1px solid var(--ui-border);
+  position: relative; z-index: 20;             /* Schatten unter dem Header/Main-Toolbar (y=4) */
+  box-shadow: 0 4px 10px rgba(0,0,0,.10);
 }
 .navitem {
   display: inline-flex; align-items: center; gap: clamp(.3rem, .5vw, .55rem);
@@ -104,8 +111,10 @@ body.no-underline a { text-decoration: none !important; }
 
 /* --- Listenpanel ------------------------------------------------------- */
 .listpanel {
-  background: var(--ui-bg); border-right: 1px solid var(--ui-border);
+  background: var(--ui-leftpanel); border-right: 1px solid var(--ui-border);
   min-width: 0; display: flex; flex-direction: column; overflow: hidden;
+  position: relative; z-index: 25;             /* über dem Header-Schatten (kein Schatten auf der Liste) + Schatten nach rechts (x=6) */
+  box-shadow: 6px 0 12px rgba(0,0,0,.10);
 }
 .listpanel__head {
   display: flex; align-items: center; justify-content: space-between;
@@ -131,7 +140,7 @@ body.no-underline a { text-decoration: none !important; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
-.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(14px, 2.4vw, 40px); }
+.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(4px, 1.7vw, 28px); }
 .detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0;
   container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter) */ }
 
@@ -172,6 +181,8 @@ body.no-underline a { text-decoration: none !important; }
   background: var(--z-bg);
   color: var(--z-fg);
   display: flex;
+  box-shadow: var(--panel-shadow); /* dezenter Panel-Schatten (toggle-bar)   */
+  border-radius: var(--panel-radius);
 }
 .talk-card.mode-image { background-size: cover; background-position: center; }
 
