@@ -18,10 +18,8 @@
   /* --- Chrome-Icons (Lucide-Style SVG) für die Listeneinträge & Referenten --- */
   const ICON_BM   = '<svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
   const ICON_MORE = '<svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>';
-  const ICON_HEART       = '<svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
-  const ICON_HEART_FILL  = '<svg class="icon is-filled" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
 
-  /* --- Referenten-/Personen-Control (wiederverwendbar, Beitrag + Teilnehmende) --- */
+  /* --- Referenten-/Personen-Control (wiederverwendbar, Beitrag + Personen) --- */
   function renderSpeaker(s, bmIcon = ICON_BM) {
     return `
       <li class="speaker">
@@ -377,26 +375,25 @@
     r.readAsDataURL(f);
   });
 
-  /* --- Splitter: Spaltenbreite ziehen (links = --list-w, rechts = --right-w);
-         Fenster-Resize setzt beide zurück auf Auto-Breite (CSS clamp) --- */
+  /* --- Dock-Logik: pro Seite genau EIN Panel sichtbar (exklusiv) ------- */
+  const workspace = $("#workspace");
+  const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
+  const dockState = { left: "programm", right: null };
+
+  /* --- Splitter: Spaltenbreite ziehen (px-Override); Resize → zurück auf clamp --- */
   let dragSide = null;
   const onMove = e => {
     if (!dragSide) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
-    if (dragSide === "left") root.style.setProperty("--list-w", Math.max(0, x) + "px");
-    else root.style.setProperty("--right-w", Math.max(0, window.innerWidth - x) + "px");
+    if (dragSide === "left") workspace.style.setProperty("--list-w", Math.max(0, x) + "px");
+    else workspace.style.setProperty("--right-w", Math.max(0, window.innerWidth - x) + "px");
   };
   const stopDrag = () => { dragSide = null; document.body.style.userSelect = ""; };
   $("#splitterLeft").addEventListener("pointerdown",  () => { dragSide = "left";  document.body.style.userSelect = "none"; });
   $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; });
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", stopDrag);
-  window.addEventListener("resize", () => { root.style.removeProperty("--list-w"); root.style.removeProperty("--right-w"); });
-
-  /* --- Dock-Logik: pro Seite genau EIN Panel sichtbar (exklusiv) ------- */
-  const workspace = $("#workspace");
-  const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
-  const dockState = { left: "programm", right: null };
+  window.addEventListener("resize", () => { workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w"); });
 
   function renderDock(side) {
     const active = dockState[side];
@@ -419,8 +416,7 @@
   const pplList = $("#pplList");
   let pplCat = "vortragende";
   function renderPeople() {
-    pplList.innerHTML = (PEOPLE[pplCat] || [])
-      .map(p => renderSpeaker(p, p.liked ? ICON_HEART_FILL : ICON_HEART)).join("");
+    pplList.innerHTML = (PEOPLE[pplCat] || []).map(p => renderSpeaker(p)).join("");
   }
   $$(".ppl-tab").forEach(b => b.addEventListener("click", () => {
     pplCat = b.dataset.pcat;
