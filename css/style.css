@@ -146,7 +146,28 @@ body.no-underline a { text-decoration: none !important; }
   flex: 1; min-width: 0; font-weight: 700; font-size: clamp(14px, 4cqi, 17px);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.panel__close { flex: 0 0 auto; }
+/* Collapse-CTA: dezentes Richtungs-Chevron, beim Hover Pille + Label „Einklappen".
+   Chevron zeigt in die Einklapp-Richtung (links ‹ / rechts › via Rotation). */
+.panel__close {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0;
+  height: 30px; padding: 0 7px; border: 0; border-radius: 999px;
+  background: transparent; color: var(--ui-muted); cursor: pointer;
+  transition: background .18s, color .18s, gap .18s, padding .18s;
+}
+.panel__close:hover { background: color-mix(in srgb, var(--ui-accent) 12%, transparent); color: var(--ui-accent); gap: .3rem; padding: 0 11px; }
+.panel__close .chev { width: 17px; height: 17px; flex: 0 0 auto; transition: transform .18s; }
+.panel__close[data-dock="left"]  { flex-direction: row; }          /* ‹ Einklappen */
+.panel__close[data-dock="right"] { flex-direction: row-reverse; }  /* Einklappen › */
+.panel__close[data-dock="right"] .chev { transform: rotate(180deg); }          /* ‹ → › */
+.panel__close:hover[data-dock="left"]  .chev { transform: translateX(-2px); }
+.panel__close:hover[data-dock="right"] .chev { transform: rotate(180deg) translateX(-2px); }
+/* Label nur beim Hover (Reveal); Default = nur Chevron */
+.panel__close-label {
+  flex: 0 0 auto; max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
+  font-size: .78rem; font-weight: 500; line-height: 1;
+  transition: max-width .2s, opacity .18s;
+}
+.panel__close:hover .panel__close-label { max-width: 92px; opacity: 1; }
 .panel__empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 2rem; color: var(--ui-muted); font-size: .95rem; }
 
 /* Programm-Kopf (Sonderfall: Titel + Aktionen rechts) */
