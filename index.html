@@ -62,8 +62,7 @@
           <span class="listpanel__title">Programm</span>
           <div class="listpanel__actions">
             <label class="switch" title="Nur Lesezeichen"><input type="checkbox"><span class="track"></span></label>
-            <button class="panel__close" data-dock="left" title="Panel einklappen"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span class="panel__close-label">Einklappen</span></button>
-          </div>
+                      </div>
         </div>
         <div class="listpanel__date">Sa. 20.06.</div>
         <!-- Vortragsliste — wird per JS aus den Vortrags-Daten gerendert -->
@@ -123,8 +122,7 @@
       <section class="panel panel--people is-hidden" data-panel="teilnehmende">
         <div class="panel__head">
           <span class="panel__title" title="Beitrag der Verwertung von Hausmüllverbrennung zur CO2-Einsparung">Beitrag der Verwertung von Hausmüllverb…</span>
-          <button class="panel__close" data-dock="right" title="Panel einklappen"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span class="panel__close-label">Einklappen</span></button>
-        </div>
+                  </div>
         <div class="ppl-tabs">
           <button class="ppl-tab is-active" data-pcat="vortragende">Vortragende</button>
           <button class="ppl-tab" data-pcat="teilnehmer">Teilnehmer</button>
@@ -143,8 +141,7 @@
       <section class="panel panel--chat is-hidden" data-panel="chat">
         <div class="panel__head">
           <span class="panel__title">Chat</span>
-          <button class="panel__close" data-dock="right" title="Panel einklappen"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span class="panel__close-label">Einklappen</span></button>
-        </div>
+                  </div>
         <ul class="chat-list" id="chatList"></ul>
         <form class="chat-input" onsubmit="return false">
           <input type="text" placeholder="Neue Nachricht eingeben …" />
@@ -159,6 +156,10 @@
         <div class="panel__empty">Demo-Inhalt folgt.</div>
       </section>
     </aside>
+
+    <!-- Einklapp-Griffe an den inneren Panel-Kanten (halbrund, ragen leicht über) — Position per JS -->
+    <button class="dock-collapse is-hidden" data-dock="left" title="Programm einklappen"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span class="dock-collapse-label">Einklappen</span></button>
+    <button class="dock-collapse is-hidden" data-dock="right" title="Panel einklappen"><span class="dock-collapse-label">Einklappen</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
 
     <!-- Live-Breiten-Hints je Bereich (Dev) — Position/Text per JS aktualisiert -->
     <span class="size-hint" data-hint="left"></span>

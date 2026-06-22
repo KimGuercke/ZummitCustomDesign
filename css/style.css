@@ -157,28 +157,29 @@ body.no-underline a { text-decoration: none !important; }
   flex: 1; min-width: 0; font-weight: 700; font-size: clamp(14px, 4cqi, 17px);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-/* Collapse-CTA: dezentes Richtungs-Chevron, beim Hover Pille + Label „Einklappen".
-   Chevron zeigt in die Einklapp-Richtung (links ‹ / rechts › via Rotation). */
-.panel__close {
-  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 0;
-  height: 30px; padding: 0 7px; border: 0; border-radius: 999px;
-  background: transparent; color: var(--ui-muted); cursor: pointer;
+/* Einklapp-Griff an der inneren Panel-Kante: halbrund, ragt leicht über (Position per JS).
+   Default nur Chevron; Hover blendet Label „Einklappen" nach innen ein. */
+.dock-collapse {
+  position: absolute; top: 16px; z-index: 27;
+  display: inline-flex; align-items: center; gap: 0;
+  height: 30px; padding: 0 7px;
+  border: 0.5px solid var(--ui-border); background: var(--ui-bg);
+  color: var(--ui-muted); cursor: pointer;
   transition: background .18s, color .18s, gap .18s, padding .18s;
 }
-.panel__close:hover { background: color-mix(in srgb, var(--ui-accent) 12%, transparent); color: var(--ui-accent); gap: .3rem; padding: 0 11px; }
-.panel__close .chev { width: 17px; height: 17px; flex: 0 0 auto; transition: transform .18s; }
-.panel__close[data-dock="left"]  { flex-direction: row; }          /* ‹ Einklappen */
-.panel__close[data-dock="right"] { flex-direction: row-reverse; }  /* Einklappen › */
-.panel__close[data-dock="right"] .chev { transform: rotate(180deg); }          /* ‹ → › */
-.panel__close:hover[data-dock="left"]  .chev { transform: translateX(-2px); }
-.panel__close:hover[data-dock="right"] .chev { transform: rotate(180deg) translateX(-2px); }
-/* Label nur beim Hover (Reveal); Default = nur Chevron */
-.panel__close-label {
+.dock-collapse:hover { background: #e7f1f6; color: var(--ui-accent); gap: .3rem; padding: 0 11px; }
+.dock-collapse .chev { width: 17px; height: 17px; flex: 0 0 auto; transition: transform .18s; }
+.dock-collapse[data-dock="left"]  { border-radius: 0 999px 999px 0; border-left: none; }    /* halbrund + Überstand nach rechts (Splitter) */
+.dock-collapse[data-dock="right"] { border-radius: 999px 0 0 999px; border-right: none; }    /* halbrund + Überstand nach links */
+.dock-collapse:hover[data-dock="left"]  .chev { transform: translateX(-2px); }
+.dock-collapse:hover[data-dock="right"] .chev { transform: translateX(2px); }
+.dock-collapse-label {
   flex: 0 0 auto; max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
   font-size: .78rem; font-weight: 500; line-height: 1;
   transition: max-width .2s, opacity .18s;
 }
-.panel__close:hover .panel__close-label { max-width: 92px; opacity: 1; }
+.dock-collapse:hover .dock-collapse-label { max-width: 92px; opacity: 1; }
+.dock-collapse.is-hidden { display: none; }
 .panel__empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 2rem; color: var(--ui-muted); font-size: .95rem; }
 
 /* Programm-Kopf (Sonderfall: Titel + Aktionen rechts) */
@@ -204,15 +205,15 @@ body.no-underline a { text-decoration: none !important; }
 .talk-item__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .2rem; }
 /* Fluid: Titel 14–24px, Meta (Zeit/Raum) proportional mitgeklemmt */
 .talk-item__meta { color: var(--ui-muted); font-size: clamp(12px, 3.8cqi, 20px); }
-.talk-item__title { font-weight: 400; font-size: clamp(14px, 4.5cqi, 22px); }
+.talk-item__title { font-weight: 400; font-size: clamp(14px, 4.5cqi, 21px); }
 /* Aktionen rechts: Bookmark oben, „…" unten — vertikal auseinandergezogen */
 .talk-item__actions { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
 .detail { position: relative; overflow: auto; min-width: 0; padding: clamp(6px, 2vw, 40px) clamp(4px, 1.7vw, 28px); scrollbar-gutter: stable both-edges; }
-.detail__inner { width: 100%; min-width: 0;
-  container-type: inline-size; /* cqi der Sub-Tabs/Karte = volle Breite des Detail-Panels; kein max-width → Mitte wächst über vw 2500 hinaus, Karten-Gaps (cqi) skalieren mit */ }
+.detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0 auto;
+  container-type: inline-size; /* cqi der Sub-Tabs/Karte = Breite des Beitragspanels; ab 1500px eingefroren → Karte zentriert, Rand drumherum wächst weiter */ }
 
 /* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
 .tabbar { display: flex; align-items: center; gap: clamp(.4rem, 1.2cqi, 1rem); }

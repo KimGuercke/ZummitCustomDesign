@@ -382,11 +382,15 @@
   const dockState = { left: "programm", right: null };
 
   /* --- Live-Breiten-Hints je Bereich (px) ----------------------------- */
-  const detail = $(".detail");
+  const detail = $(".detail__inner");   // misst das Beitragspanel (inkl. 1500px-Einfrieren), nicht die ganze Spalte
   const hints = {
     left:   $('.size-hint[data-hint="left"]'),
     center: $('.size-hint[data-hint="center"]'),
     right:  $('.size-hint[data-hint="right"]'),
+  };
+  const collapse = {
+    left:  $('.dock-collapse[data-dock="left"]'),
+    right: $('.dock-collapse[data-dock="right"]'),
   };
   function updateWidthHints() {
     const ws = workspace.getBoundingClientRect();
@@ -400,6 +404,29 @@
     place(hints.left,   dockEls.left,  !!dockState.left);
     place(hints.center, detail,        true);
     place(hints.right,  dockEls.right, !!dockState.right);
+
+    // Einklapp-Griffe an die inneren Kanten ankern (überstehende Seite fix) und
+    // vertikal mittig auf die Kopfzeile setzen (links Switch, rechts Titel)
+    const refCenterY = dockEl => {
+      const panel = dockEl.querySelector(".panel:not(.is-hidden)");
+      if (!panel) return null;
+      const ref = panel.querySelector(".switch") || panel.querySelector(".panel__title, .listpanel__title");
+      if (!ref) return null;
+      const rr = ref.getBoundingClientRect();
+      return rr.top + rr.height / 2 - ws.top - 15;   // 15 = halbe Griffhöhe (30)
+    };
+    if (dockState.left) {
+      const r = dockEls.left.getBoundingClientRect();
+      collapse.left.classList.remove("is-hidden");
+      collapse.left.style.right = (ws.width - (r.right - ws.left) - 14) + "px";
+      const cy = refCenterY(dockEls.left); if (cy != null) collapse.left.style.top = cy + "px";
+    } else collapse.left.classList.add("is-hidden");
+    if (dockState.right) {
+      const r = dockEls.right.getBoundingClientRect();
+      collapse.right.classList.remove("is-hidden");
+      collapse.right.style.left = (r.left - ws.left - 14) + "px";
+      const cy = refCenterY(dockEls.right); if (cy != null) collapse.right.style.top = cy + "px";
+    } else collapse.right.classList.add("is-hidden");
   }
 
   /* --- Splitter: Spaltenbreite ziehen (px-Override); Resize → zurück auf clamp --- */
@@ -433,7 +460,7 @@
   }
   $$(".navitem[data-panel]").forEach(b =>
     b.addEventListener("click", () => toggleDock(b.dataset.dock, b.dataset.panel)));
-  $$(".panel__close").forEach(b =>
+  $$(".dock-collapse").forEach(b =>
     b.addEventListener("click", () => { dockState[b.dataset.dock] = null; renderDock(b.dataset.dock); }));
 
   /* --- Teilnehmende (Referenten-Control wiederverwendet) + Sub-Tabs ---- */
