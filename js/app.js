@@ -380,6 +380,7 @@
   const workspace = $("#workspace");
   const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
   const dockState = { left: "programm", right: null };
+  const lastPanel = { left: "programm", right: "chat" };   // zuletzt gezeigtes Panel je Seite (für Ausklappen)
 
   /* --- Live-Breiten-Hints je Bereich (px) ----------------------------- */
   const detail = $(".detail__inner");   // misst das Beitragspanel (inkl. 1500px-Einfrieren), nicht die ganze Spalte
@@ -404,9 +405,11 @@
     place(hints.left,   dockEls.left,  !!dockState.left);
     place(hints.center, detail,        true);
     place(hints.right,  dockEls.right, !!dockState.right);
+    // Mitte zusätzlich mit Gesamt-Viewport: „Beitrag / Viewport"
+    hints.center.textContent = Math.round(detail.getBoundingClientRect().width) + " / " + window.innerWidth;
 
-    // Einklapp-Griffe an die inneren Kanten ankern (überstehende Seite fix) und
-    // vertikal mittig auf die Kopfzeile setzen (links Switch, rechts Titel)
+    // Griffe: offen → Innenkante (Einklappen, mittig auf Kopfzeile),
+    //         eingeklappt → Außenkante (Ausklappen, auf Tab-Leisten-Höhe)
     const refCenterY = dockEl => {
       const panel = dockEl.querySelector(".panel:not(.is-hidden)");
       if (!panel) return null;
@@ -415,18 +418,24 @@
       const rr = ref.getBoundingClientRect();
       return rr.top + rr.height / 2 - ws.top - 15;   // 15 = halbe Griffhöhe (30)
     };
-    if (dockState.left) {
-      const r = dockEls.left.getBoundingClientRect();
-      collapse.left.classList.remove("is-hidden");
-      collapse.left.style.right = (ws.width - (r.right - ws.left) - 14) + "px";
-      const cy = refCenterY(dockEls.left); if (cy != null) collapse.left.style.top = cy + "px";
-    } else collapse.left.classList.add("is-hidden");
-    if (dockState.right) {
-      const r = dockEls.right.getBoundingClientRect();
-      collapse.right.classList.remove("is-hidden");
-      collapse.right.style.left = (r.left - ws.left - 14) + "px";
-      const cy = refCenterY(dockEls.right); if (cy != null) collapse.right.style.top = cy + "px";
-    } else collapse.right.classList.add("is-hidden");
+    const tb = $(".tabbar").getBoundingClientRect();
+    ["left", "right"].forEach(side => {
+      const h = collapse[side];
+      const open = !!dockState[side];
+      h.classList.remove("is-hidden");
+      h.classList.toggle("is-collapsed", !open);
+      h.querySelector(".dock-collapse-label").textContent = open ? "Einklappen" : "Ausklappen";
+      if (open) {
+        const r = dockEls[side].getBoundingClientRect();
+        if (side === "left") { h.style.right = (ws.width - (r.right - ws.left) - 14) + "px"; h.style.left = ""; }
+        else { h.style.left = (r.left - ws.left - 14) + "px"; h.style.right = ""; }
+        const cy = refCenterY(dockEls[side]); if (cy != null) h.style.top = cy + "px";
+      } else {
+        if (side === "left") { h.style.left = "0px"; h.style.right = ""; }
+        else { h.style.right = "0px"; h.style.left = ""; }
+        h.style.top = (tb.top + tb.height / 2 - ws.top - 15) + "px";
+      }
+    });
   }
 
   /* --- Splitter: Spaltenbreite ziehen (px-Override); Resize → zurück auf clamp --- */
@@ -447,6 +456,7 @@
 
   function renderDock(side) {
     const active = dockState[side];
+    if (active) lastPanel[side] = active;            // zuletzt gezeigtes Panel merken
     $$(".panel", dockEls[side]).forEach(p =>
       p.classList.toggle("is-hidden", p.dataset.panel !== active));
     workspace.classList.toggle(side === "left" ? "has-left" : "has-right", !!active);
@@ -461,7 +471,11 @@
   $$(".navitem[data-panel]").forEach(b =>
     b.addEventListener("click", () => toggleDock(b.dataset.dock, b.dataset.panel)));
   $$(".dock-collapse").forEach(b =>
-    b.addEventListener("click", () => { dockState[b.dataset.dock] = null; renderDock(b.dataset.dock); }));
+    b.addEventListener("click", () => {
+      const side = b.dataset.dock;
+      dockState[side] = dockState[side] ? null : lastPanel[side];   // einklappen ↔ ausklappen (letztes Panel)
+      renderDock(side);
+    }));
 
   /* --- Teilnehmende (Referenten-Control wiederverwendet) + Sub-Tabs ---- */
   const pplList = $("#pplList");
