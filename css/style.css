@@ -103,7 +103,18 @@ body.no-underline a { text-decoration: none !important; }
 .navitem.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
 
 /* --- Workspace (dynamischer Split) ------------------------------------- */
-.workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; }
+.workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; position: relative; }
+
+/* Live-Breiten-Hints je Bereich — dezente Pille unten, Position/Text per JS */
+.size-hint {
+  position: absolute; bottom: 6px; transform: translateX(-50%);
+  padding: 1px 7px; border-radius: 999px;
+  background: color-mix(in srgb, var(--ui-text) 7%, transparent);
+  color: var(--ui-muted); font-size: 10.5px; font-weight: 500; line-height: 1.5;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  opacity: .6; pointer-events: none; z-index: 26;
+}
+.size-hint.is-hidden { display: none; }
 /* Panel-Breiten per clamp, Detail = Rest (1fr). Max bei vw 2500.
    Linkes Panel wächst SANFTER, wenn rechts mitläuft (24vw statt 32,8vw),
    damit die Mitte nicht zu schnell schrumpft. */

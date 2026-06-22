@@ -381,6 +381,27 @@
   const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
   const dockState = { left: "programm", right: null };
 
+  /* --- Live-Breiten-Hints je Bereich (px) ----------------------------- */
+  const detail = $(".detail");
+  const hints = {
+    left:   $('.size-hint[data-hint="left"]'),
+    center: $('.size-hint[data-hint="center"]'),
+    right:  $('.size-hint[data-hint="right"]'),
+  };
+  function updateWidthHints() {
+    const ws = workspace.getBoundingClientRect();
+    const place = (hint, region, visible) => {
+      if (!visible) { hint.classList.add("is-hidden"); return; }
+      const r = region.getBoundingClientRect();
+      hint.classList.remove("is-hidden");
+      hint.textContent = Math.round(r.width) + " px";
+      hint.style.left = (r.left - ws.left + r.width / 2) + "px";
+    };
+    place(hints.left,   dockEls.left,  !!dockState.left);
+    place(hints.center, detail,        true);
+    place(hints.right,  dockEls.right, !!dockState.right);
+  }
+
   /* --- Splitter: Spaltenbreite ziehen (px-Override); Resize → zurück auf clamp --- */
   let dragSide = null;
   const onMove = e => {
@@ -388,13 +409,14 @@
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     if (dragSide === "left") workspace.style.setProperty("--list-w", Math.max(0, x) + "px");
     else workspace.style.setProperty("--right-w", Math.max(0, window.innerWidth - x) + "px");
+    updateWidthHints();                 // live beim Ziehen
   };
   const stopDrag = () => { dragSide = null; document.body.style.userSelect = ""; };
   $("#splitterLeft").addEventListener("pointerdown",  () => { dragSide = "left";  document.body.style.userSelect = "none"; });
   $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; });
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", stopDrag);
-  window.addEventListener("resize", () => { workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w"); });
+  window.addEventListener("resize", () => { workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w"); updateWidthHints(); });
 
   function renderDock(side) {
     const active = dockState[side];
@@ -403,6 +425,7 @@
     workspace.classList.toggle(side === "left" ? "has-left" : "has-right", !!active);
     $$(`.navitem[data-dock="${side}"]`).forEach(b =>
       b.classList.toggle("is-active", b.dataset.panel === active));
+    updateWidthHints();
   }
   function toggleDock(side, panel) {
     dockState[side] = (dockState[side] === panel) ? null : panel;  // erneuter Klick schließt die Seite
@@ -447,4 +470,5 @@
   dockState.right = window.innerWidth >= 1600 ? "chat" : null;  // Chat initial nur bei genug Platz (≥1600px)
   renderDock("left");
   renderDock("right");
+  updateWidthHints();
 })();
