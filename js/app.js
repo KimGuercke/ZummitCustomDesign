@@ -18,6 +18,25 @@
   /* --- Chrome-Icons (Lucide-Style SVG) für die Listeneinträge & Referenten --- */
   const ICON_BM   = '<svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
   const ICON_MORE = '<svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>';
+  const ICON_HEART       = '<svg class="icon" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+  const ICON_HEART_FILL  = '<svg class="icon is-filled" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+
+  /* --- Referenten-/Personen-Control (wiederverwendbar, Beitrag + Teilnehmende) --- */
+  function renderSpeaker(s, bmIcon = ICON_BM) {
+    return `
+      <li class="speaker">
+        <img class="speaker-img" src="${s.img}" alt="" loading="lazy" />
+        <div class="speaker-info">
+          <a class="speaker-name" href="#">${s.name}</a>
+          <span class="speaker-role">${s.role}</span>
+          <span class="speaker-org">${s.org}</span>
+        </div>
+        <div class="speaker__actions">
+          <span class="speaker__bm" title="Merken">${bmIcon}</span>
+          <span class="speaker__more" title="Mehr">${ICON_MORE}</span>
+        </div>
+      </li>`;
+  }
 
   /* --- Referenten (wiederverwendbar) --- */
   const SP = {
@@ -120,6 +139,37 @@
     },
   ];
 
+  /* --- Teilnehmende (Demo) — Kategorien für die Sub-Tabs --------------- */
+  const PEOPLE = {
+    vortragende: [SP.hambloch, SP.beckmann, SP.edgemeister, SP.gries, SP.mueller, SP.mustermann],
+    teilnehmer: [
+      { img: "https://randomuser.me/api/portraits/women/68.jpg", name: "Dipl.-Ing. Sandra Giern", role: "Geschäftsführerin", org: "BDE Bundesverband der Entsorgungswirtschaft" },
+      { img: "https://randomuser.me/api/portraits/men/33.jpg",   name: "Oliver Usha",            role: "CEO", org: "Oxygenta AG", liked: true },
+      { img: "https://randomuser.me/api/portraits/women/90.jpg", name: "Stina Gunnarsdottir",    role: "Geschäftsführerin", org: "INOVEXIA" },
+      { img: "https://randomuser.me/api/portraits/men/45.jpg",   name: "Dr. Justus Kaufmann",    role: "Geschäftsführer", org: "INOVEXIA" },
+      { img: "https://randomuser.me/api/portraits/men/60.jpg",   name: "Markus Derfflinger",     role: "Pressesprecher", org: "VIOTONIC GmbH" },
+      { img: "https://randomuser.me/api/portraits/women/28.jpg", name: "Dr. Monika Jankowski",   role: "Geschäftsführerin", org: "Klimawerk gGmbH" },
+      { img: "https://randomuser.me/api/portraits/men/77.jpg",   name: "Tobias Wenninger",       role: "Projektleiter", org: "Stadtwerke Dresden" },
+      { img: "https://randomuser.me/api/portraits/women/52.jpg", name: "Lena Hofmann",           role: "Referentin Nachhaltigkeit", org: "GreenTech e.V." },
+    ],
+    aussteller: [
+      { img: "https://randomuser.me/api/portraits/men/12.jpg",   name: "Reinhard Söder",         role: "Vertrieb", org: "EcoCycle Systems GmbH" },
+      { img: "https://randomuser.me/api/portraits/women/36.jpg", name: "Petra Lindqvist",        role: "Marketing", org: "Oxygenta AG" },
+      { img: "https://randomuser.me/api/portraits/men/8.jpg",    name: "Dr. Ferdinand Roth",     role: "CTO", org: "VIOTONIC GmbH" },
+      { img: "https://randomuser.me/api/portraits/women/19.jpg", name: "Aylin Demir",            role: "Sales Lead", org: "INOVEXIA" },
+    ],
+  };
+
+  /* --- Chat (Demo) ----------------------------------------------------- */
+  const CHAT = [
+    { img: "https://randomuser.me/api/portraits/women/65.jpg", name: "Dr. Mellanie Müller-Rügenwald", time: "14:02", text: "Willkommen zur Session! Wir starten gleich." },
+    { img: "https://randomuser.me/api/portraits/men/33.jpg",   name: "Oliver Usha",                   time: "14:03", text: "Freue mich drauf 👍" },
+    { img: "https://randomuser.me/api/portraits/women/90.jpg", name: "Stina Gunnarsdottir",           time: "14:05", text: "Gibt es die Folien später als Download?" },
+    { img: "https://randomuser.me/api/portraits/men/32.jpg",   name: "Prof. Dr. Walter Mustermann",   time: "14:06", text: "Ja, im Reiter \"Downloads\" findet ihr alle Unterlagen." },
+    { img: "https://randomuser.me/api/portraits/men/60.jpg",   name: "Markus Derfflinger",            time: "14:08", text: "Super Vortrag bisher, sehr anschaulich!" },
+    { img: "https://randomuser.me/api/portraits/women/28.jpg", name: "Dr. Monika Jankowski",          time: "14:10", text: "Wie sieht es mit den CO2-Einsparungen in der Praxis aus?" },
+  ];
+
   let currentTalk = TALKS[0];
   let currentTab  = "beitrag";
 
@@ -145,19 +195,7 @@
 
   /* --- Render-Bausteine ------------------------------------------------ */
   function renderHero(t) {
-    const speakers = t.speakers.map(s => `
-      <li class="speaker">
-        <img class="speaker-img" src="${s.img}" alt="" loading="lazy" />
-        <div class="speaker-info">
-          <a class="speaker-name" href="#">${s.name}</a>
-          <span class="speaker-role">${s.role}</span>
-          <span class="speaker-org">${s.org}</span>
-        </div>
-        <div class="speaker__actions">
-          <span class="speaker__bm" title="Merken">${ICON_BM}</span>
-          <span class="speaker__more" title="Mehr">${ICON_MORE}</span>
-        </div>
-      </li>`).join("");
+    const speakers = t.speakers.map(s => renderSpeaker(s)).join("");
 
     const videoBlock = t.mode === "video"
       ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
@@ -339,22 +377,76 @@
     r.readAsDataURL(f);
   });
 
-  /* --- Splitter: Listenbreite ziehen (Override 320–520),
-         Fenster-Resize setzt zurück auf Auto-Breite (CSS clamp) --- */
-  const splitter = $("#splitter"); let dragging = false;
+  /* --- Splitter: Spaltenbreite ziehen (links = --list-w, rechts = --right-w);
+         Fenster-Resize setzt beide zurück auf Auto-Breite (CSS clamp) --- */
+  let dragSide = null;
   const onMove = e => {
-    if (!dragging) return;
-    const x = (e.touches ? e.touches[0].clientX : e.clientX);
-    const w = Math.max(0, x);                 // Splitter-Begrenzung aufgehoben
-    root.style.setProperty("--list-w", w + "px");
+    if (!dragSide) return;
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    if (dragSide === "left") root.style.setProperty("--list-w", Math.max(0, x) + "px");
+    else root.style.setProperty("--right-w", Math.max(0, window.innerWidth - x) + "px");
   };
-  const stop = () => { dragging = false; document.body.style.userSelect = ""; };
-  splitter.addEventListener("pointerdown", () => { dragging = true; document.body.style.userSelect = "none"; });
+  const stopDrag = () => { dragSide = null; document.body.style.userSelect = ""; };
+  $("#splitterLeft").addEventListener("pointerdown",  () => { dragSide = "left";  document.body.style.userSelect = "none"; });
+  $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; });
   window.addEventListener("pointermove", onMove);
-  window.addEventListener("pointerup", stop);
-  window.addEventListener("resize", () => root.style.removeProperty("--list-w"));
+  window.addEventListener("pointerup", stopDrag);
+  window.addEventListener("resize", () => { root.style.removeProperty("--list-w"); root.style.removeProperty("--right-w"); });
+
+  /* --- Dock-Logik: pro Seite genau EIN Panel sichtbar (exklusiv) ------- */
+  const workspace = $("#workspace");
+  const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
+  const dockState = { left: "programm", right: null };
+
+  function renderDock(side) {
+    const active = dockState[side];
+    $$(".panel", dockEls[side]).forEach(p =>
+      p.classList.toggle("is-hidden", p.dataset.panel !== active));
+    workspace.classList.toggle(side === "left" ? "has-left" : "has-right", !!active);
+    $$(`.navitem[data-dock="${side}"]`).forEach(b =>
+      b.classList.toggle("is-active", b.dataset.panel === active));
+  }
+  function toggleDock(side, panel) {
+    dockState[side] = (dockState[side] === panel) ? null : panel;  // erneuter Klick schließt die Seite
+    renderDock(side);
+  }
+  $$(".navitem[data-panel]").forEach(b =>
+    b.addEventListener("click", () => toggleDock(b.dataset.dock, b.dataset.panel)));
+  $$(".panel__close").forEach(b =>
+    b.addEventListener("click", () => { dockState[b.dataset.dock] = null; renderDock(b.dataset.dock); }));
+
+  /* --- Teilnehmende (Referenten-Control wiederverwendet) + Sub-Tabs ---- */
+  const pplList = $("#pplList");
+  let pplCat = "vortragende";
+  function renderPeople() {
+    pplList.innerHTML = (PEOPLE[pplCat] || [])
+      .map(p => renderSpeaker(p, p.liked ? ICON_HEART_FILL : ICON_HEART)).join("");
+  }
+  $$(".ppl-tab").forEach(b => b.addEventListener("click", () => {
+    pplCat = b.dataset.pcat;
+    $$(".ppl-tab").forEach(x => x.classList.toggle("is-active", x === b));
+    renderPeople();
+  }));
+
+  /* --- Chat --- */
+  const chatList = $("#chatList");
+  function renderChat() {
+    chatList.innerHTML = CHAT.map(m => `
+      <li class="chat-msg">
+        <img class="chat-msg__avatar" src="${m.img}" alt="" loading="lazy" />
+        <div class="chat-msg__body">
+          <div class="chat-msg__head"><span class="chat-msg__name">${m.name}</span><span class="chat-msg__time">${m.time}</span></div>
+          <div class="chat-msg__text">${m.text}</div>
+        </div>
+      </li>`).join("");
+  }
 
   /* --- Start --- */
   renderList();
   selectTalk(TALKS[0].id);
+  renderPeople();
+  renderChat();
+  dockState.right = window.innerWidth >= 1600 ? "chat" : null;  // Chat initial nur bei genug Platz (≥1600px)
+  renderDock("left");
+  renderDock("right");
 })();

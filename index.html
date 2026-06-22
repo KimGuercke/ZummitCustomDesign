@@ -34,31 +34,65 @@
   </header>
 
   <!-- ============================ Hauptmenü ========================= -->
+  <!-- Toggle-Buttons: links steuern Links-Dock, rechts steuern Rechts-Dock -->
   <nav class="mainnav">
-    <button class="navitem"><i class="fa-solid fa-house"></i>Event</button>
-    <button class="navitem is-active"><i class="fa-solid fa-clock"></i>Programm</button>
-    <button class="navitem"><i class="fa-solid fa-store"></i>Aussteller</button>
-    <button class="navitem"><i class="fa-solid fa-users"></i>Personen</button>
-    <button class="navitem"><i class="fa-solid fa-comment"></i>Infos</button>
+    <div class="mainnav__group mainnav__left">
+      <button class="navitem" data-dock="left" data-panel="event"><i class="fa-solid fa-house"></i>Event</button>
+      <button class="navitem is-active" data-dock="left" data-panel="programm"><i class="fa-solid fa-clock"></i>Programm</button>
+      <button class="navitem" data-dock="left" data-panel="aussteller"><i class="fa-solid fa-store"></i>Aussteller</button>
+      <button class="navitem" data-dock="left" data-panel="sponsoren"><i class="fa-solid fa-award"></i>Sponsoren</button>
+    </div>
+    <div class="mainnav__group mainnav__right">
+      <button class="navitem" data-dock="right" data-panel="teilnehmende"><i class="fa-solid fa-users"></i>Teilnehmende</button>
+      <button class="navitem" data-dock="right" data-panel="chat"><i class="fa-solid fa-comments"></i>Chat</button>
+      <button class="navitem" data-dock="right" data-panel="infos"><i class="fa-solid fa-bell"></i>Infos</button>
+    </div>
   </nav>
 
   <!-- ============================ Workspace ========================= -->
+  <!-- Grid-Spalten erscheinen/verschwinden via .has-left / .has-right (JS) -->
   <div class="workspace" id="workspace">
 
-    <!-- Liste links -->
-    <aside class="listpanel">
-      <div class="listpanel__head">
-        <span class="listpanel__title">Programm</span>
-        <label class="switch" title="Nur Lesezeichen"><input type="checkbox"><span class="track"></span></label>
-      </div>
-      <div class="listpanel__date">Sa. 20.06.</div>
-      <!-- Vortragsliste — wird per JS aus den Vortrags-Daten gerendert -->
-      <ul class="talk-list" id="talkList"></ul>
+    <!-- ===== LINKS-Dock — je Toggle ein Panel (exklusiv) ===== -->
+    <aside class="dock dock--left" id="dockLeft">
+
+      <!-- Programm (echte Daten) -->
+      <section class="panel panel--programm" data-panel="programm">
+        <div class="listpanel__head">
+          <span class="listpanel__title">Programm</span>
+          <div class="listpanel__actions">
+            <label class="switch" title="Nur Lesezeichen"><input type="checkbox"><span class="track"></span></label>
+            <button class="iconbtn panel__close" data-dock="left" title="Schließen">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="listpanel__date">Sa. 20.06.</div>
+        <!-- Vortragsliste — wird per JS aus den Vortrags-Daten gerendert -->
+        <ul class="talk-list" id="talkList"></ul>
+      </section>
+
+      <!-- Platzhalter Event / Aussteller / Sponsoren -->
+      <section class="panel panel--placeholder is-hidden" data-panel="event">
+        <div class="panel__head"><span class="panel__title">Event</span>
+          <button class="iconbtn panel__close" data-dock="left" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="panel__empty">Demo-Inhalt folgt.</div>
+      </section>
+      <section class="panel panel--placeholder is-hidden" data-panel="aussteller">
+        <div class="panel__head"><span class="panel__title">Aussteller</span>
+          <button class="iconbtn panel__close" data-dock="left" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="panel__empty">Demo-Inhalt folgt.</div>
+      </section>
+      <section class="panel panel--placeholder is-hidden" data-panel="sponsoren">
+        <div class="panel__head"><span class="panel__title">Sponsoren</span>
+          <button class="iconbtn panel__close" data-dock="left" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="panel__empty">Demo-Inhalt folgt.</div>
+      </section>
     </aside>
 
-    <div class="splitter" id="splitter"></div>
+    <div class="splitter" id="splitterLeft"></div>
 
-    <!-- Detail rechts -->
+    <!-- ===== Detail (Mitte) ===== -->
     <main class="detail">
       <div class="detail__inner">
         <!-- Tab-Leiste + Karten-CTAs (Bookmark / …) rechtsbündig zur Karte, fluid -->
@@ -81,6 +115,59 @@
         <article class="talk-card" id="card"></article>
       </div>
     </main>
+
+    <div class="splitter" id="splitterRight"></div>
+
+    <!-- ===== RECHTS-Dock — je Toggle ein Panel (exklusiv) ===== -->
+    <aside class="dock dock--right" id="dockRight">
+
+      <!-- Teilnehmende (echte Daten · Referenten-Control wiederverwendet) -->
+      <section class="panel panel--people is-hidden" data-panel="teilnehmende">
+        <div class="panel__head">
+          <span class="panel__title" title="Beitrag der Verwertung von Hausmüllverbrennung zur CO2-Einsparung">Beitrag der Verwertung von Hausmüllverb…</span>
+          <button class="iconbtn panel__close" data-dock="right" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <div class="ppl-tabs">
+          <button class="ppl-tab is-active" data-pcat="vortragende">Vortragende</button>
+          <button class="ppl-tab" data-pcat="teilnehmer">Teilnehmer</button>
+          <button class="ppl-tab" data-pcat="aussteller">Aussteller</button>
+        </div>
+        <div class="ppl-controls">
+          <label class="ppl-sort">
+            <span>Sortieren nach</span>
+            <select class="select select--sm"><option>Aktivität</option><option>Name</option></select>
+          </label>
+          <label class="switch" title="Nur Online"><input type="checkbox"><span class="track"></span></label>
+        </div>
+        <div class="ppl-search">
+          <div class="field-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Suche nach Person…" />
+          </div>
+        </div>
+        <ul class="speakers ppl-list" id="pplList"></ul>
+      </section>
+
+      <!-- Chat (echte Daten) -->
+      <section class="panel panel--chat is-hidden" data-panel="chat">
+        <div class="panel__head">
+          <span class="panel__title">Chat</span>
+          <button class="iconbtn panel__close" data-dock="right" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <ul class="chat-list" id="chatList"></ul>
+        <form class="chat-input" onsubmit="return false">
+          <input type="text" placeholder="Nachricht schreiben…" />
+          <button type="button" class="chat-send" title="Senden"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+      </section>
+
+      <!-- Platzhalter Infos -->
+      <section class="panel panel--placeholder is-hidden" data-panel="infos">
+        <div class="panel__head"><span class="panel__title">Infos</span>
+          <button class="iconbtn panel__close" data-dock="right" title="Schließen"><svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="panel__empty">Demo-Inhalt folgt.</div>
+      </section>
+    </aside>
   </div>
 </div>
 
