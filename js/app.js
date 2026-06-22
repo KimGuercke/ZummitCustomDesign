@@ -158,14 +158,15 @@
     ],
   };
 
-  /* --- Chat (Demo) ----------------------------------------------------- */
+  /* --- Chat (Demo) — self=true: eigene Nachricht (rechts, teal) -------- */
   const CHAT = [
-    { img: "https://randomuser.me/api/portraits/women/65.jpg", name: "Dr. Mellanie Müller-Rügenwald", time: "14:02", text: "Willkommen zur Session! Wir starten gleich." },
-    { img: "https://randomuser.me/api/portraits/men/33.jpg",   name: "Oliver Usha",                   time: "14:03", text: "Freue mich drauf 👍" },
-    { img: "https://randomuser.me/api/portraits/women/90.jpg", name: "Stina Gunnarsdottir",           time: "14:05", text: "Gibt es die Folien später als Download?" },
-    { img: "https://randomuser.me/api/portraits/men/32.jpg",   name: "Prof. Dr. Walter Mustermann",   time: "14:06", text: "Ja, im Reiter \"Downloads\" findet ihr alle Unterlagen." },
-    { img: "https://randomuser.me/api/portraits/men/60.jpg",   name: "Markus Derfflinger",            time: "14:08", text: "Super Vortrag bisher, sehr anschaulich!" },
-    { img: "https://randomuser.me/api/portraits/women/28.jpg", name: "Dr. Monika Jankowski",          time: "14:10", text: "Wie sieht es mit den CO2-Einsparungen in der Praxis aus?" },
+    { name: "Gaby Edgemeister", time: "13:54", text: "Hallo zusammen,<br>Eine Frage an die Regie: Werden die Vorträge aufgezeichnet?" },
+    { self: true,               time: "13:56", text: "Hallo Gabi, ich werde nachfragen und melde mich gleich." },
+    { name: "Gaby Edgemeister", time: "13:55", text: "Und falls ja, ab wann stehen diese als Videos zur Verfügung?" },
+    { self: true,               time: "13:55", text: "Die Vorträge werden aufgezeichnet und stehen am Montag der kommenden Woche zur Verfügung." },
+    { name: "Gaby Edgemeister", time: "13:57", text: "Super! Das freut mich sehr und gibt mir die Möglichkeit, an sämtlichen Vorträge teilzunehmen :-)" },
+    { self: true,               time: "13:58", text: "Sehr schön! Das darfst Du übrigens gerne im Feedback-Formular erwähnen ;-)" },
+    { name: "Gaby Edgemeister", time: "13:58", text: "Na, dann gib uns mal Mühe! Das Feedback-Formular beantworte ich nach dem Event ;-)" },
   ];
 
   let currentTalk = TALKS[0];
@@ -428,12 +429,13 @@
   const chatList = $("#chatList");
   function renderChat() {
     chatList.innerHTML = CHAT.map(m => `
-      <li class="chat-msg">
-        <img class="chat-msg__avatar" src="${m.img}" alt="" loading="lazy" />
-        <div class="chat-msg__body">
-          <div class="chat-msg__head"><span class="chat-msg__name">${m.name}</span><span class="chat-msg__time">${m.time}</span></div>
+      <li class="chat-msg${m.self ? " chat-msg--self" : ""}">
+        <div class="chat-bubble">
+          ${m.self ? "" : `<span class="chat-msg__name">${m.name}</span>`}
           <div class="chat-msg__text">${m.text}</div>
+          <span class="chat-msg__time">${m.time}${m.self ? ' <i class="fa-solid fa-check"></i>' : ""}</span>
         </div>
+        <a class="chat-msg__reply" href="#">Antworten</a>
       </li>`).join("");
   }
 
