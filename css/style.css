@@ -140,9 +140,9 @@ body.no-underline a { text-decoration: none !important; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
-.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(4px, 1.7vw, 28px); }
-.detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0;
-  container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter) */ }
+.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(4px, 1.7vw, 28px); scrollbar-gutter: stable both-edges; }
+.detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0 auto;
+  container-type: inline-size; /* cqi der Sub-Tabs = Breite des Detail-Panels (reagiert auf Splitter); zentriert → Gap links/rechts gleich */ }
 
 /* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
 .tabbar { display: flex; align-items: center; gap: clamp(.4rem, 1.2cqi, 1rem); }
@@ -273,7 +273,7 @@ body.no-underline a { text-decoration: none !important; }
      ein konstanter Bruchteil der Breite — passt der Inhalt bei EINER Breite
      ins 16:9, passt er bei JEDER. Genau das „gerendertes-Bild/Video"-Verhalten. */
   --scale: 2.4cqi;
-  --pad:        calc(var(--scale) * 2.0);
+  --pad:        calc(var(--scale) * 2.6);
   --title-size: calc(var(--scale) * 1.78);
   --sub-size:   calc(var(--scale) * 1.05);
   --meta-size:  calc(var(--scale) * 1.05);
