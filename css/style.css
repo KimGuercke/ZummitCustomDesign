@@ -431,7 +431,7 @@ body.no-underline a { text-decoration: none !important; }
   --img-size:  calc(var(--scale) * 3);
 }
 /* Helle Farbvariante des Referenten-Controls (Panel weiß statt blau) */
-.panel--people .speaker-name { color: var(--ui-text); }
+.panel--people .speaker-name { color: var(--ui-text); font-weight: 500; }
 .panel--people .speaker-role,
 .panel--people .speaker-org  { color: var(--ui-muted); }
 .panel--people .speaker__actions { color: var(--ui-accent); }
