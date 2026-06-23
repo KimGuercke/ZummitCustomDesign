@@ -309,6 +309,8 @@ body.no-underline a { text-decoration: none !important; }
 
 /* Maximal-Showcase: Sektions-Label für die Inline-Blöcke im Beitrag */
 .talk-section-label { margin: 0; font-size: var(--meta-size); font-weight: 700; color: var(--z-fg); }
+/* Überschrift unter der Trennerlinie = exakter Tab-Name (auf jedem Tab) */
+.talk-tab-heading { margin: 0; font-size: calc(var(--scale) * 1.6); font-weight: 700; color: var(--z-fg); }
 
 /* =========================================================================
    Dateien / Downloads — zweispaltig, unter 550px Kartenbreite einspaltig.

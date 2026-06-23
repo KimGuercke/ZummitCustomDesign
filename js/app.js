@@ -193,14 +193,10 @@
   }
 
   /* --- Render-Bausteine ------------------------------------------------ */
-  function renderHero(t) {
-    const speakers = t.speakers.map(s => renderSpeaker(s)).join("");
+  const TAB_NAMES = { beitrag: "Beitrag", details: "Details", downloads: "Downloads", feedback: "Feedback", abstimmungen: "Abstimmungen" };
 
-    const videoBlock = t.mode === "video"
-      ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
-    const ctaBlock = t.cta
-      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span><i class="fa-solid fa-video"></i></button>` : "";
-
+  /* Kopf-Bereich — auf JEDEM Tab identisch: Meta (Datum/Zeit/Raum) + Icons + Titel */
+  function renderHeader(t) {
     return `
       <div class="talk-meta">
         <span class="talk-meta__left">
@@ -209,19 +205,23 @@
           <span class="talk-sep" data-comp="room" aria-hidden="true">|</span>
           <a class="talk-room" data-comp="room" href="#">${t.room}</a>
         </span>
-        ${t.cardCta ? `<span class="talk-meta__cta">
+        <span class="talk-meta__cta">
           <button type="button" title="Als Kalendereintrag exportieren"><i class="fa-regular fa-calendar-plus"></i></button>
           <button type="button" title="Teilen"><i class="fa-regular fa-share-from-square"></i></button>
           <button type="button" title="Merken"><i class="fa-regular fa-bookmark"></i></button>
-        </span>` : ""}
+        </span>
       </div>
-      <h2 class="talk-title">${t.title}</h2>
-      <p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p>
-      ${videoBlock}
-      ${ctaBlock}
-      <hr class="talk-divider" data-comp="speakers" />
-      <ul class="speakers" data-comp="speakers">${speakers}</ul>
-      ${renderHeroExtra(t)}`;
+      <h2 class="talk-title">${t.title}</h2>`;
+  }
+
+  /* Beitrag-Inhalt (unter dem Kopf): Subtitle + Video + Join-CTA + Referenten + ggf. Inline-Extras */
+  function renderBeitrag(t) {
+    const videoBlock = t.mode === "video"
+      ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
+    const ctaBlock = t.cta
+      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span><i class="fa-solid fa-video"></i></button>` : "";
+    const speakers = `<ul class="speakers" data-comp="speakers">${t.speakers.map(s => renderSpeaker(s)).join("")}</ul>`;
+    return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p>${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
   }
 
   /* Maximal-Showcase: Dateien + Beschreibung zusätzlich INLINE im Beitrag (adaptiv) */
@@ -257,24 +257,24 @@
 
   /* --- Render: Karte je nach aktivem Tab ------------------------------ */
   function renderCard(t, tab) {
-    const isHero = tab === "beitrag";
-    const flow = !isHero || t.mode === "video" || t.autoHeight;  // 16:9 nur im Beitrag-Hero (color)
-    card.className = "talk-card" + (flow ? " mode-flow" : "") + (t.noTabs ? " no-tabs" : "");
+    card.className = "talk-card mode-flow" + (t.noTabs ? " no-tabs" : "");  // inhaltshoch: Kopf + variabler Tab-Inhalt
     card.style.backgroundImage = "";
 
-    let inner;
+    let content;
     if (tab === "beitrag") {
-      inner = renderHero(t);
+      content = renderBeitrag(t);
     } else if (tab === "details") {
-      inner = (isOn("description") && t.description && t.description.length)
+      content = (isOn("description") && t.description && t.description.length)
         ? renderDescription(t) : emptyTab("Keine Detailbeschreibung vorhanden.");
     } else if (tab === "downloads") {
-      inner = (isOn("files") && t.files && t.files.length)
+      content = (isOn("files") && t.files && t.files.length)
         ? renderFiles(t.files, t.filesVariant || "onblue") : emptyTab("Keine Dateien vorhanden.");
     } else {
-      inner = emptyTab("Inhalt folgt.");
+      content = emptyTab("Inhalt folgt.");
     }
-    card.innerHTML = `<div class="talk-card__body">${inner}</div>`;
+    // Kopf (auf jedem Tab identisch) + Trennerlinie + Tab-Name-Überschrift + Inhalt
+    const heading = t.noTabs ? "" : `<h3 class="talk-tab-heading">${TAB_NAMES[tab] || ""}</h3>`;
+    card.innerHTML = `<div class="talk-card__body">${renderHeader(t)}<hr class="talk-divider" />${heading}${content}</div>`;
   }
 
   /* --- Auswahl: Vortrag (setzt Tab auf Beitrag zurück) ---------------- */
@@ -307,9 +307,7 @@
     renderCard(currentTalk, currentTab);
     applyBackground();
     applyComponentVisibility();
-    // Externe CTA (Tab-Leiste) ausblenden, wenn die Icons im Card-Bereich liegen (nur Beitrag)
-    const inCard = !!currentTalk.cardCta && currentTab === "beitrag";
-    $(".card-cta").classList.toggle("is-hidden", inCard);
+    $(".card-cta").classList.add("is-hidden");   // Icons liegen jetzt immer im Karten-Kopf
   }
 
   /* --- Settings: Komponenten-Sichtbarkeit (nur Inline-Elemente im Beitrag) --- */
