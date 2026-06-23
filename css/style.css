@@ -253,6 +253,8 @@ body.no-underline a { text-decoration: none !important; }
 .subtab i { font-size: 1em; color: var(--ui-accent); }
 .subtab:hover { color: var(--ui-accent); }
 .subtab.is-active { background: var(--z-bg); color: var(--z-fg); font-weight: 700; }
+.bg-is-gradient .subtab.is-active,
+.bg-is-gradient .talk-card { background-attachment: fixed; }
 .subtab.is-active i { color: var(--z-fg); }
 
 /* =========================================================================
