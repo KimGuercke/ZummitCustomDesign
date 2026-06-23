@@ -6,7 +6,7 @@
 <title>Zummit Custom Design — Prototyp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Google+Sans+Flex&family=Inter:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Nunito:wght@400;700&family=Open+Sans:wght@400;700&family=Pliant&family=Poppins:wght@400;700&family=Puritan:wght@400;700&family=Roboto:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/lc-color-picker/lc_color_picker.min.js"></script>
 </head>
@@ -223,7 +223,17 @@
     <div class="toggle-row"><span>Dokumente im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="files" checked><span class="track"></span></label></div>
     <div class="toggle-row"><span>Detailbeschreibung im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="description" checked><span class="track"></span></label></div>
 
-    <div class="section-title">Layout</div>
+    <div class="section-title">Schrift</div>
+    <div class="field">
+      <label>Font</label>
+      <select class="select" id="fontMain"></select>
+    </div>
+    <div class="field">
+      <label>Alternativer Font für Titel</label>
+      <select class="select" id="fontTitle"></select>
+    </div>
+
+    <div class="section-title">Weitere Layout-Optionen</div>
     <div class="color-row"><span>Hintergrund Header</span><input class="swatch" type="text" data-color="header" value="#ffffff" /></div>
     <div class="color-row"><span>Hintergrund Main-Tab-Register</span><input class="swatch" type="text" data-color="mainnav" value="#ffffff" /></div>
     <div class="color-row"><span>Hintergrund Left Panel</span><input class="swatch" type="text" data-color="leftpanel" value="#ffffff" /></div>

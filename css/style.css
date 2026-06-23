@@ -31,6 +31,7 @@
   --ui-brand: #16A9C0;
 
   --font: "Roboto", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --title-font: var(--font);   /* Titel folgt der Hauptschrift, bis ein abweichender Titel-Font gewählt wird */
   --topbar-h: 56px;
   --nav-h: clamp(40px, 4vw, 52px);
   /* Panel-Breiten (--list-w / --right-w) werden pro Zustand auf .workspace gesetzt
@@ -399,7 +400,7 @@ body.no-underline a { text-decoration: none !important; }
 .talk-room { color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; }
 
 .talk-title {
-  margin: 0; font-size: var(--title-size); font-weight: 400; line-height: 1.1;
+  margin: 0; font-family: var(--title-font); font-size: var(--title-size); font-weight: 400; line-height: 1.1;
   color: var(--z-fg); overflow-wrap: break-word;
 }
 .talk-subtitle {

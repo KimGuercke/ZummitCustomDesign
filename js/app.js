@@ -441,6 +441,31 @@
   /* --- Modus Hintergrundfarbe/-bild --- */
   modeSelect.addEventListener("change", applyBackground);
 
+  /* --- Schrift: Haupt-Font (ganze UI via --font) + alternativer Titel-Font (.talk-title via --title-font).
+     Eine Font-Liste als Single Source, alphabetisch, füllt beide Comboboxen. --- */
+  const FONTS = [
+    { name: "Arimo",       stack: `"Arimo", sans-serif` },
+    { name: "Google Sans", stack: `"Google Sans Flex", sans-serif` },
+    { name: "Inter",       stack: `"Inter", sans-serif` },
+    { name: "Lato",        stack: `"Lato", sans-serif` },
+    { name: "Montserrat",  stack: `"Montserrat", sans-serif` },
+    { name: "Nunito",      stack: `"Nunito", sans-serif` },
+    { name: "Open Sans",   stack: `"Open Sans", sans-serif` },
+    { name: "Pliant",      stack: `"Pliant", sans-serif` },
+    { name: "Poppins",     stack: `"Poppins", sans-serif` },
+    { name: "Puritan",     stack: `"Puritan", sans-serif` },
+    { name: "Roboto",      stack: `"Roboto", sans-serif` },
+    { name: "System",      stack: `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` },
+  ];
+  const fontOptions = FONTS.map(f => `<option value='${f.stack}'>${f.name}</option>`).join("");
+  const fontMainSel = $("#fontMain"), fontTitleSel = $("#fontTitle");
+  fontMainSel.innerHTML = fontOptions;
+  fontTitleSel.innerHTML = `<option value="">&lt; Kein abweichender Titelfont &gt;</option>` + fontOptions;
+  fontMainSel.value = FONTS.find(f => f.name === "Roboto").stack;   // Default = aktuelle Hauptschrift
+  fontMainSel.addEventListener("change", e => root.style.setProperty("--font", e.target.value));
+  fontTitleSel.addEventListener("change", e =>
+    root.style.setProperty("--title-font", e.target.value || "var(--font)"));   // leer → Titel folgt Hauptschrift
+
   /* --- Panel-Schatten an/aus --- */
   $("#panelShadow").addEventListener("change", e =>
     root.style.setProperty("--panel-shadow", e.target.checked ? "6px 6px 22px rgba(0,0,0,.22)" : "none"));
