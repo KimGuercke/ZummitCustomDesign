@@ -348,8 +348,9 @@
 
   /* --- Farben -> Design-Tokens live (lc-color-picker) --- */
   const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
-  let bgLastSolid = $('[data-color="bg"]')?.value || "#035E7C";
-  let bgPrevGrad  = false;
+  const BG_ANGLE  = 177;        // Default-Winkel des Start-Gradients (muss zu --z-bg in style.css passen)
+  let bgLastSolid = "#035E7C";  // Basis-Solidfarbe für die Gradient-Vorbelegung
+  let bgPrevGrad  = true;       // Prototyp startet mit Gradient-Default (body.bg-is-gradient ist gesetzt)
   $$("[data-color]").forEach(inp => {
     new lc_color_picker(inp, {
       modes: inp.dataset.color === "bg"
@@ -384,7 +385,7 @@
     const bgInp = $('[data-color="bg"]');
     const preferred = mode === "radial-gradient"
       ? `radial-gradient(circle, ${bgLastSolid} 50%, #ffffff 100%)`
-      : `linear-gradient(135deg, ${bgLastSolid} 50%, #ffffff 100%)`;
+      : `linear-gradient(${BG_ANGLE}deg, ${bgLastSolid} 50%, #ffffff 100%)`;
     setTimeout(() => {
       bgInp.value = preferred;
       document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));   // Picker schließen
