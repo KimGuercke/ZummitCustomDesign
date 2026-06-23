@@ -228,7 +228,7 @@
         <span class="talk-meta__left">
           <span class="talk-date is-hidden" data-comp="date">${t.date}</span>
           <span class="talk-time" data-comp="time">${t.time}</span>
-          <span class="talk-sep" data-comp="room" aria-hidden="true">|</span>
+          <span class="talk-sep" aria-hidden="true">|</span>
           <a class="talk-room" data-comp="room" href="#">${t.room}</a>
         </span>
         <span class="talk-meta__cta">
@@ -347,10 +347,14 @@
   /* --- Settings: Komponenten-Sichtbarkeit (nur Inline-Elemente im Beitrag) --- */
   function applyComponentVisibility() {
     const forceAll = !!currentTalk.demoAll;   // Maximal-Showcase: alles fest sichtbar
+    const vis = {};
     ["date", "time", "room", "subtitle", "speakers"].forEach(comp => {
       const on = forceAll || isOn(comp);
+      vis[comp] = on;
       $$(`[data-comp="${comp}"]`, card).forEach(el => el.classList.toggle("is-hidden", !on));
     });
+    // Trenner „|" nur zeigen, wenn Raum sichtbar UND davor etwas steht (Datum oder Zeit)
+    $$(".talk-sep", card).forEach(el => el.classList.toggle("is-hidden", !(vis.room && (vis.date || vis.time))));
   }
 
   /* --- Settings: Modus Farbe/Bild (nur Beitrag-Hero, keine Video-Karte) --- */
@@ -376,6 +380,18 @@
   $("#openSettings").addEventListener("click", open);
   $("#closeSettings").addEventListener("click", close);
   scrim.addEventListener("click", close);
+  /* Tastatur: Option/Alt+S togglet die Settings, Esc schließt — nicht während man in einem Feld tippt.
+     e.code="KeyS" ist layout-unabhängig (Option+S erzeugt auf US-Mac-Layout sonst „ß"). */
+  window.addEventListener("keydown", e => {
+    const ae = document.activeElement;
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(ae?.tagName || "") || ae?.isContentEditable;
+    if (e.altKey && e.code === "KeyS" && !typing) {
+      e.preventDefault();
+      drawer.classList.contains("is-open") ? close() : open();
+    } else if (e.key === "Escape" && drawer.classList.contains("is-open")) {
+      close();
+    }
+  });
 
   /* --- Komponenten-Toggles: neu rendern (steuern Inline-Elemente UND Tab-Inhalte) --- */
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
@@ -455,6 +471,7 @@
     { name: "Poppins",     stack: `"Poppins", sans-serif` },
     { name: "Puritan",     stack: `"Puritan", sans-serif` },
     { name: "Roboto",      stack: `"Roboto", sans-serif` },
+    { name: "Roboto Slab", stack: `"Roboto Slab", serif` },
     { name: "System",      stack: `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` },
   ];
   const fontOptions = FONTS.map(f => `<option value='${f.stack}'>${f.name}</option>`).join("");
