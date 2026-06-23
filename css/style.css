@@ -120,7 +120,7 @@ body.no-underline a { text-decoration: none !important; }
    damit die Mitte nicht zu schnell schrumpft. */
 .workspace.has-left.has-right {
   --list-w:  clamp(320px, 24vw, 820px);     /* beide offen: linkes Panel langsamer */
-  --right-w: clamp(320px, 19.2vw, 480px);
+  --right-w: clamp(360px, 19.2vw, 480px);
   grid-template-columns: var(--list-w) 6px 1fr 6px var(--right-w);
 }
 .workspace.has-left:not(.has-right) {
@@ -128,7 +128,7 @@ body.no-underline a { text-decoration: none !important; }
   grid-template-columns: var(--list-w) 6px 1fr;
 }
 .workspace:not(.has-left).has-right {
-  --right-w: clamp(320px, 19.2vw, 480px);
+  --right-w: clamp(360px, 19.2vw, 480px);
   grid-template-columns: 1fr 6px var(--right-w);
 }
 /* Splitter + Dock der geschlossenen Seite aus dem Grid nehmen */
@@ -541,12 +541,10 @@ body.no-underline a { text-decoration: none !important; }
 }
 .color-row span, .toggle-row span { font-size: .95rem; }
 .swatch {
-  inline-size: 30px; block-size: 30px; padding: 0; border: 1px solid var(--ui-border);
-  border-radius: 50%; overflow: hidden; cursor: pointer; background: none;
+  width: 96px; height: 28px;
+  border: 1px solid var(--ui-border); border-radius: 4px;
+  font-size: .8rem; cursor: pointer; background: none;
 }
-.swatch::-webkit-color-swatch-wrapper { padding: 0; }
-.swatch::-webkit-color-swatch { border: 0; border-radius: 50%; }
-.swatch::-moz-color-swatch { border: 0; border-radius: 50%; }
 
 /* Toggle-Switch */
 .switch { position: relative; display: inline-block; width: 42px; height: 24px; flex: 0 0 auto; }

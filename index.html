@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
 <link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/lc-color-picker/lc_color_picker.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -201,13 +202,13 @@
     </div>
 
     <div class="section-title">Farben</div>
-    <div class="color-row"><span>Desktop Hintergrund</span><input class="swatch" type="color" data-color="desktop" value="#eef1f3" /></div>
-    <div class="color-row"><span>Panel Hintergrund</span><input class="swatch" type="color" data-color="bg" value="#035E7C" /></div>
-    <div class="color-row"><span>Vordergrund Primary (Primär)</span><input class="swatch" type="color" data-color="primary" value="#ffffff" /></div>
-    <div class="color-row"><span>Vordergrund Secondary (muted)</span><input class="swatch" type="color" data-color="secondary" value="#d1d1d1" /></div>
-    <div class="color-row"><span>Vordergrund Tertiary <em style="color:var(--ui-muted)">→ wird wahrscheinlich nicht!</em></span><input class="swatch" type="color" data-color="tertiary" value="#bbc4c9" /></div>
-    <div class="color-row"><span>CTAs / Links <em style="color:var(--ui-muted)">- ?</em></span><input class="swatch" type="color" data-color="link" value="#0E7C9B" /></div>
-    <div class="color-row"><span>CTAs im Panel <em style="color:var(--ui-muted)">→ wird wahrscheinlich nicht</em></span><input class="swatch" type="color" data-color="ctaPanel" value="#cde7f0" /></div>
+    <div class="color-row"><span>Desktop Hintergrund</span><input class="swatch" type="text" data-color="desktop" value="#eef1f3" /></div>
+    <div class="color-row"><span>Panel Hintergrund</span><input class="swatch" type="text" data-color="bg" value="#035E7C" /></div>
+    <div class="color-row"><span>Vordergrund Primary (Primär)</span><input class="swatch" type="text" data-color="primary" value="#ffffff" /></div>
+    <div class="color-row"><span>Vordergrund Secondary (muted)</span><input class="swatch" type="text" data-color="secondary" value="#d1d1d1" /></div>
+    <div class="color-row"><span>Vordergrund Tertiary <em style="color:var(--ui-muted)">→ wird wahrscheinlich nicht!</em></span><input class="swatch" type="text" data-color="tertiary" value="#bbc4c9" /></div>
+    <div class="color-row"><span>CTAs / Links <em style="color:var(--ui-muted)">- ?</em></span><input class="swatch" type="text" data-color="link" value="#0E7C9B" /></div>
+    <div class="color-row"><span>CTAs im Panel <em style="color:var(--ui-muted)">→ wird wahrscheinlich nicht</em></span><input class="swatch" type="text" data-color="ctaPanel" value="#cde7f0" /></div>
 
     <div class="toggle-inline">
       <label class="switch"><input type="checkbox" id="underline" checked><span class="track"></span></label>
@@ -224,9 +225,9 @@
     <div class="toggle-row"><span>Detailbeschreibung im eigenen Register</span><label class="switch"><input type="checkbox" data-toggle-comp="description" checked><span class="track"></span></label></div>
 
     <div class="section-title">Layout</div>
-    <div class="color-row"><span>Hintergrund Header</span><input class="swatch" type="color" data-color="header" value="#ffffff" /></div>
-    <div class="color-row"><span>Hintergrund Main-Tab-Register</span><input class="swatch" type="color" data-color="mainnav" value="#ffffff" /></div>
-    <div class="color-row"><span>Hintergrund Left Panel</span><input class="swatch" type="color" data-color="leftpanel" value="#ffffff" /></div>
+    <div class="color-row"><span>Hintergrund Header</span><input class="swatch" type="text" data-color="header" value="#ffffff" /></div>
+    <div class="color-row"><span>Hintergrund Main-Tab-Register</span><input class="swatch" type="text" data-color="mainnav" value="#ffffff" /></div>
+    <div class="color-row"><span>Hintergrund Left Panel</span><input class="swatch" type="text" data-color="leftpanel" value="#ffffff" /></div>
     <div class="toggle-row"><span>Panel-Schatten <em style="color:var(--ui-muted)">(x+6 / y+6)</em></span><label class="switch"><input type="checkbox" id="panelShadow" checked><span class="track"></span></label></div>
     <div class="toggle-row"><span>Abgerundete Ecken <em style="color:var(--ui-muted)">(Panel, 6px — unten + letztes Tab)</em></span><label class="switch"><input type="checkbox" id="panelRadius" checked><span class="track"></span></label></div>
   </div>

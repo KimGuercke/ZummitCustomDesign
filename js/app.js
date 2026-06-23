@@ -346,10 +346,21 @@
   /* --- Komponenten-Toggles: neu rendern (steuern Inline-Elemente UND Tab-Inhalte) --- */
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
 
-  /* --- Farben -> Design-Tokens live --- */
+  /* --- Farben -> Design-Tokens live (lc-color-picker) --- */
   const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
-  $$("[data-color]").forEach(inp => inp.addEventListener("input", () =>
-    root.style.setProperty(colorMap[inp.dataset.color], inp.value)));
+  $$("[data-color]").forEach(inp =>
+    new lc_color_picker(inp, {
+      modes: inp.dataset.color === "bg"
+        ? ["solid", "linear-gradient", "radial-gradient"]
+        : ["solid"],
+      transparency: false,
+      on_change: (val, field) => {
+        root.style.setProperty(colorMap[field.dataset.color], val);
+        if (field.dataset.color === "bg")
+          document.body.classList.toggle("bg-is-gradient", val.includes("gradient"));
+      },
+    })
+  );
 
   /* --- Links unterstrichen --- */
   $("#underline").addEventListener("change", e =>
