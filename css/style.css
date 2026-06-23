@@ -169,8 +169,17 @@ body.no-underline a { text-decoration: none !important; }
 }
 .dock-collapse:hover { background: #e7f1f6; color: var(--ui-accent); gap: .3rem; padding: 0 11px; }
 .dock-collapse .chev { width: 17px; height: 17px; flex: 0 0 auto; transition: transform .18s; }
-.dock-collapse[data-dock="left"]  { border-radius: 0 999px 999px 0; border-left: none; }    /* halbrund + Überstand nach rechts (Splitter) */
-.dock-collapse[data-dock="right"] { border-radius: 999px 0 0 999px; border-right: none; }    /* halbrund + Überstand nach links */
+.dock-collapse[data-dock="left"]  { border-radius: 0 999px 999px 0; border-left: none; background: var(--ui-leftpanel); }   /* halbrund + Überstand nach rechts (Splitter) */
+.dock-collapse[data-dock="right"] { border-radius: 999px 0 0 999px; border-right: none; background: var(--ui-bg); }         /* halbrund + Überstand nach links */
+/* Innere Rahmenlinien (über dem Panel) mit der Panel-Farbe überdecken → Linie nur außen. Beim Hover (aktive Pille) volle Kontur. */
+.dock-collapse:not(.is-collapsed):not(:hover)::before,
+.dock-collapse:not(.is-collapsed):not(:hover)::after { content: ""; position: absolute; height: 2px; pointer-events: none; }
+.dock-collapse:not(.is-collapsed):not(:hover)::before { top: -1px; }
+.dock-collapse:not(.is-collapsed):not(:hover)::after  { bottom: -1px; }
+.dock-collapse[data-dock="left"]:not(.is-collapsed):not(:hover)::before,
+.dock-collapse[data-dock="left"]:not(.is-collapsed):not(:hover)::after  { left: 0; right: 14px; background: var(--ui-leftpanel); }
+.dock-collapse[data-dock="right"]:not(.is-collapsed):not(:hover)::before,
+.dock-collapse[data-dock="right"]:not(.is-collapsed):not(:hover)::after { left: 14px; right: 0; background: var(--ui-bg); }
 .dock-collapse:not(.is-collapsed):hover[data-dock="left"]  .chev { transform: translateX(-2px); }
 .dock-collapse:not(.is-collapsed):hover[data-dock="right"] .chev { transform: translateX(2px); }
 /* Eingeklappt: Außenkante, Pfeil gedreht (Ausklapp-Richtung), Reihenfolge gespiegelt */

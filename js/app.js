@@ -427,6 +427,7 @@
       h.querySelector(".dock-collapse-label").textContent = open ? "Einklappen" : "Ausklappen";
       if (open) {
         const r = dockEls[side].getBoundingClientRect();
+        // wie zuvor: Griff überlappt die Kante, ragt nur ~14px über (kleiner Footprint)
         if (side === "left") { h.style.right = (ws.width - (r.right - ws.left) - 14) + "px"; h.style.left = ""; }
         else { h.style.left = (r.left - ws.left - 14) + "px"; h.style.right = ""; }
         const cy = refCenterY(dockEls[side]); if (cy != null) h.style.top = cy + "px";
