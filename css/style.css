@@ -118,10 +118,12 @@ body.no-underline a { text-decoration: none !important; }
 .size-hint {
   position: absolute; bottom: 6px; transform: translateX(-50%);
   padding: 1px 7px; border-radius: 999px;
-  background: color-mix(in srgb, var(--ui-text) 7%, transparent);
+  /* solide Pille statt fast transparent → lesbar auch über der dunklen Beitragskarte */
+  background: var(--ui-bg); border: 1px solid var(--ui-border);
+  box-shadow: 0 1px 4px rgba(0,0,0,.18);
   color: var(--ui-muted); font-size: 10.5px; font-weight: 500; line-height: 1.5;
   font-variant-numeric: tabular-nums; white-space: nowrap;
-  opacity: .6; pointer-events: none; z-index: 26;
+  pointer-events: none; z-index: 30;
 }
 .size-hint.is-hidden { display: none; }
 /* Panel-Breiten per clamp, Detail = Rest (1fr). Max bei vw 2500.

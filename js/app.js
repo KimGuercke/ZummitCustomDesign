@@ -489,7 +489,8 @@
   const lastPanel = { left: "programm", right: "chat" };   // zuletzt gezeigtes Panel je Seite (für Ausklappen)
 
   /* --- Live-Breiten-Hints je Bereich (px) ----------------------------- */
-  const detail = $(".detail__inner");   // misst das Beitragspanel (inkl. 1500px-Einfrieren), nicht die ganze Spalte
+  const detail = $(".detail__inner");   // Beitragspanel (Inhalt, max 1500px)
+  const mainCol = $(".detail");          // gesamter mittlerer Bereich (Spalte inkl. Padding)
   const hints = {
     left:   $('.size-hint[data-hint="left"]'),
     center: $('.size-hint[data-hint="center"]'),
@@ -511,8 +512,8 @@
     place(hints.left,   dockEls.left,  !!dockState.left);
     place(hints.center, detail,        true);
     place(hints.right,  dockEls.right, !!dockState.right);
-    // Mitte zusätzlich mit Gesamt-Viewport: „Beitrag / Viewport"
-    hints.center.textContent = Math.round(detail.getBoundingClientRect().width) + " / " + window.innerWidth;
+    // Mitte: „Mittlerer Bereich / Beitrag / Viewport"
+    hints.center.textContent = Math.round(mainCol.getBoundingClientRect().width) + " / " + Math.round(detail.getBoundingClientRect().width) + " / " + window.innerWidth;
 
     // Griffe: offen → Innenkante (Einklappen, mittig auf Kopfzeile),
     //         eingeklappt → Außenkante (Ausklappen, auf Tab-Leisten-Höhe)
