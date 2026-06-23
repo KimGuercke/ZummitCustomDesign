@@ -439,15 +439,15 @@ body.no-underline a { text-decoration: none !important; }
 .panel--people .speaker__actions { color: var(--ui-accent); }
 .panel--people .speaker-img { background: var(--ui-selected); }
 
-/* Sub-Tabs Vortragende / Teilnehmer / Aussteller */
-.ppl-tabs { flex: 0 0 auto; display: flex; gap: .3rem; padding: .6rem 1.1rem 0; }
+/* Tab-Register Vortragende / Teilnehmer / Aussteller — flach, Unterstrich aktiv (wie Beitrag/Hauptmenü), sitzt oben */
+.ppl-tabs { flex: 0 0 auto; display: flex; gap: .2rem; padding: .9rem 1.1rem 0; border-bottom: 1px solid var(--ui-border); }
 .ppl-tab {
-  flex: 1; padding: .45rem .5rem; border: 0; border-radius: 6px; cursor: pointer;
-  background: transparent; font: inherit; font-size: clamp(11px, 3cqi, 13px);
-  color: var(--ui-muted); white-space: nowrap;
+  flex: 1; padding: .5rem .4rem; border: 0; background: transparent; cursor: pointer;
+  font: inherit; font-size: clamp(11px, 3cqi, 13px); color: var(--ui-muted); white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
 }
 .ppl-tab:hover { color: var(--ui-text); }
-.ppl-tab.is-active { background: #e7f1f6; color: var(--ui-accent); font-weight: 500; }
+.ppl-tab.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
 
 /* Suche */
 .ppl-search { flex: 0 0 auto; padding: .6rem 1.1rem; }

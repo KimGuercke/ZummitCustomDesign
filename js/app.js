@@ -411,7 +411,7 @@
     const refCenterY = dockEl => {
       const panel = dockEl.querySelector(".panel:not(.is-hidden)");
       if (!panel) return null;
-      const ref = panel.querySelector(".switch") || panel.querySelector(".panel__title, .listpanel__title");
+      const ref = panel.querySelector(".switch") || panel.querySelector(".panel__title, .listpanel__title, .ppl-tabs");
       if (!ref) return null;
       const rr = ref.getBoundingClientRect();
       return rr.top + rr.height / 2 - ws.top - 15;   // 15 = halbe Griffhöhe (30)
