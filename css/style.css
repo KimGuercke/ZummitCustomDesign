@@ -96,7 +96,7 @@ body.no-underline a { text-decoration: none !important; }
 .navitem {
   display: inline-flex; align-items: center; gap: clamp(.3rem, .5vw, .55rem);
   padding: 0 clamp(.5rem, .85vw, 1rem); border: 0; background: transparent;
-  color: var(--ui-muted); font: inherit; font-size: clamp(11px, 1.3vw, 15px); cursor: pointer;
+  color: var(--ui-muted); font: inherit; font-size: clamp(14px, 1.3vw, 15px); cursor: pointer;
   border-bottom: 2px solid transparent;
 }
 .navitem i { font-size: 1.05em; }
