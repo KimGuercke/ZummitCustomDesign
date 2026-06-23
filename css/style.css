@@ -107,7 +107,7 @@ body.no-underline a { text-decoration: none !important; }
 .talk-cta-join .icon, .field-search .icon { width: 1em; height: 1em; }
 /* Karten-CTA-Icons wie die Referenten-Action-Icons dimensionieren (--scale × 1.1),
    sonst wirken sie deutlich kleiner als die Bookmarks bei den Referenten. */
-.talk-meta__cta .icon { width: calc(var(--scale) * 1.1); height: calc(var(--scale) * 1.1); }
+.talk-meta__cta .icon { width: max(16px, calc(var(--scale) * 1.1)); height: max(16px, calc(var(--scale) * 1.1)); }
 .navitem:hover { color: var(--ui-text); }
 .navitem.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
 
@@ -338,13 +338,13 @@ body.no-underline a { text-decoration: none !important; }
   .files__grid { grid-template-columns: 1fr; }
 }
 .file { display: flex; align-items: center; gap: calc(var(--scale) * 0.7); min-width: 0; padding: calc(var(--scale) * 0.55) 0; }
-.file__icon { flex: 0 0 auto; font-size: calc(var(--scale) * 1.5); width: 1em; height: 1em; }
+.file__icon { flex: 0 0 auto; font-size: max(16px, calc(var(--scale) * 1.5)); width: 1em; height: 1em; }
 .file__name { flex: 1; min-width: 0; font-size: clamp(16px, 2.1cqi, 19px); overflow-wrap: anywhere; } /* min. 16px; lange Namen brechen um */
 .file__actions { flex: 0 0 auto; display: flex; align-items: center; gap: calc(var(--scale) * 0.35); }
 .file__btn {
   border: 0; background: transparent; cursor: pointer;
   display: inline-grid; place-items: center; padding: calc(var(--scale) * 0.2);
-  font-size: calc(var(--scale) * 1.1);   /* gleiche Größe wie Referenten-Icons */
+  font-size: max(16px, calc(var(--scale) * 1.1));   /* gleiche Größe wie Referenten-Icons, min 16 */
 }
 
 /* Einzelne Datei: immer volle Zeile, Name in Referenten-Schriftgröße */
@@ -373,11 +373,11 @@ body.no-underline a { text-decoration: none !important; }
      ins 16:9, passt er bei JEDER. Genau das „gerendertes-Bild/Video"-Verhalten. */
   --scale: 2.4cqi;
   --pad:        calc(var(--scale) * 2.6);
-  --title-size: calc(var(--scale) * 1.78);
-  --sub-size:   calc(var(--scale) * 1.05);
-  --meta-size:  calc(var(--scale) * 1.05);
-  --name-size:  calc(var(--scale) * 0.95);
-  --info-size:  calc(var(--scale) * 0.8);
+  --title-size: max(18px, calc(var(--scale) * 1.78));   /* Vortrags-Titel: min 18 */
+  --sub-size:   max(12px, calc(var(--scale) * 1.05));   /* Subline: min 12 */
+  --meta-size:  max(16px, calc(var(--scale) * 1.05));   /* Datum/Zeit/Raum: min 16 */
+  --name-size:  max(14px, calc(var(--scale) * 0.95));   /* Referenten-/Personen-Name: min 14 */
+  --info-size:  max(12px, calc(var(--scale) * 0.8));    /* Referenten-/Personen-Subline: min 12 */
   --img-size:   calc(var(--scale) * 3);
 
   flex: 1; min-height: 0;
@@ -430,7 +430,7 @@ body.no-underline a { text-decoration: none !important; }
 .speaker-role, .speaker-org { font-size: var(--info-size); line-height: 1.3; color: var(--z-fg-muted); overflow-wrap: break-word; }
 /* Aktionen je Referent: Bookmark oben, „…" unten — rechtsbündig */
 .speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 0.75); color: var(--z-cta); }
-.speaker__actions .icon { width: calc(var(--scale) * 1.1); height: calc(var(--scale) * 1.1); }
+.speaker__actions .icon { width: max(16px, calc(var(--scale) * 1.1)); height: max(16px, calc(var(--scale) * 1.1)); }
 
 /* =========================================================================
    Rechtes Dock — Teilnehmende (Referenten-Control wiederverwendet) & Chat
@@ -439,8 +439,8 @@ body.no-underline a { text-decoration: none !important; }
    angepasst (cqi = Dock-Breite), damit Namen/Bilder lesbar bleiben. */
 .panel--people {
   --scale: clamp(13px, 4.2cqi, 18px);
-  --name-size: clamp(13px, 4.2cqi, 19px);   /* Personenname: min 13, max 19 */
-  --info-size: calc(var(--scale) * 0.8);
+  --name-size: clamp(14px, 4.2cqi, 19px);   /* Personenname: min 14, max 19 */
+  --info-size: max(12px, calc(var(--scale) * 0.8));   /* Subline: min 12 */
   --img-size:  calc(var(--scale) * 3);
 }
 /* Helle Farbvariante des Referenten-Controls (Panel weiß statt blau) */
