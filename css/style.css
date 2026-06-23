@@ -99,6 +99,14 @@ body.no-underline a { text-decoration: none !important; }
   border-bottom: 2px solid transparent;
 }
 .navitem i { font-size: 1.05em; }
+/* Konvertierte Lucide-SVG auf Glyph-Größe (1em des Wrappers, wie zuvor die FA-Glyphen).
+   Listen-/Referenten-Icons waren bereits Lucide → behalten den .icon-Default (1.25em). */
+.navitem .icon, .subtab .icon,
+.file__btn .icon,
+.talk-cta-join .icon, .field-search .icon { width: 1em; height: 1em; }
+/* Karten-CTA-Icons wie die Referenten-Action-Icons dimensionieren (--scale × 1.1),
+   sonst wirken sie deutlich kleiner als die Bookmarks bei den Referenten. */
+.talk-meta__cta .icon { width: calc(var(--scale) * 1.1); height: calc(var(--scale) * 1.1); }
 .navitem:hover { color: var(--ui-text); }
 .navitem.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
 
@@ -312,7 +320,7 @@ body.no-underline a { text-decoration: none !important; }
 /* Maximal-Showcase: Sektions-Label für die Inline-Blöcke im Beitrag */
 .talk-section-label { margin: 0; font-size: var(--meta-size); font-weight: 700; color: var(--z-fg); }
 /* Überschrift unter der Trennerlinie = exakter Tab-Name (auf jedem Tab) */
-.talk-tab-heading { margin: 0; font-size: calc(var(--scale) * 1.6); font-weight: 700; color: var(--z-fg); }
+.talk-tab-heading { margin: 0; font-size: calc(var(--scale) * 1.6); font-weight: 700; color: var(--z-fg-muted); }
 
 /* =========================================================================
    Dateien / Downloads — zweispaltig, unter 550px Kartenbreite einspaltig.
@@ -327,7 +335,7 @@ body.no-underline a { text-decoration: none !important; }
   .files__grid { grid-template-columns: 1fr; }
 }
 .file { display: flex; align-items: center; gap: calc(var(--scale) * 0.7); min-width: 0; padding: calc(var(--scale) * 0.55) 0; }
-.file__icon { flex: 0 0 auto; font-size: calc(var(--scale) * 1.5); }
+.file__icon { flex: 0 0 auto; font-size: calc(var(--scale) * 1.5); width: 1em; height: 1em; }
 .file__name { flex: 1; min-width: 0; font-size: clamp(16px, 2.1cqi, 19px); overflow-wrap: anywhere; } /* min. 16px; lange Namen brechen um */
 .file__actions { flex: 0 0 auto; display: flex; align-items: center; gap: calc(var(--scale) * 0.35); }
 .file__btn {
@@ -386,16 +394,14 @@ body.no-underline a { text-decoration: none !important; }
 .talk-sep { opacity: .6; }
 /* In-Card-CTA (Demo): Bookmark/„…" auf der Karte, etwas größer als die Meta-Zeile */
 .talk-meta__cta { display: flex; align-items: center; gap: calc(var(--scale) * 0.8); flex: 0 0 auto; }
-.talk-meta__cta button { border: 0; background: transparent; cursor: pointer; color: var(--z-cta); padding: 0; line-height: 1; font-size: calc(var(--meta-size) * 1.05); }
+.talk-meta__cta button { border: 0; background: transparent; cursor: pointer; color: var(--z-cta); padding: 0; line-height: 1; font-size: calc(var(--meta-size) * 0.85); }
 .talk-meta__cta button:hover { opacity: .75; }
 .talk-room { color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; }
 
 .talk-title {
-  margin: 0; font-size: var(--title-size); font-weight: 700; line-height: 1.1;
+  margin: 0; font-size: var(--title-size); font-weight: 400; line-height: 1.1;
   color: var(--z-fg); overflow-wrap: break-word;
 }
-/* Bei großem Titel das Gewicht reduzieren (700 wirkt sonst zu schwer) */
-@container (min-width: 640px) { .talk-title { font-weight: 500; } }
 .talk-subtitle {
   margin: calc(var(--scale) * -0.2) 0 0;
   font-size: var(--sub-size); font-style: italic; line-height: 1.3;

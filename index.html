@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zummit Custom Design — Prototyp</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
@@ -38,15 +37,15 @@
   <!-- Toggle-Buttons: links steuern Links-Dock, rechts steuern Rechts-Dock -->
   <nav class="mainnav">
     <div class="mainnav__group mainnav__left">
-      <button class="navitem" data-dock="left" data-panel="event"><i class="fa-solid fa-house"></i>Event</button>
-      <button class="navitem is-active" data-dock="left" data-panel="programm"><i class="fa-solid fa-clock"></i>Programm</button>
-      <button class="navitem" data-dock="left" data-panel="aussteller"><i class="fa-solid fa-store"></i>Aussteller</button>
-      <button class="navitem" data-dock="left" data-panel="sponsoren"><i class="fa-solid fa-award"></i>Sponsoren</button>
+      <button class="navitem" data-dock="left" data-panel="event"><i data-icon="house"></i>Event</button>
+      <button class="navitem is-active" data-dock="left" data-panel="programm"><i data-icon="clock"></i>Programm</button>
+      <button class="navitem" data-dock="left" data-panel="aussteller"><i data-icon="store"></i>Aussteller</button>
+      <button class="navitem" data-dock="left" data-panel="sponsoren"><i data-icon="award"></i>Sponsoren</button>
     </div>
     <div class="mainnav__group mainnav__right">
-      <button class="navitem" data-dock="right" data-panel="teilnehmende"><i class="fa-solid fa-users"></i>Personen</button>
-      <button class="navitem" data-dock="right" data-panel="chat"><i class="fa-solid fa-comments"></i>Chat</button>
-      <button class="navitem" data-dock="right" data-panel="infos"><i class="fa-solid fa-bell"></i>Infos</button>
+      <button class="navitem" data-dock="right" data-panel="teilnehmende"><i data-icon="users"></i>Personen</button>
+      <button class="navitem" data-dock="right" data-panel="chat"><i data-icon="messages-square"></i>Chat</button>
+      <button class="navitem" data-dock="right" data-panel="infos"><i data-icon="bell"></i>Infos</button>
     </div>
   </nav>
 
@@ -96,16 +95,16 @@
         <!-- Tab-Leiste + Karten-CTAs (Bookmark / …) rechtsbündig zur Karte, fluid -->
         <div class="tabbar">
           <div class="subtabs">
-            <button class="subtab is-active" data-tab="beitrag"><i class="fa-solid fa-file-lines"></i>Beitrag</button>
-            <button class="subtab" data-tab="details"><i class="fa-solid fa-circle-info"></i>Details</button>
-            <button class="subtab" data-tab="downloads"><i class="fa-solid fa-download"></i>Downloads</button>
-            <button class="subtab" data-tab="feedback"><i class="fa-solid fa-comment-dots"></i>Feedback</button>
-            <button class="subtab" data-tab="abstimmungen"><i class="fa-solid fa-square-poll-vertical"></i>Abstimmungen</button>
+            <button class="subtab is-active" data-tab="beitrag"><i data-icon="file-text"></i>Beitrag</button>
+            <button class="subtab" data-tab="details"><i data-icon="info"></i>Details</button>
+            <button class="subtab" data-tab="downloads"><i data-icon="download"></i>Downloads</button>
+            <button class="subtab" data-tab="feedback"><i data-icon="message-circle"></i>Feedback</button>
+            <button class="subtab" data-tab="abstimmungen"><i data-icon="chart-column"></i>Abstimmungen</button>
           </div>
           <div class="card-cta">
-            <button class="cta-btn" type="button" title="Als Kalendereintrag exportieren" aria-label="Als Kalendereintrag exportieren"><i class="fa-regular fa-calendar-plus"></i></button>
-            <button class="cta-btn" type="button" title="Teilen" aria-label="Teilen"><i class="fa-regular fa-share-from-square"></i></button>
-            <button class="cta-btn" type="button" title="Merken" aria-label="Merken"><i class="fa-regular fa-bookmark"></i></button>
+            <button class="cta-btn" type="button" title="Als Kalendereintrag exportieren" aria-label="Als Kalendereintrag exportieren"><i data-icon="calendar-plus"></i></button>
+            <button class="cta-btn" type="button" title="Teilen" aria-label="Teilen"><i data-icon="share-2"></i></button>
+            <button class="cta-btn" type="button" title="Merken" aria-label="Merken"><i data-icon="bookmark"></i></button>
           </div>
         </div>
 
@@ -129,7 +128,7 @@
         </div>
         <div class="ppl-search">
           <div class="field-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i data-icon="search"></i>
             <input type="search" placeholder="Suche nach Person…" />
           </div>
         </div>
@@ -144,7 +143,7 @@
         <ul class="chat-list" id="chatList"></ul>
         <form class="chat-input" onsubmit="return false">
           <input type="text" placeholder="Neue Nachricht eingeben …" />
-          <button type="button" class="chat-send" title="Senden"><i class="fa-solid fa-paper-plane"></i></button>
+          <button type="button" class="chat-send" title="Senden"><i data-icon="send"></i></button>
         </form>
       </section>
 

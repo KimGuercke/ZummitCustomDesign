@@ -15,9 +15,35 @@
   const talkList   = $("#talkList");
   const modeSelect = $("#mode");
 
-  /* --- Chrome-Icons (Lucide-Style SVG) für die Listeneinträge & Referenten --- */
-  const ICON_BM   = '<svg class="icon" viewBox="0 0 24 24"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-  const ICON_MORE = '<svg class="icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>';
+  /* --- Icons — Lucide-Inline-SVG, Single Source (lucide.dev/icons, v1.21.0) ---
+     icon(name) liefert das fertige <svg>; statische Icons in index.html werden
+     über data-icon-Platzhalter aus derselben Quelle gefüllt (siehe Start). */
+  const ICONS = {
+    house: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    store: '<path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/>',
+    award: '<path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/>',
+    users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/>',
+    "messages-square": '<path d="M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1"/>',
+    bell: '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>',
+    "file-text": '<path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+    info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+    download: '<path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/>',
+    "message-circle": '<path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/>',
+    "chart-column": '<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    "calendar-plus": '<path d="M16 19h6"/><path d="M16 2v4"/><path d="M19 16v6"/><path d="M21 12.598V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8.5"/><path d="M3 10h18"/><path d="M8 2v4"/>',
+    "share-2": '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+    bookmark: '<path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>',
+    video: '<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+    eye: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+    search: '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
+    send: '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    ellipsis: '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+  };
+  const icon = (name, cls = "icon") => `<svg class="${cls}" viewBox="0 0 24 24">${ICONS[name] || ""}</svg>`;
+  const ICON_BM   = icon("bookmark");   // Referenten/Liste „Merken"
+  const ICON_MORE = icon("ellipsis");   // Referenten/Liste „Mehr"
 
   /* --- Referenten-/Personen-Control (wiederverwendbar, Beitrag + Personen) --- */
   function renderSpeaker(s, bmIcon = ICON_BM) {
@@ -117,7 +143,7 @@
       listMeta: "14:00–15:30 | Hörsaal 1", listTitle: "Vortrag, der alles zusammen demonstriert",
       date: "Sa. 20.06.2026", time: "14:00 - 15:30", room: "Hörsaal 1",
       title: "Maximal-Beispiel – alle Komponenten auf der Beitragsseite",
-      subtitle: "Datum, Uhrzeit, Raum, Video, Referenten, Dateien und Beschreibung – alles inline.",
+      subtitle: "Demonstriert Datum, Uhrzeit, Raum, Video, Referenten, Dateien und Beschreibung.",
       speakers: [SP.mueller, SP.mustermann, SP.hambloch],
       files: FILES,                            // alle 5
       description: DESC_WORKSHOP,
@@ -130,7 +156,7 @@
       listMeta: "15:30–17:00 | Hörsaal 1", listTitle: "Demo ohne Tab-Register da kein Feedback und keine Abstimmungen",
       date: "Sa. 20.06.2026", time: "15:30 - 17:00", room: "Hörsaal 1",
       title: "Maximal-Beispiel – alle Komponenten auf der Beitragsseite",
-      subtitle: "Datum, Uhrzeit, Raum, Video, Referenten, Dateien und Beschreibung – alles inline.",
+      subtitle: "Demonstriert Datum, Uhrzeit, Raum, Video, Referenten, Dateien und Beschreibung.",
       speakers: [SP.mueller, SP.mustermann, SP.hambloch],
       files: FILES,
       description: DESC_WORKSHOP,
@@ -206,9 +232,9 @@
           <a class="talk-room" data-comp="room" href="#">${t.room}</a>
         </span>
         <span class="talk-meta__cta">
-          <button type="button" title="Als Kalendereintrag exportieren"><i class="fa-regular fa-calendar-plus"></i></button>
-          <button type="button" title="Teilen"><i class="fa-regular fa-share-from-square"></i></button>
-          <button type="button" title="Merken"><i class="fa-regular fa-bookmark"></i></button>
+          <button type="button" title="Als Kalendereintrag exportieren">${icon("calendar-plus")}</button>
+          <button type="button" title="Teilen">${icon("share-2")}</button>
+          <button type="button" title="Merken">${icon("bookmark")}</button>
         </span>
       </div>
       <h2 class="talk-title">${t.title}</h2>`;
@@ -219,9 +245,10 @@
     const videoBlock = t.mode === "video"
       ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
     const ctaBlock = t.cta
-      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span><i class="fa-solid fa-video"></i></button>` : "";
+      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span>${icon("video")}</button>` : "";
     const speakers = `<ul class="speakers" data-comp="speakers">${t.speakers.map(s => renderSpeaker(s)).join("")}</ul>`;
-    return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p>${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
+    // Subtitel direkt unter dem Titel, dann Trennlinie, dann der restliche Beitrags-Inhalt
+    return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p><hr class="talk-divider" />${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
   }
 
   /* Maximal-Showcase: Dateien + Beschreibung zusätzlich INLINE im Beitrag (adaptiv) */
@@ -242,11 +269,11 @@
   function renderFiles(files, variant) {
     const items = files.map(f => `
       <li class="file">
-        <i class="fa-solid fa-file-pdf file__icon"></i>
+        ${icon("file-text", "icon file__icon")}
         <span class="file__name">${f.name}</span>
         <span class="file__actions">
-          ${f.preview ? '<button class="file__btn" type="button" title="Vorschau"><i class="fa-solid fa-eye"></i></button>' : ""}
-          <button class="file__btn" type="button" title="Download"><i class="fa-solid fa-download"></i></button>
+          ${f.preview ? `<button class="file__btn" type="button" title="Vorschau">${icon("eye")}</button>` : ""}
+          <button class="file__btn" type="button" title="Download">${icon("download")}</button>
         </span>
       </li>`).join("");
     const single = files.length === 1 ? " files--single" : "";   // 1 Datei: volle Zeile, Font wie Referent
@@ -272,9 +299,16 @@
     } else {
       content = emptyTab("Inhalt folgt.");
     }
-    // Kopf (auf jedem Tab identisch) + Trennerlinie + Tab-Name-Überschrift + Inhalt
-    const heading = t.noTabs ? "" : `<h3 class="talk-tab-heading">${TAB_NAMES[tab] || ""}</h3>`;
-    card.innerHTML = `<div class="talk-card__body">${renderHeader(t)}<hr class="talk-divider" />${heading}${content}</div>`;
+    // Beitrag = „Landingpage": Kopf → Subtitel → Trennlinie → Inhalt (Subtitel+Linie liefert renderBeitrag),
+    // KEINE Tab-Überschrift. Andere Register: Kopf → Trennlinie → „Du-bist-hier"-Überschrift → Inhalt (Orientierung).
+    let body;
+    if (tab === "beitrag") {
+      body = renderHeader(t) + content;
+    } else {
+      const heading = t.noTabs ? "" : `<h3 class="talk-tab-heading">${TAB_NAMES[tab] || ""}</h3>`;
+      body = `${renderHeader(t)}<hr class="talk-divider" />${heading}${content}`;
+    }
+    card.innerHTML = `<div class="talk-card__body">${body}</div>`;
   }
 
   /* --- Auswahl: Vortrag (setzt Tab auf Beitrag zurück) ---------------- */
@@ -545,13 +579,14 @@
         <div class="chat-bubble">
           ${m.self ? "" : `<span class="chat-msg__name">${m.name}</span>`}
           <div class="chat-msg__text">${m.text}</div>
-          <span class="chat-msg__time">${m.time}${m.self ? ' <i class="fa-solid fa-check"></i>' : ""}</span>
+          <span class="chat-msg__time">${m.time}${m.self ? ` ${icon("check")}` : ""}</span>
         </div>
         <a class="chat-msg__reply" href="#">Antworten</a>
       </li>`).join("");
   }
 
   /* --- Start --- */
+  $$("[data-icon]").forEach(el => { el.innerHTML = icon(el.dataset.icon); });  // statische Icons aus ICONS-Quelle füllen
   renderList();
   selectTalk(TALKS[0].id);
   renderPeople();
