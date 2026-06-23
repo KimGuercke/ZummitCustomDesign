@@ -8,7 +8,7 @@
 /* --- Tokens ------------------------------------------------------------ */
 :root {
   /* Design-Tokens des Beitrags (über Settings konfigurierbar) */
-  --z-bg: linear-gradient(177deg, #035E7C 50%, #ffffff 100%); /* Hintergrund — Default: Gradient (muss zu index.html bg-Input + app.js BG_ANGLE passen) */
+  --z-bg: linear-gradient(145deg, #035E7C 50%, #5b96aa 100%); /* Hintergrund — Default: Gradient (muss zu index.html bg-Input + app.js BG_ANGLE/BG_END passen) */
   --z-fg: #FFFFFF;          /* Vordergrund Primary    */
   --z-fg-muted: #D1D1D1;    /* Vordergrund Secondary  */
   --z-fg-tertiary: #BBC4C9; /* Vordergrund Tertiary   */
