@@ -373,8 +373,8 @@ body.no-underline a { text-decoration: none !important; }
      ins 16:9, passt er bei JEDER. Genau das „gerendertes-Bild/Video"-Verhalten. */
   --scale: 2.4cqi;
   --pad:        calc(var(--scale) * 2.6);
-  --title-size: max(18px, calc(var(--scale) * 1.78));   /* Vortrags-Titel: min 18 */
-  --sub-size:   max(12px, calc(var(--scale) * 1.05));   /* Subline: min 12 */
+  --title-size: clamp(18px, calc(var(--scale) * 1.78), 60px);   /* Vortrags-Titel: min 18, max 60 */
+  --sub-size:   clamp(12px, calc(var(--scale) * 1.05), 36px);   /* Subtitle: min 12, max 36 */
   --meta-size:  max(16px, calc(var(--scale) * 1.05));   /* Datum/Zeit/Raum: min 16 */
   --name-size:  max(14px, calc(var(--scale) * 0.95));   /* Referenten-/Personen-Name: min 14 */
   --info-size:  max(12px, calc(var(--scale) * 0.8));    /* Referenten-/Personen-Subline: min 12 */
@@ -407,7 +407,7 @@ body.no-underline a { text-decoration: none !important; }
 }
 .talk-subtitle {
   margin: calc(var(--scale) * -0.2) 0 0;
-  font-size: var(--sub-size); font-style: italic; line-height: 1.3;
+  font-size: var(--sub-size); font-weight: 300; font-style: italic; line-height: 1.3;
   color: var(--z-fg-muted);
 }
 
@@ -426,7 +426,7 @@ body.no-underline a { text-decoration: none !important; }
   border-radius: 50%; object-fit: cover; background: var(--z-fg-muted);
 }
 .speaker-info { flex: 1; display: flex; flex-direction: column; gap: calc(var(--scale) * 0.1); min-width: 0; }
-.speaker-name { font-size: var(--name-size); font-weight: 700; color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; overflow-wrap: break-word; }
+.speaker-name { font-size: var(--name-size); font-weight: 400; color: var(--z-fg); text-decoration: underline; text-underline-offset: .18em; overflow-wrap: break-word; }
 .speaker-role, .speaker-org { font-size: var(--info-size); line-height: 1.3; color: var(--z-fg-muted); overflow-wrap: break-word; }
 /* Aktionen je Referent: Bookmark oben, „…" unten — rechtsbündig */
 .speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 0.75); color: var(--z-cta); }
@@ -444,7 +444,7 @@ body.no-underline a { text-decoration: none !important; }
   --img-size:  calc(var(--scale) * 3);
 }
 /* Helle Farbvariante des Referenten-Controls (Panel weiß statt blau) */
-.panel--people .speaker-name { color: var(--ui-text); font-weight: 500; }
+.panel--people .speaker-name { color: var(--ui-text); font-weight: 400; }
 .panel--people .speaker-role,
 .panel--people .speaker-org  { color: var(--ui-muted); }
 .panel--people .speaker__actions { color: var(--ui-accent); }
