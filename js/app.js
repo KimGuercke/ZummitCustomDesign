@@ -398,10 +398,6 @@
 
   /* --- Farben -> Design-Tokens live (lc-color-picker) --- */
   const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
-  const BG_ANGLE  = 145;        // Default-Winkel des Start-Gradients (muss zu --z-bg in style.css passen)
-  const BG_END    = "#5b96aa";  // Ziel-/Endfarbe des Gradients (muss zu --z-bg in style.css passen)
-  let bgLastSolid = "#035E7C";  // Basis-Solidfarbe (Gradient-Start) für die Vorbelegung
-  let bgPrevGrad  = true;       // Prototyp startet mit Gradient-Default (body.bg-is-gradient ist gesetzt)
   $$("[data-color]").forEach(inp => {
     new lc_color_picker(inp, {
       modes: inp.dataset.color === "bg"
@@ -409,46 +405,13 @@
         : ["solid"],
       transparency: false,
       on_change: (val, field) => {
-        if (field.dataset.color === "bg") {
-          const isGrad = val.includes("gradient");
-          if (!isGrad) bgLastSolid = val;
-          bgPrevGrad = isGrad;
-          document.body.classList.toggle("bg-is-gradient", isGrad);
-        }
+        // bg: Gradient-Modus aktiviert background-attachment:fixed (Karte + aktiver Tab teilen den Verlauf)
+        if (field.dataset.color === "bg")
+          document.body.classList.toggle("bg-is-gradient", val.includes("gradient"));
         root.style.setProperty(colorMap[field.dataset.color], val);
       },
     });
   });
-  /* Erster Wechsel Solid → Gradient: lc-color-picker startet hart bei Weiß→Schwarz und
-     reicht den Default zudem zeitverzögert (debounced) an on_change durch.
-     Wir fangen den Gradient-Tab-Klick in der Capture-Phase ab und installieren
-     "letzteSolid → Weiß":
-       1. Wert ins Input schreiben + Picker per Close→Reopen neu einlesen lassen
-          (show_picker → load_gradient_data parst input.value → korrekte Stops + Winkel).
-       2. Token sofort selbst setzen (kein Flash).
-       3. Winkel-Slider anstoßen: das setzt den debounce-Timer zurück und verwirft so den
-          beim Mode-Switch eingereihten Default-Callback; on_change feuert stattdessen mit
-          dem aktuell gerenderten Gradient. */
-  window.addEventListener("click", e => {
-    const mode = e.target.closest?.("[data-mode]")?.getAttribute("data-mode");
-    if (!mode?.includes("gradient") || bgPrevGrad) return;
-    bgPrevGrad = true;                             // kein Re-Entry bei weiteren Klicks
-    const bgInp = $('[data-color="bg"]');
-    const preferred = mode === "radial-gradient"
-      ? `radial-gradient(circle, ${bgLastSolid} 50%, ${BG_END} 100%)`
-      : `linear-gradient(${BG_ANGLE}deg, ${bgLastSolid} 50%, ${BG_END} 100%)`;
-    setTimeout(() => {
-      bgInp.value = preferred;
-      document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));   // Picker schließen
-      setTimeout(() => {
-        bgInp.closest(".lccp-preview-right")?.querySelector(".lccp-preview")?.click();  // neu öffnen
-        root.style.setProperty("--z-bg", preferred);
-        document.body.classList.add("bg-is-gradient");
-        $("#lc-color-picker .pccp_deg_f_wrap input[type='range']")
-          ?.dispatchEvent(new Event("input", { bubbles: true }));   // debounce-Reset → verwirft Default
-      }, 50);
-    }, 100);
-  }, true);
 
   /* --- Links unterstrichen --- */
   $("#underline").addEventListener("change", e =>
