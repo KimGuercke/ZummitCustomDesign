@@ -383,8 +383,8 @@
     bgPrevGrad = true;                             // kein Re-Entry bei weiteren Klicks
     const bgInp = $('[data-color="bg"]');
     const preferred = mode === "radial-gradient"
-      ? `radial-gradient(circle, ${bgLastSolid} 0%, #ffffff 100%)`
-      : `linear-gradient(135deg, ${bgLastSolid} 0%, #ffffff 100%)`;
+      ? `radial-gradient(circle, ${bgLastSolid} 50%, #ffffff 100%)`
+      : `linear-gradient(135deg, ${bgLastSolid} 50%, #ffffff 100%)`;
     setTimeout(() => {
       bgInp.value = preferred;
       document.body.dispatchEvent(new MouseEvent("click", { bubbles: true }));   // Picker schließen
