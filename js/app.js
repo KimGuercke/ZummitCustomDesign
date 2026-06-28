@@ -104,6 +104,17 @@
       files: FILES, filesVariant: "onblue",   // 5 Dateien (Showcase) — Variante A
     },
     {
+      id: "bildvideo", mode: "video", videoThumb: "assets/video-thumb.jpg",
+      cta: "Zum Vortrag - jetzt beitreten",
+      listMeta: "10:30–11:00 | Hauptsaal", listTitle: "Vortrag mit Bild oder Video Iteration 1",
+      date: "Sa. 20.06.2026", time: "10:30 - 11:00", room: "Hörsaal 3",
+      title: "Vortrag mit Bild oder Video – Iteration 1",
+      subtitle: "Erste Iteration: Hero zeigt Bild oder Video, Dokumente liegen im Downloads-Register, zusätzlich aktives Abstimmungen-Register.",
+      speakers: [SP.mueller],
+      files: FILES, filesVariant: "onblue",   // Downloads-Sample (alle Dateien) — nur im Downloads-Tab, nicht inline
+      hideTabs: ["details"],                   // zeigt Beitrag · Downloads · Feedback · Abstimmungen (ohne Details)
+    },
+    {
       id: "video", mode: "video", videoThumb: "assets/video-thumb.jpg",
       cta: "Zum Vortrag - jetzt beitreten",
       listMeta: "11:00–12:00 | Hauptsaal", listTitle: "Vortrag mit Video on Demand",
@@ -245,7 +256,7 @@
     const videoBlock = t.mode === "video"
       ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
     const ctaBlock = t.cta
-      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span>${icon("video")}</button>` : "";
+      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span>${icon("video")}</button><hr class="talk-divider" />` : "";
     const speakers = `<ul class="speakers" data-comp="speakers">${t.speakers.map(s => renderSpeaker(s)).join("")}</ul>`;
     // Subtitel direkt unter dem Titel, dann Trennlinie, dann der restliche Beitrags-Inhalt
     return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p><hr class="talk-divider" />${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
