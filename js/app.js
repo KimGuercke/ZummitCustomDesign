@@ -208,6 +208,7 @@
 
   let currentTalk = TALKS[0];
   let currentTab  = "beitrag";
+  let bgImageUrl  = null;   // hochgeladenes Hintergrundbild (Modus „Hintergrundbild")
 
   const isOn = comp => { const el = $(`[data-toggle-comp="${comp}"]`); return el ? el.checked : false; };
 
@@ -255,8 +256,9 @@
   function renderBeitrag(t) {
     const videoBlock = t.mode === "video"
       ? `<div class="talk-video"><img src="${t.videoThumb}" alt="Video-Vorschau" /></div>` : "";
+    const ctaOff = $("#ctaDisabled")?.checked;
     const ctaBlock = t.cta
-      ? `<button class="talk-cta-join" type="button"><span>${t.cta}</span>${icon("video")}</button><hr class="talk-divider" />` : "";
+      ? `<button class="talk-cta-join${ctaOff ? " is-disabled" : ""}" type="button"${ctaOff ? " disabled" : ""}><span>${t.cta}</span>${icon("video")}</button><hr class="talk-divider" />` : "";
     const speakers = `<ul class="speakers" data-comp="speakers">${t.speakers.map(s => renderSpeaker(s)).join("")}</ul>`;
     // Subtitel direkt unter dem Titel, dann Trennlinie, dann der restliche Beitrags-Inhalt
     return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p><hr class="talk-divider" />${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
@@ -375,7 +377,8 @@
     }
     if (modeSelect.value === "image") {
       card.classList.add("mode-image");
-      card.style.backgroundImage = "linear-gradient(120deg, rgba(3,94,124,.55), rgba(3,94,124,.9)), url('https://picsum.photos/1280/720?grayscale')";
+      const src = bgImageUrl ? `url('${bgImageUrl}')` : "url('https://picsum.photos/1280/720?grayscale')";
+      card.style.backgroundImage = `linear-gradient(120deg, rgba(3,94,124,.55), rgba(3,94,124,.9)), ${src}`;   // Farbverlauf „überlagert" das Bild
     } else {
       card.classList.remove("mode-image"); card.style.backgroundImage = "";
     }
@@ -408,7 +411,7 @@
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
 
   /* --- Farben -> Design-Tokens live (lc-color-picker) --- */
-  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", tertiary: "--z-fg-tertiary", link: "--ui-accent", ctaPanel: "--z-cta", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
+  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", link: "--ui-accent", "cta-fg": "--cta-fg", "cta-bg": "--cta-bg", "cta-border": "--cta-border", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
   $$("[data-color]").forEach(inp => {
     new lc_color_picker(inp, {
       modes: inp.dataset.color === "bg"
@@ -427,6 +430,15 @@
   /* --- Links unterstrichen --- */
   $("#underline").addEventListener("change", e =>
     document.body.classList.toggle("no-underline", !e.target.checked));
+
+  /* --- Links fett (Default an, gespiegelt zum Underline-Pattern) --- */
+  const linkBold = $("#linkBold");
+  const applyLinkBold = () => document.body.classList.toggle("links-bold", linkBold.checked);
+  linkBold.addEventListener("change", applyLinkBold);
+  applyLinkBold();
+
+  /* --- Vortrag-CTA Demo-Deaktivierung: rendert die Karte neu (is-disabled am Button) --- */
+  $("#ctaDisabled").addEventListener("change", refresh);
 
   /* --- Modus Hintergrundfarbe/-bild --- */
   modeSelect.addEventListener("change", applyBackground);
@@ -465,11 +477,11 @@
   $("#panelRadius").addEventListener("change", e =>
     root.style.setProperty("--panel-corner", e.target.checked ? "6px" : "0"));
 
-  /* --- Logo-Upload-Vorschau --- */
-  $("#logoInput").addEventListener("change", e => {
+  /* --- Hintergrundbild-Upload: setzt das (vom Farbverlauf überlagerte) BG-Bild und schaltet in den Bild-Modus --- */
+  $("#bgImgInput").addEventListener("change", e => {
     const f = e.target.files[0]; if (!f) return;
     const r = new FileReader();
-    r.onload = () => { $("#logoDrop").innerHTML = `<img src="${r.result}" alt="Logo" />`; };
+    r.onload = () => { bgImageUrl = r.result; modeSelect.value = "image"; applyBackground(); };
     r.readAsDataURL(f);
   });
 

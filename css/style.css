@@ -13,6 +13,9 @@
   --z-fg-muted: #D1D1D1;    /* Vordergrund Secondary  */
   --z-fg-tertiary: #BBC4C9; /* Vordergrund Tertiary   */
   --z-cta: #CDE7F0;         /* CTAs im Panel (Klick-Elemente auf der Karte) */
+  --cta-fg: #FFFFFF;        /* Vortrag-CTA · Textfarbe   */
+  --cta-bg: #1496B8;        /* Vortrag-CTA · Hintergrund (gefüllt, Screen 1) */
+  --cta-border: #4FBAD4;    /* Vortrag-CTA · Border      */
   --z-divider: rgba(209,209,209,.45);
 
   /* Chrome (App-Rahmen, helles Theme) */
@@ -53,6 +56,7 @@ svg { display: block; }
         fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .is-hidden { display: none !important; }
 body.no-underline a { text-decoration: none !important; }
+body.links-bold a { font-weight: 600; }
 
 .app { height: 100%; display: flex; flex-direction: column; min-height: 0; }
 
@@ -301,11 +305,15 @@ body.no-underline a { text-decoration: none !important; }
   width: 100%; display: flex; align-items: center; justify-content: center; gap: calc(var(--scale) * 0.55);
   padding: calc(var(--scale) * 0.75) calc(var(--scale) * 1.2);
   font: inherit; font-size: var(--meta-size); font-weight: 500;
-  color: var(--z-cta); background: transparent;
-  border: 1px solid var(--z-cta); border-radius: calc(var(--scale) * 0.4);
-  cursor: pointer; transition: background .15s, border-color .15s;
+  color: var(--cta-fg); background: var(--cta-bg);
+  border: 1px solid var(--cta-border); border-radius: calc(var(--scale) * 0.4);
+  cursor: pointer; transition: filter .15s, opacity .15s;
 }
-.talk-cta-join:hover { background: rgba(255,255,255,.12); }
+.talk-cta-join:hover { filter: brightness(1.07); }
+/* Universeller Deaktiviert-Status (Demo-Toggle / disabled-Attribut) */
+.talk-cta-join:disabled, .talk-cta-join.is-disabled {
+  filter: saturate(0.2) brightness(0.9); opacity: 0.6; cursor: not-allowed;
+}
 
 /* Beschreibungs-Block — weißer Panel, dunkle Schrift, Font 16–24px (cqi) */
 .talk-desc {
