@@ -164,12 +164,14 @@ body.links-bold a { font-weight: 600; }
 
 /* --- Panel (Inhalt eines Docks; nur eines pro Seite sichtbar) ---------- */
 .panel { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-.panel__head {
+.panel__head, .listpanel__head {
   flex: 0 0 auto; display: flex; align-items: center; gap: .5rem;
   padding: .85rem 1.1rem; border-bottom: 1px solid var(--ui-border);
+  min-height: calc(24px + 1.7rem + 1px);   /* Toggle (24px) + v-Padding + Border → beide Köpfe exakt gleich hoch */
 }
-.panel__title {
+.panel__title, .listpanel__title {
   flex: 1; min-width: 0; font-weight: 700; font-size: clamp(14px, 4cqi, 17px);
+  text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 /* Einklapp-Griff an der inneren Panel-Kante: halbrund, ragt leicht über (Position per JS).
@@ -210,13 +212,9 @@ body.links-bold a { font-weight: 600; }
 .dock-collapse.is-hidden { display: none; }
 .panel__empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 2rem; color: var(--ui-muted); font-size: .95rem; }
 
-/* Programm-Kopf (Sonderfall: Titel + Aktionen rechts) */
-.listpanel__head {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 1.1rem .4rem;
-}
+/* Programm-Kopf nutzt die geteilten .panel__head/.panel__title-Regeln (oben) —
+   Titel füllt per flex:1, Aktionen rücken rechts. */
 .listpanel__actions { display: flex; align-items: center; gap: .3rem; }
-.listpanel__title { font-size: 1.25rem; font-weight: 700; }
 .listpanel__date {
   flex: 0 0 auto;
   padding: .4rem 1.1rem .7rem; font-weight: 700; color: var(--ui-accent);
