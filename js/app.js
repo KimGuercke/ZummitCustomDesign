@@ -112,6 +112,7 @@
       subtitle: "Erste Iteration: Hero zeigt Bild oder Video, Dokumente liegen im Downloads-Register, zusätzlich aktives Abstimmungen-Register.",
       speakers: [SP.mueller],
       files: FILES, filesVariant: "onblue",   // Downloads-Sample (alle Dateien) — nur im Downloads-Tab, nicht inline
+      description: DESC_WORKSHOP, inlineDescription: true,  // Beschreibung unten inline (wie Demo-Vortrag), Dokumente bleiben im Register
       hideTabs: ["details"],                   // zeigt Beitrag · Downloads · Feedback · Abstimmungen (ohne Details)
     },
     {
@@ -264,13 +265,15 @@
     return `<p class="talk-subtitle" data-comp="subtitle">${t.subtitle}</p><hr class="talk-divider" />${videoBlock}${ctaBlock}${speakers}${renderHeroExtra(t)}`;
   }
 
-  /* Maximal-Showcase: Dateien + Beschreibung zusätzlich INLINE im Beitrag (adaptiv) */
+  /* Inline-Extras im Beitrag (adaptiv): Dokumente und Beschreibung je eigenständig zuschaltbar.
+     demoAll/inlineExtras = beides inline; inlineDescription = nur Beschreibung (Dokumente bleiben im Register). */
   function renderHeroExtra(t) {
-    if (!t.demoAll && !t.inlineExtras) return "";
+    const filesInline = (t.demoAll || t.inlineExtras) && t.files && t.files.length;
+    const descInline  = (t.demoAll || t.inlineExtras || t.inlineDescription) && t.description && t.description.length;
     let extra = "";
-    if (t.files && t.files.length)
+    if (filesInline)
       extra += `<hr class="talk-divider" /><h3 class="talk-section-label">Dokumente</h3>` + renderFiles(t.files, t.filesVariant || "onblue");
-    if (t.description && t.description.length)
+    if (descInline)
       extra += `<hr class="talk-divider" /><h3 class="talk-section-label">Beschreibung</h3>` + renderDescription(t);
     return extra;
   }
