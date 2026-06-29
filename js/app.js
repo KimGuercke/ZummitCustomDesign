@@ -413,21 +413,78 @@
   /* --- Komponenten-Toggles: neu rendern (steuern Inline-Elemente UND Tab-Inhalte) --- */
   $$("[data-toggle-comp]").forEach(t => t.addEventListener("change", refresh));
 
-  /* --- Farben -> Design-Tokens live (lc-color-picker) --- */
-  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", link: "--ui-accent", "cta-fg": "--cta-fg", "cta-bg": "--cta-bg", "cta-border": "--cta-border", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
-  $$("[data-color]").forEach(inp => {
-    new lc_color_picker(inp, {
-      modes: inp.dataset.color === "bg"
-        ? ["solid", "linear-gradient", "radial-gradient"]
-        : ["solid"],
-      transparency: false,
-      on_change: (val, field) => {
-        // bg: Gradient-Modus aktiviert background-attachment:fixed (Karte + aktiver Tab teilen den Verlauf)
-        if (field.dataset.color === "bg")
-          document.body.classList.toggle("bg-is-gradient", val.includes("gradient"));
-        root.style.setProperty(colorMap[field.dataset.color], val);
-      },
+  /* --- Farb-Control: lc-color-picker (Popup + Verläufe) + Hex/%-Zeilenfelder (Schnell-Eingabe) ---
+     Beide Wege schreiben dasselbe CSS-Token; Felder ↔ Picker bleiben synchron. --- */
+  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", link: "--ui-accent", "cta-fg": "--cta-fg", "cta-bg": "--cta-bg", "cta-border": "--cta-border", speakerBg: "--speaker-bg", speakerBorder: "--speaker-border", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
+
+  /* Farbwert -> { gradient } | { hex: "rrggbb", alpha: 0–100 } */
+  function parseColor(str) {
+    str = (str || "").trim();
+    if (/gradient/i.test(str)) return { gradient: true };
+    let m = str.match(/^rgba?\(([^)]+)\)$/i);
+    if (m) {
+      const p = m[1].split(",").map(s => s.trim());
+      const hex = p.slice(0, 3).map(n => (+n).toString(16).padStart(2, "0")).join("");
+      return { hex, alpha: p[3] != null ? Math.round(parseFloat(p[3]) * 100) : 100 };
+    }
+    m = str.match(/^#?([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i);
+    if (m) {
+      let h = m[1];
+      if (h.length === 3) h = h.split("").map(c => c + c).join("");
+      return { hex: h.slice(0, 6), alpha: h.length === 8 ? Math.round(parseInt(h.slice(6), 16) / 255 * 100) : 100 };
+    }
+    return { hex: "000000", alpha: 100 };
+  }
+  /* hex(6) + alpha(0–100) -> "#rrggbb" (deckend) | "rgba(r,g,b,a)" */
+  function composeColor(hex, alpha) {
+    if (alpha >= 100) return "#" + hex;
+    const n = i => parseInt(hex.slice(i, i + 2), 16);
+    return `rgba(${n(0)}, ${n(2)}, ${n(4)}, ${(alpha / 100).toFixed(2)})`;
+  }
+  function setColorToken(dc, val) {
+    if (dc === "bg") document.body.classList.toggle("bg-is-gradient", /gradient/i.test(val));
+    root.style.setProperty(colorMap[dc], val);
+  }
+
+  $$(".swatch[data-color]").forEach(swatch => {
+    const dc = swatch.dataset.color;
+    // Zeilen-Control bauen: # [hex] [alpha] %  + Swatch (lc hängt sich an den Swatch)
+    const cc = document.createElement("div");
+    cc.className = "cc";
+    cc.innerHTML = `<span class="cc__hash">#</span><input class="cc__hex" type="text" maxlength="6" spellcheck="false" /><input class="cc__alpha" type="number" min="0" max="100" /><span class="cc__pct">%</span>`;
+    swatch.parentNode.insertBefore(cc, swatch);
+    cc.appendChild(swatch);
+    const hexF = cc.querySelector(".cc__hex"), alphaF = cc.querySelector(".cc__alpha");
+
+    // Token-Wert -> Felder spiegeln (Verlauf: Felder aus, Picker bleibt der Weg)
+    const mirror = val => {
+      const p = parseColor(val);
+      hexF.disabled = alphaF.disabled = !!p.gradient;
+      hexF.value = p.gradient ? "" : p.hex.toUpperCase();
+      alphaF.value = p.gradient ? "" : p.alpha;
+    };
+    // Felder -> Token + Swatch-Vorschau (ohne Picker zu öffnen)
+    const fromFields = () => {
+      const hx = hexF.value.trim().replace(/^#/, "");
+      if (!/^([0-9a-f]{3}|[0-9a-f]{6})$/i.test(hx)) return;     // ungültig: ignorieren
+      const hex6 = hx.length === 3 ? hx.split("").map(c => c + c).join("") : hx;
+      let a = parseInt(alphaF.value, 10); a = isNaN(a) ? 100 : Math.min(100, Math.max(0, a));
+      const val = composeColor(hex6, a);
+      swatch.value = val;
+      setColorToken(dc, val);
+      const pv = cc.querySelector(".lccp-preview"); if (pv) pv.style.background = val;   // Farbebene (über dem Checkerboard)
+    };
+    hexF.addEventListener("change", fromFields);
+    alphaF.addEventListener("change", fromFields);
+
+    new lc_color_picker(swatch, {
+      modes: dc === "bg" ? ["solid", "linear-gradient", "radial-gradient"] : ["solid"],
+      transparency: true,        // Opacity-Feld im Popup
+      no_input_mode: true,       // nur der Swatch (Rechteck), kein Text-Input — Hex steht im Zeilenfeld
+      on_change: (val, field) => { setColorToken(field.dataset.color, val); mirror(val); },
     });
+    setColorToken(dc, swatch.value);   // Initialwert aus dem value-Attribut ist führend
+    mirror(swatch.value);
   });
 
   /* --- Links unterstrichen --- */
@@ -442,6 +499,10 @@
 
   /* --- Vortrag-CTA Demo-Deaktivierung: rendert die Karte neu (is-disabled am Button) --- */
   $("#ctaDisabled").addEventListener("change", refresh);
+
+  /* --- Vortragende: Karten-Eckradius live --- */
+  $("#speakerRadius").addEventListener("input", e =>
+    root.style.setProperty("--speaker-radius", (parseInt(e.target.value, 10) || 0) + "px"));
 
   /* --- Modus Hintergrundfarbe/-bild --- */
   modeSelect.addEventListener("change", applyBackground);

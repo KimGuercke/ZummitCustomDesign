@@ -16,6 +16,9 @@
   --cta-fg: #FFFFFF;        /* Vortrag-CTA · Textfarbe   */
   --cta-bg: #1496B8;        /* Vortrag-CTA · Hintergrund (gefüllt, Screen 1) */
   --cta-border: #4FBAD4;    /* Vortrag-CTA · Border      */
+  --speaker-bg: #2A758F;    /* Referenten-Karte · Hintergrund */
+  --speaker-border: #18B2CB;/* Referenten-Karte · Border */
+  --speaker-radius: 8px;    /* Referenten-Karte · Eckradius */
   --z-divider: rgba(209,209,209,.45);
 
   /* Chrome (App-Rahmen, helles Theme) */
@@ -440,6 +443,11 @@ body.links-bold a { font-weight: 600; }
 /* Aktionen je Referent: Bookmark oben, „…" unten — rechtsbündig */
 .speaker__actions { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: calc(var(--scale) * 0.75); color: var(--z-cta); }
 .speaker__actions .icon { width: max(16px, calc(var(--scale) * 1.1)); height: max(16px, calc(var(--scale) * 1.1)); }
+/* Referenten im Beitrag als Karte (Personen-Panel .ppl-list bleibt unberührt) */
+.talk-card .speaker {
+  background: var(--speaker-bg); border: 1px solid var(--speaker-border);
+  border-radius: var(--speaker-radius); padding: calc(var(--scale) * 0.8);
+}
 
 /* =========================================================================
    Rechtes Dock — Teilnehmende (Referenten-Control wiederverwendet) & Chat
@@ -560,11 +568,26 @@ body.links-bold a { font-weight: 600; }
   padding: .55rem 0; gap: 1rem;
 }
 .color-row span, .toggle-row span { font-size: .95rem; }
-.swatch {
-  width: 96px; height: 28px;
-  border: 1px solid var(--ui-border); border-radius: 4px;
-  font-size: .8rem; cursor: pointer; background: none;
+/* Farb-Control je Zeile: # [hex] [alpha] %  + lc-Swatch (liegendes Rechteck) */
+.cc { display: flex; align-items: center; gap: .35rem; flex: 0 0 auto; }
+.cc__hash, .cc__pct { color: var(--ui-muted); font-size: .82rem; }
+.cc__hex, .cc__alpha, .num-input {
+  font: inherit; font-size: .8rem; text-align: center; color: var(--ui-text);
+  border: 1px solid var(--ui-border); border-radius: 4px; padding: .28rem .2rem; background: var(--ui-bg);
 }
+.cc__hex { width: 7ch; text-transform: uppercase; }
+.cc__alpha { width: 4.5ch; }
+.num-input { width: 5ch; }
+/* Number-Spinner ausblenden → volle Breite für die Ziffern (100) */
+.cc__alpha, .num-input { -moz-appearance: textfield; appearance: textfield; }
+.cc__alpha::-webkit-inner-spin-button, .cc__alpha::-webkit-outer-spin-button,
+.num-input::-webkit-inner-spin-button, .num-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.cc__hex:disabled, .cc__alpha:disabled { opacity: .4; cursor: not-allowed; }
+/* lc-Swatch (no_input_mode): Wrapper auf liegendes Rechteck 45×24 begrenzen
+   (die Preview-Kinder sind absolut mit calc(100%) → folgen automatisch). */
+.cc .lccp-el-wrap { width: 45px; height: 24px; flex: 0 0 auto; cursor: pointer; }
+.cc .lccp-el-wrap .swatch { width: 45px; height: 24px; min-width: 0; }
+.cc .lccp-preview, .cc .lccp-preview-bg { border-radius: 4px; }
 
 /* Toggle-Switch */
 .switch { position: relative; display: inline-block; width: 42px; height: 24px; flex: 0 0 auto; }
