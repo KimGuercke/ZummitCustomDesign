@@ -415,12 +415,17 @@
 
   /* --- Farb-Control: lc-color-picker (Popup + Verläufe) + Hex/%-Zeilenfelder (Schnell-Eingabe) ---
      Beide Wege schreiben dasselbe CSS-Token; Felder ↔ Picker bleiben synchron. --- */
-  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", link: "--ui-accent", "cta-fg": "--cta-fg", "cta-bg": "--cta-bg", "cta-border": "--cta-border", speakerBg: "--speaker-bg", speakerBorder: "--speaker-border", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
+  const colorMap = { desktop: "--ui-canvas", bg: "--z-bg", primary: "--z-fg", secondary: "--z-fg-muted", link: "--ui-accent", tabFg: "--tab-fg", tabBg: "--tab-bg", "cta-fg": "--cta-fg", "cta-bg": "--cta-bg", "cta-border": "--cta-border", speakerBg: "--speaker-bg", speakerBorder: "--speaker-border", header: "--ui-header", mainnav: "--ui-mainnav", leftpanel: "--ui-leftpanel" };
 
   /* Farbwert -> { gradient } | { hex: "rrggbb", alpha: 0–100 } */
   function parseColor(str) {
     str = (str || "").trim();
-    if (/gradient/i.test(str)) return { gradient: true };
+    if (/gradient/i.test(str)) {
+      // erste Farb-Stufe des Verlaufs für die (deaktivierten) Felder herausziehen
+      const c = str.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]+\)/i);
+      const first = c ? parseColor(c[0]) : { hex: "000000", alpha: 100 };
+      return { gradient: true, hex: first.hex, alpha: first.alpha };
+    }
     let m = str.match(/^rgba?\(([^)]+)\)$/i);
     if (m) {
       const p = m[1].split(",").map(s => s.trim());
@@ -459,9 +464,9 @@
     // Token-Wert -> Felder spiegeln (Verlauf: Felder aus, Picker bleibt der Weg)
     const mirror = val => {
       const p = parseColor(val);
-      hexF.disabled = alphaF.disabled = !!p.gradient;
-      hexF.value = p.gradient ? "" : p.hex.toUpperCase();
-      alphaF.value = p.gradient ? "" : p.alpha;
+      hexF.disabled = alphaF.disabled = !!p.gradient;   // Verlauf: nur über Picker editierbar …
+      hexF.value = (p.hex || "000000").toUpperCase();    // … aber Werte (erste Stufe) trotzdem anzeigen
+      alphaF.value = p.alpha != null ? p.alpha : 100;
     };
     // Felder -> Token + Swatch-Vorschau (ohne Picker zu öffnen)
     const fromFields = () => {

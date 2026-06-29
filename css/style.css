@@ -17,7 +17,7 @@
   --cta-bg: #1496B8;        /* Vortrag-CTA · Hintergrund (gefüllt, Screen 1) */
   --cta-border: #4FBAD4;    /* Vortrag-CTA · Border      */
   --speaker-bg: #2A758F;    /* Referenten-Karte · Hintergrund */
-  --speaker-border: #18B2CB;/* Referenten-Karte · Border */
+  --speaker-border: #2384A4;/* Referenten-Karte · Border */
   --speaker-radius: 8px;    /* Referenten-Karte · Eckradius */
   --z-divider: rgba(209,209,209,.45);
 
@@ -33,6 +33,9 @@
   --ui-muted: #6b7785;
   --ui-border: #e4e8ec;
   --ui-accent: #04DDED;     /* Links (App-Chrome + Karte) */
+  --ui-switch: #1C84E7;     /* Toggle-Schalter (aktiv)   */
+  --tab-fg: #065D7B;        /* Tab-Register inaktiv · Text + Icons */
+  --tab-bg: #FFFFFF;        /* Tab-Register inaktiv · Hintergrund  */
   --ui-selected: #eceff1;
   --ui-brand: #16A9C0;
 
@@ -263,10 +266,10 @@ body.links-bold a { font-weight: 600; }
 .subtab {
   display: inline-flex; align-items: center; gap: clamp(.2rem, .8cqi, .45rem); white-space: nowrap;
   padding: clamp(.4rem, 1.3cqi, .7rem) clamp(.55rem, 1.9cqi, 1.05rem);
-  font-size: clamp(11px, 1.7cqi, 15px); color: var(--ui-text);
-  background: transparent; border: 0; cursor: pointer; border-bottom: 3px solid transparent;
+  font-size: clamp(11px, 1.7cqi, 15px); color: var(--tab-fg);
+  background: var(--tab-bg); border: 0; cursor: pointer; border-bottom: 3px solid transparent;
 }
-.subtab i { font-size: 1em; color: var(--ui-accent); }
+.subtab i { font-size: 1em; color: var(--tab-fg); }
 .subtab:hover { color: var(--ui-accent); }
 .subtab.is-active { background: var(--z-bg); color: var(--z-fg); font-weight: 700; }
 .bg-is-gradient .subtab.is-active,
@@ -398,7 +401,7 @@ body.links-bold a { font-weight: 600; }
 .talk-meta {
   display: flex; align-items: center; justify-content: space-between;
   gap: calc(var(--scale) * 0.8);
-  margin: 0; color: var(--ui-accent);   /* Uhrzeit + Raum in Link-Farbe */
+  margin: 0; color: var(--z-fg-muted);   /* Uhrzeit neutral — nur der Raum (.talk-room) ist ein Link */
   /* Meta-Zeile bewusst langsamer + gedeckelt (kleinerer Faktor als --meta-size, Cap 22px) —
      bleibt eine dezente Meta-Zeile statt mit Titel/Subtitle mitzuwachsen. CTA-Text/Labels unberührt. */
   font-size: clamp(16px, calc(var(--scale) * 0.85), 22px);
@@ -575,7 +578,7 @@ body.links-bold a { font-weight: 600; }
   font: inherit; font-size: .8rem; text-align: center; color: var(--ui-text);
   border: 1px solid var(--ui-border); border-radius: 4px; padding: .28rem .2rem; background: var(--ui-bg);
 }
-.cc__hex { width: 7ch; text-transform: uppercase; }
+.cc__hex { width: 70px; text-transform: uppercase; }
 .cc__alpha { width: 4.5ch; }
 .num-input { width: 5ch; }
 /* Number-Spinner ausblenden → volle Breite für die Ziffern (100) */
@@ -599,7 +602,7 @@ body.links-bold a { font-weight: 600; }
   content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
   background: #fff; border-radius: 50%; transition: .18s;
 }
-.switch input:checked + .track { background: var(--ui-accent); }
+.switch input:checked + .track { background: var(--ui-switch); }
 .switch input:checked + .track::before { transform: translateX(18px); }
 .toggle-inline { display: flex; align-items: center; gap: .6rem; padding: .6rem 0; }
 .toggle-inline span { font-size: .95rem; }
