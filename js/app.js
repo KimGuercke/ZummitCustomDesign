@@ -213,6 +213,29 @@
 
   const isOn = comp => { const el = $(`[data-toggle-comp="${comp}"]`); return el ? el.checked : false; };
 
+  /* --- Vortrags-Tags (Demo) — Palette (Farbe + gefüllt/outline) als Single Source --- */
+  const TAGS = {
+    "Tutorial":       { c: "#6b7785", fill: false },
+    "Aufzeichnung":   { c: "#d6336c", fill: true  },
+    "Studio":         { c: "#7048e8", fill: false },
+    "Nachhaltigkeit": { c: "#2f9e44", fill: false },
+    "Industrie":      { c: "#7048e8", fill: false },
+    "Dolmetscher":    { c: "#1c84e7", fill: false },
+  };
+  const TALK_TAGS = {
+    standard:      ["Tutorial"],
+    bildvideo:     ["Aufzeichnung", "Studio"],
+    video:         ["Aufzeichnung"],
+    panel:         ["Nachhaltigkeit", "Industrie"],
+    experiment:    ["Tutorial"],
+    "demo-all":    ["Aufzeichnung", "Dolmetscher"],
+    "demo-notabs": ["Nachhaltigkeit"],
+  };
+  const renderTag = name => {
+    const t = TAGS[name] || { c: "#6b7785", fill: false };
+    return `<span class="tag${t.fill ? " tag--fill" : ""}" style="--tag-c:${t.c}">${name}</span>`;
+  };
+
   /* --- Render: Liste --------------------------------------------------- */
   function renderList() {
     talkList.innerHTML = TALKS.map(t => `
@@ -220,6 +243,7 @@
         <div class="talk-item__main">
           <span class="talk-item__meta">${t.listMeta}</span>
           <span class="talk-item__title">${t.listTitle}</span>
+          ${(TALK_TAGS[t.id] || []).length ? `<div class="talk-item__tags">${TALK_TAGS[t.id].map(renderTag).join("")}</div>` : ""}
         </div>
         <div class="talk-item__actions">
           <span class="talk-item__bm" title="Merken">${ICON_BM}</span>
@@ -505,6 +529,12 @@
   const applyLinkBold = () => document.body.classList.toggle("links-bold", linkBold.checked);
   linkBold.addEventListener("change", applyLinkBold);
   applyLinkBold();
+
+  /* --- Vortrags-Tags in der Liste ein-/ausblenden (Default an) --- */
+  const showTags = $("#showTags");
+  const applyShowTags = () => document.body.classList.toggle("show-tags", showTags.checked);
+  showTags.addEventListener("change", applyShowTags);
+  applyShowTags();
 
   /* --- Vortrag-CTA Demo-Deaktivierung: rendert die Karte neu (is-disabled am Button) --- */
   $("#ctaDisabled").addEventListener("change", refresh);

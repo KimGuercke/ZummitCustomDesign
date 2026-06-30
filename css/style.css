@@ -250,6 +250,15 @@ body.links-bold a { font-weight: 600; }
 /* Titel = Master, Meta = fester Bruchteil → skalieren als Paar, klemmen gemeinsam */
 .talk-item__meta { color: var(--ui-muted); font-size: calc(var(--li-title) * 0.75); }
 .talk-item__title { font-weight: 400; font-size: var(--li-title); }
+/* Vortrags-Tags (Demo) — farbige Pills, gefüllt oder Outline (--tag-c je Tag) */
+.talk-item__tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .4rem; }
+.tag {
+  font-size: calc(var(--li-title) * 0.62); line-height: 1; white-space: nowrap;
+  padding: .28em .5em; border-radius: 4px;
+  border: 1px solid var(--tag-c); color: var(--tag-c); background: transparent;
+}
+.tag--fill { color: #fff; background: var(--tag-c); }
+body:not(.show-tags) .talk-item__tags { display: none; }   /* Toggle „Vortrags-Tags anzeigen" */
 /* Aktionen rechts: Bookmark oben, „…" unten — vertikal auseinandergezogen */
 .talk-item__actions { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
