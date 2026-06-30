@@ -64,7 +64,12 @@
             <label class="switch" title="Nur Lesezeichen"><input type="checkbox"><span class="track"></span></label>
                       </div>
         </div>
-        <div class="listpanel__date">Sa. 20.06.</div>
+        <!-- Tagesregister (Demo) — aktiver Tag unterstrichen -->
+        <div class="listpanel__days">
+          <button class="day-tab is-active">Sa. 20.06.</button>
+          <button class="day-tab">So. 21.06.</button>
+          <button class="day-tab">Mo. 22.06.</button>
+        </div>
         <!-- Vortragsliste — wird per JS aus den Vortrags-Daten gerendert -->
         <ul class="talk-list" id="talkList"></ul>
       </section>

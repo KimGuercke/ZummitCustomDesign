@@ -141,16 +141,16 @@ body.links-bold a { font-weight: 600; }
    Linkes Panel wächst SANFTER, wenn rechts mitläuft (24vw statt 32,8vw),
    damit die Mitte nicht zu schnell schrumpft. */
 .workspace.has-left.has-right {
-  --list-w:  clamp(320px, 24vw, 820px);     /* beide offen: linkes Panel langsamer */
-  --right-w: clamp(360px, 19.2vw, 480px);
+  --list-w:  clamp(300px, 29.3vw, 820px);   /* beide offen: Min 300 wird bei Viewport 1024 erreicht (29.3vw·1024≈300) */
+  --right-w: clamp(300px, 29.3vw, 480px);
   grid-template-columns: var(--list-w) 6px 1fr 6px var(--right-w);
 }
 .workspace.has-left:not(.has-right) {
-  --list-w:  clamp(320px, 32.8vw, 820px);   /* nur links: voller Slope */
+  --list-w:  clamp(300px, 32.8vw, 820px);   /* nur links: voller Slope */
   grid-template-columns: var(--list-w) 6px 1fr;
 }
 .workspace:not(.has-left).has-right {
-  --right-w: clamp(360px, 19.2vw, 480px);
+  --right-w: clamp(300px, 19.2vw, 480px);
   grid-template-columns: 1fr 6px var(--right-w);
 }
 /* Splitter + Dock der geschlossenen Seite aus dem Grid nehmen */
@@ -222,14 +222,24 @@ body.links-bold a { font-weight: 600; }
 /* Programm-Kopf nutzt die geteilten .panel__head/.panel__title-Regeln (oben) —
    Titel füllt per flex:1, Aktionen rücken rechts. */
 .listpanel__actions { display: flex; align-items: center; gap: .3rem; }
-.listpanel__date {
-  flex: 0 0 auto;
-  padding: .9rem 1.1rem .3rem; font-weight: 400; color: var(--chrome-accent);   /* mehr Luft oben, weniger unten */
-  font-size: clamp(14px, 4.5cqi, 20px);   /* gleiche fluide Größe + Gewicht wie die Listen-Vortragstitel */
-  border-bottom: 2px solid var(--chrome-accent); width: max-content; margin: 0 1.1rem;
+/* Tagesregister: Tab je Tag; aktiver Tag chrome-akzentuiert + unterstrichen.
+   Größe/Gewicht der Tabs wie die Listen-Vortragstitel. */
+.listpanel__days {
+  flex: 0 0 auto; display: flex; align-items: flex-end; flex-wrap: wrap;
+  gap: 1.1rem; padding: .9rem 1.1rem .3rem;   /* oben mehr Luft, unten weniger */
 }
+.day-tab {
+  border: 0; background: transparent; cursor: pointer; font: inherit; white-space: nowrap;
+  font-size: clamp(14px, 4.5cqi, 20px); font-weight: 400; color: var(--ui-muted);
+  padding: 0 0 .25rem; border-bottom: 2px solid transparent;
+}
+.day-tab:hover { color: var(--chrome-accent); }
+.day-tab.is-active { color: var(--chrome-accent); border-bottom-color: var(--chrome-accent); }
 .talk-list { flex: 1; min-height: 0; list-style: none; margin: .1rem 0 0; padding: 0; overflow-y: auto; }
 .talk-item {
+  /* Master-Schriftgröße der Zeile (min/max definiert hier); Titel = 1×, Meta = fester Bruchteil
+     → beide skalieren als Paar wie eine Grafik und klemmen gemeinsam an Titel-min/max. */
+  --li-title: clamp(14px, 4.5cqi, 20px);
   /* Padding dezent fluid mit der Listenbreite (cqi), wie Font/Gap der Items */
   padding: clamp(10px, 3.2cqi, 22px) clamp(14px, 4.4cqi, 30px); border-bottom: 1px solid var(--ui-border);
   cursor: pointer; display: flex; align-items: stretch; gap: .6rem;
@@ -237,9 +247,9 @@ body.links-bold a { font-weight: 600; }
 .talk-item:hover { background: #f6f8f9; }
 .talk-item.is-selected { background: var(--ui-selected); }
 .talk-item__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .2rem; }
-/* Fluid: Titel 14–24px, Meta (Zeit/Raum) proportional mitgeklemmt */
-.talk-item__meta { color: var(--ui-muted); font-size: clamp(12px, 3.8cqi, 20px); }
-.talk-item__title { font-weight: 400; font-size: clamp(14px, 4.5cqi, 20px); }
+/* Titel = Master, Meta = fester Bruchteil → skalieren als Paar, klemmen gemeinsam */
+.talk-item__meta { color: var(--ui-muted); font-size: calc(var(--li-title) * 0.75); }
+.talk-item__title { font-weight: 400; font-size: var(--li-title); }
 /* Aktionen rechts: Bookmark oben, „…" unten — vertikal auseinandergezogen */
 .talk-item__actions { flex: 0 0 auto; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; }
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }

@@ -390,6 +390,10 @@
   /* --- Sub-Tabs klickbar --- */
   $$(".subtab").forEach(b => b.addEventListener("click", () => selectTab(b.dataset.tab)));
 
+  /* --- Tagesregister (Demo): aktiven Tag visuell umschalten (keine Filterung) --- */
+  $$(".day-tab").forEach(b => b.addEventListener("click", () =>
+    $$(".day-tab").forEach(x => x.classList.toggle("is-active", x === b))));
+
   /* --- Settings-Drawer öffnen/schließen --- */
   const drawer = $("#drawer"), scrim = $("#scrim");
   const open  = () => { drawer.classList.add("is-open"); scrim.classList.add("is-open"); };
@@ -632,7 +636,12 @@
   $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; });
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", stopDrag);
-  window.addEventListener("resize", () => { workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w"); updateWidthHints(); });
+  window.addEventListener("resize", () => {
+    workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w");
+    // Viewport < 1024 & beide Panels offen → rechtes automatisch ausblenden (Platz für Beitrag)
+    if (window.innerWidth < 1024 && dockState.left && dockState.right) { dockState.right = null; renderDock("right"); }
+    updateWidthHints();
+  });
 
   function renderDock(side) {
     const active = dockState[side];
