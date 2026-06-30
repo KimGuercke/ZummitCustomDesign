@@ -655,6 +655,11 @@
   }
   function toggleDock(side, panel) {
     dockState[side] = (dockState[side] === panel) ? null : panel;  // erneuter Klick schließt die Seite
+    // Schmal (<1024): Links- und Rechts-Menü verschmelzen — nur EIN Panel gesamt aktiv
+    if (window.innerWidth < 1024 && dockState[side]) {
+      const other = side === "left" ? "right" : "left";
+      if (dockState[other]) { dockState[other] = null; renderDock(other); }
+    }
     renderDock(side);
   }
   $$(".navitem[data-panel]").forEach(b =>
