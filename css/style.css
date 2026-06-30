@@ -224,11 +224,11 @@ body.links-bold a { font-weight: 600; }
 .listpanel__actions { display: flex; align-items: center; gap: .3rem; }
 .listpanel__date {
   flex: 0 0 auto;
-  padding: .4rem 1.1rem .7rem; font-weight: 400; color: var(--chrome-accent);
+  padding: .9rem 1.1rem .3rem; font-weight: 400; color: var(--chrome-accent);   /* mehr Luft oben, weniger unten */
   font-size: clamp(14px, 4.5cqi, 20px);   /* gleiche fluide Größe + Gewicht wie die Listen-Vortragstitel */
   border-bottom: 2px solid var(--chrome-accent); width: max-content; margin: 0 1.1rem;
 }
-.talk-list { flex: 1; min-height: 0; list-style: none; margin: .4rem 0 0; padding: 0; overflow-y: auto; }
+.talk-list { flex: 1; min-height: 0; list-style: none; margin: .1rem 0 0; padding: 0; overflow-y: auto; }
 .talk-item {
   /* Padding dezent fluid mit der Listenbreite (cqi), wie Font/Gap der Items */
   padding: clamp(10px, 3.2cqi, 22px) clamp(14px, 4.4cqi, 30px); border-bottom: 1px solid var(--ui-border);
