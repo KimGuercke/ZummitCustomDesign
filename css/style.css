@@ -224,6 +224,7 @@ body.links-bold a { font-weight: 600; }
 .listpanel__date {
   flex: 0 0 auto;
   padding: .4rem 1.1rem .7rem; font-weight: 700; color: var(--ui-accent);
+  font-size: clamp(14px, 4.5cqi, 20px);   /* gleiche fluide Größe wie die Listen-Vortragstitel */
   border-bottom: 2px solid var(--ui-accent); width: max-content; margin: 0 1.1rem;
 }
 .talk-list { flex: 1; min-height: 0; list-style: none; margin: .4rem 0 0; padding: 0; overflow-y: auto; }
@@ -384,7 +385,7 @@ body.links-bold a { font-weight: 600; }
      ein konstanter Bruchteil der Breite — passt der Inhalt bei EINER Breite
      ins 16:9, passt er bei JEDER. Genau das „gerendertes-Bild/Video"-Verhalten. */
   --scale: 2.4cqi;
-  --pad:        calc(var(--scale) * 2.6);
+  --pad:        clamp(12px, calc(4cqi - 5.6px), 56px);   /* 20px bei Kartenbreite 640, steiler wachsend (Basis+Slope) */
   --title-size: clamp(18px, calc(var(--scale) * 1.78), 60px);   /* Vortrags-Titel: min 18, max 60 */
   --sub-size:   clamp(12px, calc(var(--scale) * 1.05), 36px);   /* Subtitle: min 12, max 36 */
   --meta-size:  max(16px, calc(var(--scale) * 1.05));   /* Datum/Zeit/Raum: min 16 */

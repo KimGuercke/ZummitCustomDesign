@@ -106,7 +106,7 @@
     {
       id: "bildvideo", mode: "video", videoThumb: "assets/video-thumb.jpg",
       cta: "Zum Vortrag - jetzt beitreten",
-      listMeta: "10:30–11:00 | Hauptsaal", listTitle: "Vortrag mit Bild oder Video Iteration 1",
+      listMeta: "10:30–11:00 | Hauptsaal", listTitle: "Iteration 1 -Vortrag mit Bild oder Video",
       date: "Sa. 20.06.2026", time: "10:30 - 11:00", room: "Hörsaal 3",
       title: "Vortrag mit Bild oder Video – Iteration 1",
       subtitle: "Erste Iteration: Hero zeigt Bild oder Video, Dokumente liegen im Downloads-Register, zusätzlich aktives Abstimmungen-Register.",
