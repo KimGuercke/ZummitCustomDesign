@@ -563,6 +563,7 @@
   const dockEls = { left: $("#dockLeft"), right: $("#dockRight") };
   const dockState = { left: "programm", right: null };
   const lastPanel = { left: "programm", right: "chat" };   // zuletzt gezeigtes Panel je Seite (für Ausklappen)
+  const widthCollapsed = { left: false, right: false };    // true = nur breitenbedingt zu (→ bei ≥1024 zurückholen); manuelles Schließen setzt false
 
   /* --- Live-Breiten-Hints je Bereich (px) ----------------------------- */
   const detail = $(".detail__inner");   // Beitragspanel (Inhalt, max 1500px)
@@ -638,8 +639,15 @@
   window.addEventListener("pointerup", stopDrag);
   window.addEventListener("resize", () => {
     workspace.style.removeProperty("--list-w"); workspace.style.removeProperty("--right-w");
-    // Viewport < 1024 & beide Panels offen → rechtes automatisch ausblenden (Platz für Beitrag)
-    if (window.innerWidth < 1024 && dockState.left && dockState.right) { dockState.right = null; renderDock("right"); }
+    if (window.innerWidth < 1024) {
+      // beide offen → rechtes ausblenden (breitenbedingt → merken, damit es bei ≥1024 zurückkommt)
+      if (dockState.left && dockState.right) { dockState.right = null; widthCollapsed.right = true; renderDock("right"); }
+    } else {
+      // wieder ≥1024: nur breitenbedingt geschlossene Seiten zurückholen (manuell geschlossene bleiben zu)
+      ["left", "right"].forEach(side => {
+        if (!dockState[side] && widthCollapsed[side]) { dockState[side] = lastPanel[side]; widthCollapsed[side] = false; renderDock(side); }
+      });
+    }
     updateWidthHints();
   });
 
@@ -655,10 +663,11 @@
   }
   function toggleDock(side, panel) {
     dockState[side] = (dockState[side] === panel) ? null : panel;  // erneuter Klick schließt die Seite
+    widthCollapsed[side] = false;   // bewusste Nutzeraktion auf dieser Seite → nicht „breitenbedingt"
     // Schmal (<1024): Links- und Rechts-Menü verschmelzen — nur EIN Panel gesamt aktiv
     if (window.innerWidth < 1024 && dockState[side]) {
       const other = side === "left" ? "right" : "left";
-      if (dockState[other]) { dockState[other] = null; renderDock(other); }
+      if (dockState[other]) { dockState[other] = null; widthCollapsed[other] = true; renderDock(other); }
     }
     renderDock(side);
   }
@@ -668,6 +677,7 @@
     b.addEventListener("click", () => {
       const side = b.dataset.dock;
       dockState[side] = dockState[side] ? null : lastPanel[side];   // einklappen ↔ ausklappen (letztes Panel)
+      widthCollapsed[side] = false;   // manuelle Aktion → nicht „breitenbedingt"
       renderDock(side);
     }));
 
