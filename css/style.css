@@ -32,7 +32,8 @@
   --ui-text: #1f2933;
   --ui-muted: #6b7785;
   --ui-border: #e4e8ec;
-  --ui-accent: #04DDED;     /* Links (App-Chrome + Karte) */
+  --ui-accent: #04DDED;     /* Links im Beitragspanel (Raum, Referenten, …) */
+  --chrome-accent: #18B2CB; /* Links + aktive Tabs außerhalb des Beitragspanels */
   --ui-switch: #1C84E7;     /* Toggle-Schalter (aktiv)   */
   --tab-fg: #065D7B;        /* Tab-Register inaktiv · Text + Icons */
   --tab-bg: #FFFFFF;        /* Tab-Register inaktiv · Hintergrund  */
@@ -119,7 +120,7 @@ body.links-bold a { font-weight: 600; }
    sonst wirken sie deutlich kleiner als die Bookmarks bei den Referenten. */
 .talk-meta__cta .icon { width: max(16px, calc(var(--scale) * 1.1)); height: max(16px, calc(var(--scale) * 1.1)); }
 .navitem:hover { color: var(--ui-text); }
-.navitem.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
+.navitem.is-active { color: var(--chrome-accent); border-bottom-color: var(--chrome-accent); font-weight: 500; }
 
 /* --- Workspace (dynamischer Split) ------------------------------------- */
 .workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; position: relative; }
@@ -223,9 +224,9 @@ body.links-bold a { font-weight: 600; }
 .listpanel__actions { display: flex; align-items: center; gap: .3rem; }
 .listpanel__date {
   flex: 0 0 auto;
-  padding: .4rem 1.1rem .7rem; font-weight: 700; color: var(--ui-accent);
-  font-size: clamp(14px, 4.5cqi, 20px);   /* gleiche fluide Größe wie die Listen-Vortragstitel */
-  border-bottom: 2px solid var(--ui-accent); width: max-content; margin: 0 1.1rem;
+  padding: .4rem 1.1rem .7rem; font-weight: 400; color: var(--chrome-accent);
+  font-size: clamp(14px, 4.5cqi, 20px);   /* gleiche fluide Größe + Gewicht wie die Listen-Vortragstitel */
+  border-bottom: 2px solid var(--chrome-accent); width: max-content; margin: 0 1.1rem;
 }
 .talk-list { flex: 1; min-height: 0; list-style: none; margin: .4rem 0 0; padding: 0; overflow-y: auto; }
 .talk-item {
@@ -479,7 +480,7 @@ body.links-bold a { font-weight: 600; }
   border-bottom: 2px solid transparent; margin-bottom: -1px;
 }
 .ppl-tab:hover { color: var(--ui-text); }
-.ppl-tab.is-active { color: var(--ui-accent); border-bottom-color: var(--ui-accent); font-weight: 500; }
+.ppl-tab.is-active { color: var(--chrome-accent); border-bottom-color: var(--chrome-accent); font-weight: 500; }
 
 /* Suche */
 .ppl-search { flex: 0 0 auto; padding: .6rem 1.1rem; }
@@ -513,7 +514,7 @@ body.links-bold a { font-weight: 600; }
 .chat-msg__time { display: block; text-align: right; margin-top: .25rem; font-size: .68rem; color: var(--ui-muted); }
 .chat-msg--self .chat-msg__time { color: rgba(255,255,255,.85); }
 .chat-msg__time i { font-size: .9em; margin-left: .15rem; }
-.chat-msg__reply { font-size: .75rem; color: var(--ui-accent); text-decoration: none; }
+.chat-msg__reply { font-size: .75rem; color: var(--chrome-accent); text-decoration: none; }
 .chat-msg__reply:hover { text-decoration: underline; }
 .chat-input { flex: 0 0 auto; display: flex; gap: .5rem; padding: .7rem 1.1rem; border-top: 1px solid var(--ui-border); }
 .chat-input input { flex: 1; min-width: 0; padding: .6rem .8rem; font: inherit; font-size: .9rem; border: 1px solid var(--ui-border); border-radius: 8px; }
