@@ -618,3 +618,54 @@ body.links-bold a { font-weight: 600; }
 .switch input:checked + .track::before { transform: translateX(18px); }
 .toggle-inline { display: flex; align-items: center; gap: .6rem; padding: .6rem 0; }
 .toggle-inline span { font-size: .95rem; }
+
+/* =========================================================================
+   Mobile-Modus (< 700px, via body.is-mobile aus JS): Nav als Fuß-Toolbar,
+   ein Panel pro Screen, Drill-in zum Beitrag mit Back-Button.
+   Additiv — alles ≥700px bleibt unverändert.
+   ========================================================================= */
+.backbtn { display: none; }                              /* nur im Mobile-Detail (s.u.) */
+body:not(.is-mobile) .nav-more { display: none; }        /* „Mehr" nur in Mobile */
+
+body.is-mobile .brand__sub { display: none; }            /* Platz im schmalen Header */
+body.is-mobile.mobile-detail .backbtn { display: inline-grid; place-items: center; }
+
+/* --- Fuß-Toolbar --- */
+body.is-mobile .mainnav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  background: var(--ui-mainnav); border-top: 1px solid var(--ui-border);
+  display: flex; justify-content: space-around; align-items: stretch; gap: 0;
+  padding: .2rem .15rem; padding-bottom: max(.2rem, env(safe-area-inset-bottom));
+}
+body.is-mobile .mainnav__left { display: contents; }     /* Items = direkte Toolbar-Kinder */
+body.is-mobile .navitem {
+  flex: 1; flex-direction: column; gap: .12rem; align-items: center; justify-content: center;
+  font-size: .66rem; padding: .35rem .1rem; border: 0; white-space: nowrap;
+}
+body.is-mobile .navitem i { font-size: 1.3rem; }
+
+/* --- Overflow-Popup (Personen/Chat/Infos) --- */
+body.is-mobile .mainnav__right {
+  position: fixed; right: .5rem; bottom: 66px; z-index: 61;
+  flex-direction: column; align-items: stretch;
+  background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.18); padding: .35rem; min-width: 170px; display: none;
+}
+body.is-mobile.nav-overflow-open .mainnav__right { display: flex; }
+body.is-mobile .mainnav__right .navitem {
+  flex-direction: row; gap: .6rem; justify-content: flex-start; font-size: .92rem; padding: .65rem .7rem;
+}
+body.is-mobile .mainnav__right .navitem i { font-size: 1.1rem; }
+
+/* --- Ein-Spalten-Stack --- */
+body.is-mobile .workspace { display: flex; padding-bottom: 62px; }   /* Platz für Fuß-Toolbar */
+body.is-mobile #splitterLeft, body.is-mobile #splitterRight,
+body.is-mobile .dock-collapse, body.is-mobile .size-hint { display: none; }
+body.is-mobile .dock, body.is-mobile .detail { flex: 1; width: auto; max-width: none; }
+
+/* Listen-Ansicht: aktives Dock vollflächig, Beitrag aus */
+body.is-mobile.mobile-list .detail { display: none; }
+/* Detail-Ansicht: Beitrag vollflächig, beide Docks aus */
+body.is-mobile.mobile-detail #dockLeft,
+body.is-mobile.mobile-detail #dockRight { display: none; }
+body.is-mobile.mobile-detail .detail { display: block; }

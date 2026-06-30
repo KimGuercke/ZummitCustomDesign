@@ -228,7 +228,7 @@
       </li>`).join("");
 
     $$(".talk-item", talkList).forEach(li =>
-      li.addEventListener("click", () => selectTalk(li.dataset.id)));
+      li.addEventListener("click", () => { selectTalk(li.dataset.id); enterDetail(); }));
   }
 
   /* --- Render-Bausteine ------------------------------------------------ */
@@ -672,7 +672,10 @@
     renderDock(side);
   }
   $$(".navitem[data-panel]").forEach(b =>
-    b.addEventListener("click", () => toggleDock(b.dataset.dock, b.dataset.panel)));
+    b.addEventListener("click", () =>
+      document.body.classList.contains("is-mobile")
+        ? selectSection(b.dataset.dock, b.dataset.panel)      // Mobile: Tab-Bar → Sektion zeigen
+        : toggleDock(b.dataset.dock, b.dataset.panel)));      // Desktop: wie bisher (Toggle)
   $$(".dock-collapse").forEach(b =>
     b.addEventListener("click", () => {
       const side = b.dataset.dock;
@@ -680,6 +683,30 @@
       widthCollapsed[side] = false;   // manuelle Aktion → nicht „breitenbedingt"
       renderDock(side);
     }));
+
+  /* --- Mobile-Modus (<700): Fuß-Toolbar, ein Panel pro Screen, Beitrag-Drill-in ---- */
+  const body = document.body;
+  const enterDetail = () => { if (body.classList.contains("is-mobile")) { body.classList.add("mobile-detail"); body.classList.remove("mobile-list"); } };
+  const exitDetail  = () => { body.classList.remove("mobile-detail"); body.classList.add("mobile-list"); };
+  // Mobile: Tab-Bar — Sektion immer zeigen (kein Toggle-Schließen), zurück auf Listen-Ansicht
+  function selectSection(side, panel) {
+    const other = side === "left" ? "right" : "left";
+    dockState[side] = panel; dockState[other] = null;
+    widthCollapsed[side] = false;
+    body.classList.remove("nav-overflow-open");
+    exitDetail();
+    renderDock(other); renderDock(side);
+  }
+  function applyMobile() {
+    const mobile = window.innerWidth < 700;
+    body.classList.toggle("is-mobile", mobile);
+    if (mobile) { if (!body.classList.contains("mobile-detail")) body.classList.add("mobile-list"); }
+    else { body.classList.remove("mobile-list", "mobile-detail", "nav-overflow-open"); }
+  }
+  $("#backBtn").addEventListener("click", exitDetail);
+  $("#navMore").addEventListener("click", () => body.classList.toggle("nav-overflow-open"));
+  window.addEventListener("resize", applyMobile);
+  applyMobile();
 
   /* --- Teilnehmende (Referenten-Control wiederverwendet) + Sub-Tabs ---- */
   const pplList = $("#pplList");

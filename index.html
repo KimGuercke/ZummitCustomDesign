@@ -15,6 +15,9 @@
 
   <!-- ============================ Topbar ============================ -->
   <header class="topbar">
+    <button class="iconbtn backbtn" id="backBtn" title="Zurück">
+      <svg class="icon" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
     <div class="brand">
       <span class="brand__dot"></span>
       <span class="brand__name">Muster AG</span>
@@ -47,6 +50,8 @@
       <button class="navitem" data-dock="right" data-panel="chat"><i data-icon="messages-square"></i>Chat</button>
       <button class="navitem" data-dock="right" data-panel="infos"><i data-icon="bell"></i>Infos</button>
     </div>
+    <!-- Nur Mobile: Overflow-Button für die Items, die nicht in die Fuß-Toolbar passen -->
+    <button class="navitem nav-more" id="navMore"><i data-icon="ellipsis"></i>Mehr</button>
   </nav>
 
   <!-- ============================ Workspace ========================= -->
