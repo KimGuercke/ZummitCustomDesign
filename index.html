@@ -39,6 +39,8 @@
   <!-- ============================ Hauptmenü ========================= -->
   <!-- Toggle-Buttons: links steuern Links-Dock, rechts steuern Rechts-Dock -->
   <nav class="mainnav">
+    <!-- Ein-/Ausklapp-CTA linkes Dock — ganz links, vor „Event" (Icon per JS je Zustand) -->
+    <button class="dock-collapse" data-dock="left" title="Programm einklappen"><span class="dock-collapse-icon"></span></button>
     <div class="mainnav__group mainnav__left">
       <button class="navitem" data-dock="left" data-panel="event"><i data-icon="house"></i>Event</button>
       <button class="navitem is-active" data-dock="left" data-panel="programm"><i data-icon="clock"></i>Programm</button>
@@ -50,6 +52,8 @@
       <button class="navitem" data-dock="right" data-panel="chat"><i data-icon="messages-square"></i>Chat</button>
       <button class="navitem" data-dock="right" data-panel="infos"><i data-icon="bell"></i>Infos</button>
     </div>
+    <!-- Ein-/Ausklapp-CTA rechtes Dock — ganz rechts, nach „Infos" (Icon per JS je Zustand) -->
+    <button class="dock-collapse" data-dock="right" title="Panel einklappen"><span class="dock-collapse-icon"></span></button>
     <!-- Nur Mobile: Overflow-Button für die Items, die nicht in die Fuß-Toolbar passen -->
     <button class="navitem nav-more" id="navMore"><i data-icon="ellipsis"></i>Mehr</button>
   </nav>
@@ -162,9 +166,6 @@
       </section>
     </aside>
 
-    <!-- Einklapp-Griffe an den inneren Panel-Kanten (halbrund, ragen leicht über) — Position per JS -->
-    <button class="dock-collapse is-hidden" data-dock="left" title="Programm einklappen"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg><span class="dock-collapse-label">Einklappen</span></button>
-    <button class="dock-collapse is-hidden" data-dock="right" title="Panel einklappen"><span class="dock-collapse-label">Einklappen</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
 
     <!-- Live-Breiten-Hints je Bereich (Dev) — Position/Text per JS aktualisiert -->
     <span class="size-hint" data-hint="left"></span>

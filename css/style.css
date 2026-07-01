@@ -181,42 +181,20 @@ body.links-bold a { font-weight: 600; }
   text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-/* Einklapp-Griff an der inneren Panel-Kante: halbrund, ragt leicht über (Position per JS).
-   Default nur Chevron; Hover blendet Label „Einklappen" nach innen ein. */
+/* Ein-/Ausklapp-CTA in der Mainnav: Icon-only, Höhe wie die Nav-Items (links vor „Event", rechts nach „Infos").
+   Icon (panel-left/right-close|open) zeigt die Richtung selbst → keine Rotation, Wechsel per JS. */
 .dock-collapse {
-  position: absolute; top: 16px; z-index: 27;
-  display: inline-flex; align-items: center; gap: 0;
-  height: 30px; padding: 0 7px;
-  border: 0.5px solid var(--ui-border); background: var(--ui-bg);
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 clamp(.5rem, .85vw, 1rem); border: 0; background: transparent;
   color: var(--ui-muted); cursor: pointer;
-  transition: background .18s, color .18s, gap .18s, padding .18s;
+  border-bottom: 2px solid transparent;   /* gleiche Grundlinie wie .navitem */
+  transition: color .18s;
 }
-.dock-collapse:hover { background: #e7f1f6; color: var(--ui-accent); gap: .3rem; padding: 0 11px; }
-.dock-collapse .chev { width: 17px; height: 17px; flex: 0 0 auto; transition: transform .18s; }
-.dock-collapse[data-dock="left"]  { border-radius: 0 999px 999px 0; border-left: none; background: var(--ui-leftpanel); }   /* halbrund + Überstand nach rechts (Splitter) */
-.dock-collapse[data-dock="right"] { border-radius: 999px 0 0 999px; border-right: none; background: var(--ui-bg); }         /* halbrund + Überstand nach links */
-/* Innere Rahmenlinien (über dem Panel) mit der Panel-Farbe überdecken → Linie nur außen. Beim Hover (aktive Pille) volle Kontur. */
-.dock-collapse:not(.is-collapsed):not(:hover)::before,
-.dock-collapse:not(.is-collapsed):not(:hover)::after { content: ""; position: absolute; height: 2px; pointer-events: none; }
-.dock-collapse:not(.is-collapsed):not(:hover)::before { top: -1px; }
-.dock-collapse:not(.is-collapsed):not(:hover)::after  { bottom: -1px; }
-.dock-collapse[data-dock="left"]:not(.is-collapsed):not(:hover)::before,
-.dock-collapse[data-dock="left"]:not(.is-collapsed):not(:hover)::after  { left: 0; right: 14px; background: var(--ui-leftpanel); }
-.dock-collapse[data-dock="right"]:not(.is-collapsed):not(:hover)::before,
-.dock-collapse[data-dock="right"]:not(.is-collapsed):not(:hover)::after { left: 14px; right: 0; background: var(--ui-bg); }
-.dock-collapse:not(.is-collapsed):hover[data-dock="left"]  .chev { transform: translateX(-2px); }
-.dock-collapse:not(.is-collapsed):hover[data-dock="right"] .chev { transform: translateX(2px); }
-/* Eingeklappt: Außenkante, Pfeil gedreht (Ausklapp-Richtung), Reihenfolge gespiegelt */
-.dock-collapse.is-collapsed { flex-direction: row-reverse; }
-.dock-collapse.is-collapsed .chev { transform: rotate(180deg); }
-.dock-collapse.is-collapsed:hover .chev { transform: rotate(180deg) translateX(-2px); }
-.dock-collapse-label {
-  flex: 0 0 auto; max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
-  font-size: .78rem; font-weight: 500; line-height: 1;
-  transition: max-width .2s, opacity .18s;
-}
-.dock-collapse:hover .dock-collapse-label { max-width: 92px; opacity: 1; }
-.dock-collapse.is-hidden { display: none; }
+.dock-collapse:hover { color: var(--chrome-accent); }
+.dock-collapse-icon { display: inline-flex; }
+.dock-collapse-icon .icon { width: 20px; height: 20px; }
+/* Mobile: Panels werden nicht eingeklappt → CTA aus der Fuß-Toolbar raushalten */
+body.is-mobile .dock-collapse { display: none; }
 .panel__empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 2rem; color: var(--ui-muted); font-size: .95rem; }
 
 /* Programm-Kopf nutzt die geteilten .panel__head/.panel__title-Regeln (oben) —

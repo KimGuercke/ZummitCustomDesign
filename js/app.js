@@ -41,6 +41,10 @@
     send: '<path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/>',
     check: '<path d="M20 6 9 17l-5-5"/>',
     ellipsis: '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+    "panel-left-close":  '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/>',
+    "panel-left-open":   '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/>',
+    "panel-right-close": '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/>',
+    "panel-right-open":  '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m10 15-3-3 3-3"/>',
   };
   const icon = (name, cls = "icon") => `<svg class="${cls}" viewBox="0 0 24 24">${ICONS[name] || ""}</svg>`;
   const ICON_BM   = icon("bookmark");   // Referenten/Liste „Merken"
@@ -624,35 +628,20 @@
     // Mitte: „Mittlerer Bereich / Beitrag / Viewport"
     hints.center.textContent = Math.round(mainCol.getBoundingClientRect().width) + " / " + Math.round(detail.getBoundingClientRect().width) + " / " + window.innerWidth;
 
-    // Griffe: offen → Innenkante (Einklappen, mittig auf Kopfzeile),
-    //         eingeklappt → Außenkante (Ausklappen, auf Tab-Leisten-Höhe)
-    const refCenterY = dockEl => {
-      const panel = dockEl.querySelector(".panel:not(.is-hidden)");
-      if (!panel) return null;
-      const ref = panel.querySelector(".switch") || panel.querySelector(".panel__title, .listpanel__title, .ppl-tabs");
-      if (!ref) return null;
-      const rr = ref.getBoundingClientRect();
-      return rr.top + rr.height / 2 - ws.top - 15;   // 15 = halbe Griffhöhe (30)
-    };
-    const tb = $(".tabbar").getBoundingClientRect();
-    ["left", "right"].forEach(side => {
-      const h = collapse[side];
-      const open = !!dockState[side];
-      h.classList.remove("is-hidden");
-      h.classList.toggle("is-collapsed", !open);
-      h.querySelector(".dock-collapse-label").textContent = open ? "Einklappen" : "Ausklappen";
-      if (open) {
-        const r = dockEls[side].getBoundingClientRect();
-        // wie zuvor: Griff überlappt die Kante, ragt nur ~14px über (kleiner Footprint)
-        if (side === "left") { h.style.right = (ws.width - (r.right - ws.left) - 14) + "px"; h.style.left = ""; }
-        else { h.style.left = (r.left - ws.left - 14) + "px"; h.style.right = ""; }
-        const cy = refCenterY(dockEls[side]); if (cy != null) h.style.top = cy + "px";
-      } else {
-        if (side === "left") { h.style.left = "0px"; h.style.right = ""; }
-        else { h.style.right = "0px"; h.style.left = ""; }
-        h.style.top = (tb.top + tb.height / 2 - ws.top - 15) + "px";
-      }
-    });
+    // Nav-CTAs bündig zum Spalten-Gutter der Panels ausrichten (Icon-Kästchen = PROGRAMM/CHAT-Titelkante, 1.1rem):
+    // links linksbündig, rechts spiegelbildlich rechtsbündig. Button-Padding kompensiert die vw-Nav-Polsterung.
+    const RECT_OFF = 20 * 3 / 24;   // Icon-Rect beginnt/endet 3/24 innerhalb der 20px-Icon-Box → 2.5px
+    const NUDGE = 2;                 // Feinabstimmung: Icon 2px nach innen (optischer Ausgleich zur Textkante)
+    const brand = $(".brand__dot");
+    const gutter = brand ? (brand.getBoundingClientRect().left - ws.left) : 17.6;
+    if (collapse.left) {
+      const bl = collapse.left.getBoundingClientRect().left - ws.left;
+      collapse.left.style.paddingLeft = Math.max(0, gutter - RECT_OFF - bl + NUDGE) + "px";
+    }
+    if (collapse.right) {
+      const br = ws.right - collapse.right.getBoundingClientRect().right;
+      collapse.right.style.paddingRight = Math.max(0, gutter - RECT_OFF - br + NUDGE) + "px";
+    }
   }
 
   /* --- Splitter: Spaltenbreite ziehen (px-Override); Resize → zurück auf clamp --- */
@@ -691,6 +680,13 @@
     workspace.classList.toggle(side === "left" ? "has-left" : "has-right", !!active);
     $$(`.navitem[data-dock="${side}"]`).forEach(b =>
       b.classList.toggle("is-active", b.dataset.panel === active));
+    // Ein-/Ausklapp-CTA in der Mainnav: Icon je Zustand aus der ICONS-Single-Source (offen → …-close, zu → …-open)
+    const cbtn = collapse[side];
+    if (cbtn) {
+      cbtn.querySelector(".dock-collapse-icon").innerHTML = icon(`panel-${side}-${active ? "close" : "open"}`);
+      cbtn.title = active ? "Panel einklappen" : "Panel ausklappen";
+      cbtn.classList.toggle("is-collapsed", !active);
+    }
     updateWidthHints();
   }
   function toggleDock(side, panel) {
