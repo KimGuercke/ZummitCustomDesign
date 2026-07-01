@@ -150,7 +150,7 @@ body.links-bold a { font-weight: 600; }
   grid-template-columns: var(--list-w) 6px 1fr;
 }
 .workspace:not(.has-left).has-right {
-  --right-w: clamp(300px, 19.2vw, 480px);
+  --right-w: clamp(300px, 32.8vw, 560px);   /* nur rechts: wächst mit (spiegelt „nur links"), Beitrag bekommt den Großteil */
   grid-template-columns: 1fr 6px var(--right-w);
 }
 /* Splitter + Dock der geschlossenen Seite aus dem Grid nehmen */
