@@ -242,8 +242,12 @@ body:not(.show-tags) .talk-item__tags { display: none; }   /* Toggle „Vortrags
 .talk-item__bm, .talk-item__more { color: var(--ui-muted); display: inline-flex; }
 
 /* --- Detailbereich ----------------------------------------------------- */
-.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(6px, 2vw, 40px) clamp(4px, 1.7vw, 28px); scrollbar-gutter: stable both-edges; }
+/* .detail ist Query-Container → cqi der Kinder = Breite des Mittelbereichs (zwischen Links- und Rechts-Dock).
+   Vertikales Padding bleibt viewport-basiert; horizontales Padding sitzt cqi-basiert auf .detail__inner. */
+.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(6px, 2vw, 40px) 0; container-type: inline-size; }
 .detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0 auto;
+  /* Horizontales Padding um den Beitragspanel, abhängig von der Mittelbereichs-Breite: kalibriert auf 16px bei 640er-Panel (cqi-Basis 672 → 16/672≈2.38%) */
+  padding-inline: clamp(8px, 2.38cqi, 28px);
   container-type: inline-size; /* cqi der Sub-Tabs/Karte = Breite des Beitragspanels; ab 1500px eingefroren → Karte zentriert, Rand drumherum wächst weiter */ }
 
 /* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
