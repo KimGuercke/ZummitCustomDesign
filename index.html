@@ -50,6 +50,7 @@
     <div class="mainnav__group mainnav__right">
       <button class="navitem" data-dock="right" data-panel="teilnehmende"><i data-icon="users"></i>Personen</button>
       <button class="navitem" data-dock="right" data-panel="chat"><i data-icon="messages-square"></i>Chat</button>
+      <button class="navitem" data-dock="right" data-panel="ki"><i data-icon="sparkles"></i>Bot</button>
       <button class="navitem" data-dock="right" data-panel="infos"><i data-icon="bell"></i>Infos</button>
     </div>
     <!-- Ein-/Ausklapp-CTA rechtes Dock — ganz rechts, nach „Infos" (Icon per JS je Zustand) -->
@@ -154,6 +155,36 @@
         <ul class="chat-list" id="chatList"></ul>
         <form class="chat-input" onsubmit="return false">
           <input type="text" placeholder="Neue Nachricht eingeben …" />
+          <button type="button" class="chat-send" title="Senden"><i data-icon="send"></i></button>
+        </form>
+      </section>
+
+      <!-- Bot / KI-Chat (Demo · statische Konversation, sichtbare Timestamps) -->
+      <section class="panel panel--ki is-hidden" data-panel="ki">
+        <div class="panel__head"><span class="panel__title">KI-Chat - Fokus Vortrag</span></div>
+        <!-- Kontext-Absatz: bleibt oben stehen (nicht scrollend), Trennlinie darunter -->
+        <p class="ki-context">Automatische Zusammenfassung des Vortrags „Like dich selbst – Selbstbewusst &amp; resilient gegen Cybermobbing".</p>
+        <div class="ki-chat">
+          <div class="ki-answer">
+            <h4 class="ki-section">1. Definition und neue Dimension von Mobbing</h4>
+            <p class="ki-point"><strong>Definition:</strong> Experten definieren Mobbing als offene und/oder subtile Gewalt gegen Personen über einen längeren Zeitraum mit dem Ziel der sozialen Ausgrenzung. <span class="ki-ts">01:43</span></p>
+            <p class="ki-point"><strong>Die digitale Dimension:</strong> Über soziale Medien erhält das Phänomen eine neue Tragweite: Betroffene können kaum entkommen, es findet überall und rund um die Uhr statt, und die Anonymität verstärkt die Hemmungslosigkeit der Täter. <span class="ki-ts">01:26</span></p>
+
+            <h4 class="ki-section">2. Psychologische Faktoren und Gruppendynamik</h4>
+            <p class="ki-point"><strong>Fehlendes Feedback:</strong> Im Netz fehlen nonverbale Reaktionen – Täter merken oft nicht, wann sie eine Grenze überschreiten. <span class="ki-ts">01:56</span></p>
+            <p class="ki-point"><strong>Verzerrtes Unrechtsbewusstsein:</strong> Motive sind Machtausübung, Geltungsdrang oder falsches Zusammengehörigkeitsgefühl; oft verstecken sich Täter hinter der Gruppe („Zehn andere haben das doch auch geschrieben"). <span class="ki-ts">03:22</span></p>
+            <p class="ki-point"><strong>Der Kreislauf:</strong> Grenzen zwischen Opfern und Tätern sind fließend – jeder dritte Täter war laut Studien früher selbst Opfer; Motive: Rache, Langeweile, Spaß. <span class="ki-ts">05:33</span></p>
+
+            <h4 class="ki-section">3. Auswirkungen auf die Betroffenen</h4>
+            <p class="ki-point">Opfer leiden massiv unter psychischen und körperlichen Symptomen: Appetit- und Antriebslosigkeit sowie sozialer Rückzug – aus den Medien wie aus dem realen Leben. <span class="ki-ts">05:13</span></p>
+
+            <h4 class="ki-section">4. Rechtliche Einordnung und Vorgehen</h4>
+            <p class="ki-point"><strong>Kein rechtsfreier Raum:</strong> Einen eigenen Tatbestand „Cybermobbing" gibt es nicht, doch Beleidigung, Verleumdung und üble Nachrede sind auch im Netz strafbar. <span class="ki-ts">06:38</span></p>
+            <p class="ki-point"><strong>Beweissicherung:</strong> Für ein Vorgehen gegen Täter sind Beweise nötig – Screenshots, gespeicherte Chatverläufe und ein Mobbing-Tagebuch (Wer, wann, was, wo). <span class="ki-ts">08:17</span></p>
+          </div>
+        </div>
+        <form class="ki-input" onsubmit="return false">
+          <textarea rows="2" placeholder="Frage stellen …"></textarea>
           <button type="button" class="chat-send" title="Senden"><i data-icon="send"></i></button>
         </form>
       </section>

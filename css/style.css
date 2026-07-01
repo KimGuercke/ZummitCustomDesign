@@ -197,6 +197,26 @@ body.links-bold a { font-weight: 600; }
 body.is-mobile .dock-collapse { display: none; }
 .panel__empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 2rem; color: var(--ui-muted); font-size: .95rem; }
 
+/* --- KI-Chat (rechtes Dock „Bot") — Kontext bleibt oben, Chat scrollt, Eingabe unten --- */
+.ki-context { flex: 0 0 auto; margin: 0; padding: .75rem 1.1rem; border-bottom: 1px solid var(--ui-border); color: var(--ui-muted); font-size: .85rem; line-height: 1.45; }
+.ki-chat { flex: 1; min-height: 0; overflow-y: auto; padding: .9rem 1.1rem; }
+.ki-answer { margin-top: 0; }
+.ki-section { margin: 1.2rem 0 .5rem; font-size: .95rem; font-weight: 700; color: var(--ui-text); }
+.ki-answer .ki-section:first-child { margin-top: 0; }
+.ki-point { margin: 0 0 .8rem; font-size: .9rem; line-height: 1.55; color: var(--ui-text); }
+.ki-point strong { font-weight: 600; }
+.ki-ts {
+  display: inline-block; margin-left: .1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78em; font-weight: 600;
+  color: var(--chrome-accent); background: #e7f1f6;
+  border-radius: 4px; padding: .1em .4em; white-space: nowrap;
+}
+/* Eingabefeld (~2 Zeilen) für weitere Fragen — nutzt den bestehenden .chat-send-Button */
+.ki-input { flex: 0 0 auto; display: flex; gap: .5rem; align-items: stretch; padding: .7rem 1.1rem; border-top: 1px solid var(--ui-border); }
+.ki-input textarea { flex: 1; min-width: 0; padding: .5rem .8rem; font: inherit; font-size: .9rem; line-height: 1.35; border: 1px solid var(--ui-border); border-radius: 8px; resize: none; }
+/* Senden-CTA: Markenfarbe #16A9C0, Höhe = Fragefeld (stretch) */
+.ki-input .chat-send { background: var(--ui-brand); }
+
 /* Programm-Kopf nutzt die geteilten .panel__head/.panel__title-Regeln (oben) —
    Titel füllt per flex:1, Aktionen rücken rechts. */
 .listpanel__actions { display: flex; align-items: center; gap: .3rem; }
