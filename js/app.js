@@ -654,9 +654,11 @@
     else workspace.style.setProperty("--right-w", Math.max(0, window.innerWidth - x) + "px");
     updateWidthHints();                 // live beim Ziehen
   };
-  const stopDrag = () => { dragSide = null; document.body.style.userSelect = ""; };
-  $("#splitterLeft").addEventListener("pointerdown",  () => { dragSide = "left";  document.body.style.userSelect = "none"; });
-  $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; });
+  const stopDrag = () => { dragSide = null; document.body.style.userSelect = ""; workspace.classList.remove("ws-no-anim"); };
+  $("#splitterLeft").addEventListener("pointerdown",  () => { dragSide = "left";  document.body.style.userSelect = "none"; workspace.classList.add("ws-no-anim"); });
+  $("#splitterRight").addEventListener("pointerdown", () => { dragSide = "right"; document.body.style.userSelect = "none"; workspace.classList.add("ws-no-anim"); });
+  // Nach der Slide-Animation (Grid-Transition) Größen-Hints/Positionen final nachziehen
+  workspace.addEventListener("transitionend", e => { if (e.target === workspace) updateWidthHints(); });
   window.addEventListener("pointermove", onMove);
   window.addEventListener("pointerup", stopDrag);
   window.addEventListener("resize", () => {
@@ -712,6 +714,21 @@
       widthCollapsed[side] = false;   // manuelle Aktion → nicht „breitenbedingt"
       renderDock(side);
     }));
+
+  /* --- Bot-Icon auf der Beitragskarte (.ai-summary) → rechtes Bot-Panel öffnen/umschalten.
+     Delegiert, da die Karte pro Vortrag neu gerendert wird. Dock zu → Slide-in (Grid-Transition);
+     Dock schon offen (auch wenn Bot bereits aktiv) → kurzer Content-Flash als Feedback. --- */
+  document.addEventListener("click", e => {
+    const btn = e.target.closest(".ai-summary");
+    if (!btn) return;
+    if (document.body.classList.contains("is-mobile")) { selectSection("right", "ki"); return; }
+    const wasOpen = !!dockState.right;
+    if (dockState.right !== "ki") toggleDock("right", "ki");   // öffnet bzw. schaltet um (inkl. <1024-Logik)
+    if (wasOpen) {
+      const c = $(".panel--ki .ki-chat");
+      if (c) { c.classList.remove("ki-flash"); void c.offsetWidth; c.classList.add("ki-flash"); }
+    }
+  });
 
   /* --- Mobile-Modus (<700): Fuß-Toolbar, ein Panel pro Screen, Beitrag-Drill-in ---- */
   const body = document.body;

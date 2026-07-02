@@ -123,7 +123,15 @@ body.links-bold a { font-weight: 600; }
 .navitem.is-active { color: var(--chrome-accent); border-bottom-color: var(--chrome-accent); font-weight: 500; }
 
 /* --- Workspace (dynamischer Split) ------------------------------------- */
-.workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr; position: relative; }
+/* Konstante 5 Spuren (Dock/Splitter/Detail/Splitter/Dock) — zugeklappte Seiten auf 0px statt
+   display:none, damit grid-template-columns beim Öffnen/Schließen animieren kann (Slide-in). */
+.workspace {
+  flex: 1; min-height: 0; display: grid; position: relative;
+  --list-w: 0px; --right-w: 0px; --split-l: 0px; --split-r: 0px;
+  grid-template-columns: var(--list-w) var(--split-l) 1fr var(--split-r) var(--right-w);
+  transition: grid-template-columns .28s ease;
+}
+.workspace.ws-no-anim { transition: none; }   /* Splitter-Drag: live folgen statt nachlaufen */
 
 /* Live-Breiten-Hints je Bereich — dezente Pille unten, Position/Text per JS */
 .size-hint {
@@ -140,22 +148,27 @@ body.links-bold a { font-weight: 600; }
 /* Panel-Breiten per clamp, Detail = Rest (1fr). Max bei vw 2500.
    Linkes Panel wächst SANFTER, wenn rechts mitläuft (24vw statt 32,8vw),
    damit die Mitte nicht zu schnell schrumpft. */
+.workspace.has-left  { --split-l: 6px; }
+.workspace.has-right { --split-r: 6px; }
 .workspace.has-left.has-right {
   --list-w:  clamp(300px, 29.3vw, 820px);   /* beide offen: Min 300 wird bei Viewport 1024 erreicht (29.3vw·1024≈300) */
   --right-w: clamp(300px, 29.3vw, 480px);
-  grid-template-columns: var(--list-w) 6px 1fr 6px var(--right-w);
 }
 .workspace.has-left:not(.has-right) {
   --list-w:  clamp(300px, 32.8vw, 820px);   /* nur links: voller Slope */
-  grid-template-columns: var(--list-w) 6px 1fr;
 }
 .workspace:not(.has-left).has-right {
   --right-w: clamp(300px, 32.8vw, 560px);   /* nur rechts: wächst mit (spiegelt „nur links"), Beitrag bekommt den Großteil */
-  grid-template-columns: 1fr 6px var(--right-w);
 }
-/* Splitter + Dock der geschlossenen Seite aus dem Grid nehmen */
-.workspace:not(.has-left)  #dockLeft,  .workspace:not(.has-left)  #splitterLeft  { display: none; }
-.workspace:not(.has-right) #dockRight, .workspace:not(.has-right) #splitterRight { display: none; }
+/* Zugeklappte Seite: nach dem Zufahren unsichtbar (Border/Schatten weg), beim Auffahren sofort sichtbar.
+   Desktop: visibility (animierbar); Mobile (Flex-Layout): weiterhin display:none, sonst nähme
+   der unsichtbare Dock Flex-Platz ein. */
+body:not(.is-mobile) .workspace:not(.has-left)  #dockLeft,
+body:not(.is-mobile) .workspace:not(.has-left)  #splitterLeft,
+body:not(.is-mobile) .workspace:not(.has-right) #dockRight,
+body:not(.is-mobile) .workspace:not(.has-right) #splitterRight { visibility: hidden; transition: visibility 0s .28s; }
+body.is-mobile .workspace:not(.has-left)  #dockLeft,  body.is-mobile .workspace:not(.has-left)  #splitterLeft  { display: none; }
+body.is-mobile .workspace:not(.has-right) #dockRight, body.is-mobile .workspace:not(.has-right) #splitterRight { display: none; }
 
 .splitter { cursor: col-resize; background: var(--ui-border); }
 .splitter:hover { background: var(--ui-accent); }
@@ -211,6 +224,9 @@ body.is-mobile .dock-collapse { display: none; }
   color: var(--chrome-accent); background: #e7f1f6;
   border-radius: 4px; padding: .1em .4em; white-space: nowrap;
 }
+/* Feedback beim Umschalten aufs Bot-Panel (Dock schon offen): Inhalt blendet kurz ein */
+@keyframes ki-flash { from { opacity: .15; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.ki-flash { animation: ki-flash .3s ease; }
 /* Eingabefeld (~2 Zeilen) für weitere Fragen — nutzt den bestehenden .chat-send-Button */
 .ki-input { flex: 0 0 auto; display: flex; gap: .5rem; align-items: stretch; padding: .7rem 1.1rem; border-top: 1px solid var(--ui-border); }
 .ki-input textarea { flex: 1; min-width: 0; padding: .5rem .8rem; font: inherit; font-size: .9rem; line-height: 1.35; border: 1px solid var(--ui-border); border-radius: 8px; resize: none; }
