@@ -289,6 +289,10 @@ body:not(.show-tags) .talk-item__tags { display: none; }   /* Toggle „Vortrags
   padding-block: clamp(4px, calc((100cqi - 700px) * 0.045 + 4px), 40px);
   padding-inline: clamp(0px, calc((100cqi - 700px) * 0.033), 28px);
   container-type: inline-size; /* cqi der Sub-Tabs/Karte = Breite des Beitragspanels; ab 1500px eingefroren → Karte zentriert, Rand drumherum wächst weiter */ }
+/* Seite ohne offenes Panel: Karte grenzt an die Workspace-Kante → dort nie 0, sondern fluider
+   Mindestabstand (Boden 12px, gleiche Gerade). Mit Panel trennt die Dock-Kante → 0 ist ok. */
+body:not(.is-mobile) .workspace:not(.has-left)  .detail__inner { padding-left:  clamp(12px, calc((100cqi - 700px) * 0.033), 28px); }
+body:not(.is-mobile) .workspace:not(.has-right) .detail__inner { padding-right: clamp(12px, calc((100cqi - 700px) * 0.033), 28px); }
 
 /* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
 .tabbar { display: flex; align-items: center; gap: clamp(.4rem, 1.2cqi, 1rem); }
