@@ -230,8 +230,7 @@ body.is-mobile .dock-collapse { display: none; }
 /* Eingabefeld (~2 Zeilen) für weitere Fragen — nutzt den bestehenden .chat-send-Button */
 .ki-input { flex: 0 0 auto; display: flex; gap: .5rem; align-items: stretch; padding: .7rem 1.1rem; border-top: 1px solid var(--ui-border); }
 .ki-input textarea { flex: 1; min-width: 0; padding: .5rem .8rem; font: inherit; font-size: .9rem; line-height: 1.35; border: 1px solid var(--ui-border); border-radius: 8px; resize: none; }
-/* Senden-CTA: Markenfarbe #16A9C0, Höhe = Fragefeld (stretch) */
-.ki-input .chat-send { background: var(--ui-brand); }
+/* Senden-CTA: Höhe = Fragefeld (stretch); Markenfarbe kommt aus der .chat-send-Basis */
 
 /* Programm-Kopf nutzt die geteilten .panel__head/.panel__title-Regeln (oben) —
    Titel füllt per flex:1, Aktionen rücken rechts. */
@@ -563,7 +562,7 @@ body:not(.is-mobile) .workspace:not(.has-right) .detail__inner { padding-right: 
 .chat-msg__reply:hover { text-decoration: underline; }
 .chat-input { flex: 0 0 auto; display: flex; gap: .5rem; padding: .7rem 1.1rem; border-top: 1px solid var(--ui-border); }
 .chat-input input { flex: 1; min-width: 0; padding: .6rem .8rem; font: inherit; font-size: .9rem; border: 1px solid var(--ui-border); border-radius: 8px; }
-.chat-send { flex: 0 0 auto; width: 40px; display: inline-grid; place-items: center; border: 0; border-radius: 8px; background: var(--ui-accent); color: #fff; cursor: pointer; }
+.chat-send { flex: 0 0 auto; width: 40px; display: inline-grid; place-items: center; border: 0; border-radius: 8px; background: var(--ui-brand); color: #fff; cursor: pointer; }
 .chat-send:hover { filter: brightness(1.06); }
 
 /* =========================================================================

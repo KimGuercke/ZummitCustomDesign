@@ -687,7 +687,7 @@
     const cbtn = collapse[side];
     if (cbtn) {
       cbtn.querySelector(".dock-collapse-icon").innerHTML = icon(`panel-${side}-${active ? "close" : "open"}`);
-      cbtn.title = active ? "Panel einklappen" : "Panel ausklappen";
+      cbtn.title = (active ? "Panel einklappen" : "Panel ausklappen") + (side === "left" ? " (⌃⌥L)" : " (⌃⌥R)");
       cbtn.classList.toggle("is-collapsed", !active);
     }
     updateWidthHints();
@@ -714,6 +714,21 @@
       widthCollapsed[side] = false;   // manuelle Aktion → nicht „breitenbedingt"
       renderDock(side);
     }));
+
+  /* --- Shortcuts: Ctrl+Option+L / Ctrl+Option+R → linkes/rechtes Dock togglen (wie die CTAs).
+     e.code = physische Taste (layoutunabhängig); Guard: nicht beim Tippen in Feldern, nicht mobil. --- */
+  document.addEventListener("keydown", e => {
+    if (!e.ctrlKey || !e.altKey || e.metaKey || e.shiftKey) return;
+    const side = e.code === "KeyL" ? "left" : e.code === "KeyR" ? "right" : null;
+    if (!side) return;
+    if (document.body.classList.contains("is-mobile")) return;
+    const t = e.target;
+    if (t && (t.matches("input, textarea, select") || t.isContentEditable)) return;
+    e.preventDefault();
+    dockState[side] = dockState[side] ? null : lastPanel[side];   // einklappen ↔ ausklappen (letztes Panel)
+    widthCollapsed[side] = false;
+    renderDock(side);
+  });
 
   /* --- Bot-Icon auf der Beitragskarte (.ai-summary) → rechtes Bot-Panel öffnen/umschalten.
      Delegiert, da die Karte pro Vortrag neu gerendert wird. Dock zu → Slide-in (Grid-Transition);
