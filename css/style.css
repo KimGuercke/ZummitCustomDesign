@@ -263,12 +263,19 @@ body:not(.show-tags) .talk-item__tags { display: none; }   /* Toggle „Vortrags
 
 /* --- Detailbereich ----------------------------------------------------- */
 /* .detail ist Query-Container → cqi der Kinder = Breite des Mittelbereichs (zwischen Links- und Rechts-Dock).
-   Vertikales Padding bleibt viewport-basiert; horizontales Padding sitzt cqi-basiert auf .detail__inner. */
-.detail { position: relative; overflow: auto; min-width: 0; padding: clamp(6px, 2vw, 40px) 0; container-type: inline-size; }
+   Beide Paddings liegen auf .detail__inner, damit die <700-Container-Query unten beide nullen kann
+   (.detail kann nicht auf seine eigene Query reagieren). */
+.detail { position: relative; overflow: auto; min-width: 0; container-type: inline-size; }
 .detail__inner { width: 100%; min-width: 0; max-width: 1500px; margin: 0 auto;
-  /* Horizontales Padding um den Beitragspanel, abhängig von der Mittelbereichs-Breite: kalibriert auf 12px bei 640er-Panel (cqi-Basis 664 → 12/664≈1.81%) */
+  /* Vertikal viewport-basiert (wie zuvor auf .detail); horizontal abhängig von der Mittelbereichs-Breite:
+     kalibriert auf 12px bei 640er-Panel (cqi-Basis 664 → 12/664≈1.81%) */
+  padding-block: clamp(6px, 2vw, 40px);
   padding-inline: clamp(8px, 1.81cqi, 28px);
   container-type: inline-size; /* cqi der Sub-Tabs/Karte = Breite des Beitragspanels; ab 1500px eingefroren → Karte zentriert, Rand drumherum wächst weiter */ }
+/* Mittelbereich schmaler als 700px → Beitragspanel randlos (nur oben 4px Luft) */
+@container (max-width: 700px) {
+  .detail__inner { padding: 4px 0 0; }
+}
 
 /* Tab-Leiste: Sub-Tabs links, Karten-CTAs rechtsbündig zur Karte, vertikal zentriert */
 .tabbar { display: flex; align-items: center; gap: clamp(.4rem, 1.2cqi, 1rem); }
